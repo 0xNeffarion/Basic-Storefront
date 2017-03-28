@@ -1,6 +1,4 @@
-#include<stdio.h>
-#include<string.h>
-#include<ctype.h>
+#include "../lib.c"
 
 typedef struct{
   char nome[30];
