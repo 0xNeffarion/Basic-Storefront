@@ -43,7 +43,7 @@ void clearScreen(){
 }
 
 /* 
-* I: Fills array with value
+* I: Fills array with a value
 * P: int *data: array pointer | int size: array size
 * P: int value: value to fill array
 * R: -

@@ -10,6 +10,7 @@ char* getDataDirectory(){
     char* homedir = getHomeDirectory();
     char* end = malloc(512);
     sprintf(end, "%s/%s", homedir, DATA_FOLDERNAME);
+    free(homedir);
     return end;
 }
 
@@ -23,14 +24,17 @@ int dirExists(const char* mydir){
         returnVal = -1;
     }
     
+    free(cdir);
     return returnVal;
 }
 
 int deleteDir(const char* mydir){
     char params[256];
     sprintf(params, "-rf \"%s\"", mydir);
+    char* d = &params[0];
+    char* cmd = "rm";
     if(fork()){
-        execvp("rm", &params);
+        execlp(cmd, d, NULL);
     }else{
         wait(NULL);
         usleep(1000*1000);

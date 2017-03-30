@@ -16,54 +16,16 @@ void sair(){
     exit(0);
 }
 
-void menu(){
-  ePrint("** Menu **\n");
-  ePrint("1) Criar Novo Utilizador\n");
-  ePrint("2) Gerir Stocks\n");
-  ePrint("3) Ver Estatisticas\n");
-  ePrint("4) Flag\n");
-  ePrint("5) Sair\n");
-  ePrint("Insira a opção desejada:\n\n");
-}
-
-void actionTree(const int val){
-  switch(val) {
-    case 1:{
-      novo();
-      break;
-    }
-    case 2:{
-      break;
-    }
-    case 3:{
-      break;
-    }
-    case 4:{
-      flag();
-      break;
-    }
-    case 5:{
-      sair();
-      return 0;
-      break;
-    }
-    default:{
-      printf("[ERRO] Opção invalida! Escolha valores de 1 a 5\n");
-      int n = 0;
-      scanf("%d",&n);
-      actionTree(n);
-      break;
-    }
-  }
-}
-
-void novo(){
+void novoUser(){
   clearScreen();
   char usr[30];
   char pw[128];
   
   printf("Insira o nome de utilizador [Max. 30 caracteres]: \n");
-  scanf("%s", &usr);
+  if(scanf("%s", &usr[0]) < 0){
+    printf("Erro a inserir utilizador!\n");
+    return;
+  }
   char *str = getpass("Insira a password [Max. 128 caracteres]:\n");
   strcpy(pw,str);
   
@@ -82,7 +44,7 @@ void cria_string(char s[], int max){
   s[i]='\0';
 }
 
-void flag(){
+void listarUsers(){
   int j;
   int n = sizeof(users);
   for(j=0;j<n;j++)
@@ -91,14 +53,57 @@ void flag(){
   }
 }
 
+void menu(){
+  ePrint("** Menu **\n");
+  ePrint("1) Criar Novo Utilizador\n");
+  ePrint("2) Gerir Stocks\n");
+  ePrint("3) Ver Estatisticas\n");
+  ePrint("4) Flag\n");
+  ePrint("5) Sair\n");
+  ePrint("Insira a opção desejada:\n\n");
+}
+
+void actions(const int val){
+  switch(val) {
+    case 1:{
+      novoUser();
+      break;
+    }
+    case 2:{
+      break;
+    }
+    case 3:{
+      break;
+    }
+    case 4:{
+      listarUsers();
+      break;
+    }
+    case 5:{
+      sair();
+      return;
+      break;
+    }
+    default:{
+      printf("[ERRO] Opção invalida! Escolha valores de 1 a 5\n");
+      int n = 0;
+      if(scanf("%d",&n) >= 1){
+        actions(n);
+      }
+      break;
+    }
+  }
+}
+
 int main() {
   int input=1;
   do{
     clearScreen();
     menu();
-    scanf("%d",&input);
-    actionTree(input);
-  }while (1);
+    if(scanf("%d",&input) >= 1){
+      actions(input);  
+    }
+  }while(1);
   
   return 0;
 }
