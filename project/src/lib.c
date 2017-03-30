@@ -14,13 +14,16 @@
 #include <dirent.h>
 #include "lib_dir.c"
 
-void ePrint(char *text, float speed){
+#define TXT_SPEED 2.0
+#define FILE_DELIM ";"
+
+void ePrint(char *text){
     int i = 0;
     int len = strlen(text);
     while(text[i] != '\0'){
         printf("%c", (text[i]));
         fflush(stdout);
-        usleep(1000*45/speed);
+        usleep(1000*40/TXT_SPEED);
         i++;
     }
 }
@@ -28,3 +31,11 @@ void ePrint(char *text, float speed){
 void ClearScreen(){
     printf("\033[2J\033[1;1H");
 }
+
+void FillArray(int *data, int size, int value){
+    int i = 0;
+    for(i = 0; i < size; i++){
+        data[i] = value;
+    }
+}
+

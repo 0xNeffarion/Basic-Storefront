@@ -1,6 +1,6 @@
 const char dataFolderName[15] = "labc_sm_data";
 
-static char* getHomeDirectory(){
+char* getHomeDirectory(){
     char* homedir = malloc(512);
     if ((homedir = getenv("HOME")) == NULL) {
         homedir = getpwuid(getuid())->pw_dir;
@@ -8,14 +8,14 @@ static char* getHomeDirectory(){
     return homedir;
 }
 
-static char* getDataDirectory(){
+char* getDataDirectory(){
     char* homedir = getHomeDirectory();
     char* end = malloc(512);
     sprintf(end, "%s/%s", homedir, dataFolderName);
     return end;
 }
 
-static int dirExists(char* mydir){
+int dirExists(const char* mydir){
     DIR* cdir = opendir(mydir);
     int returnVal = 0;
     if (cdir){
@@ -28,7 +28,7 @@ static int dirExists(char* mydir){
     return returnVal;
 }
 
-static int createDir(char* mydir){
+int createDir(const char* mydir){
     return mkdir(mydir, 0777);
 }
 
