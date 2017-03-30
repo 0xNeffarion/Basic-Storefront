@@ -2,36 +2,17 @@
 
 typedef struct{
    int uid;
-  char username[128];
+  char username[30];
   char password[128];
 } userdb;
 
-void menu();
-int novo(userdb utilizador[], int n);
-//void erro(int input);
-void cria_string(char s[], int max);
-void flag(userdb utilizador[], int n);
-
-int main() {
-  userdb utilizador[100];
-  int input=0;
-  menu();
-  scanf("%d",&input);
-  do{
-    menu();
-    scanf("%d",&input);
-    actionTree(input);
-    ClearScreen();
-  }while (1);
-  
-  
-  return 0;
-}
+userdb users[256];
+int nextId = 0;
 
 void sair(){
-    ClearScreen();
-    printf("Fechando servidor...");
-    usleep(1000*2500); // 2.5s
+    clearScreen();
+    printf("Fechando servidor...\n");
+    usleep(1000*1500); // 1.5s
     exit(0);
 }
 
@@ -45,10 +26,10 @@ void menu(){
   ePrint("Insira a opção desejada:\n\n");
 }
 
-void actionTree(int val){
+void actionTree(const int val){
   switch(val) {
     case 1:{
-      novo(utilizador,&n);
+      novo();
       break;
     }
     case 2:{
@@ -58,30 +39,35 @@ void actionTree(int val){
       break;
     }
     case 4:{
-      flag(utilizador,n);
+      flag();
       break;
     }
     case 5:{
       sair();
       return 0;
       break;
-    }   
+    }
     default:{
       printf("[ERRO] Opção invalida! Escolha valores de 1 a 5\n");
+      int n = 0;
+      scanf("%d",&n);
+      actionTree(n);
       break;
     }
   }
 }
 
-int novo(userdb utilizador[], int* n){
-  printf("Username: \n");
-  fflush(stdout);
-  cria_string(utilizador[n].username,128);
-  printf("Password: ");
-  char *str = getpass("");
-  strcpy(utilizador[n].password,str);
-  &n = &n+1 
-  return &n;
+void novo(){
+  clearScreen();
+  char usr[30];
+  char pw[128];
+  
+  printf("Insira o nome de utilizador [Max. 30 caracteres]: \n");
+  scanf("%s", &usr);
+  char *str = getpass("Insira a password [Max. 128 caracteres]:\n");
+  strcpy(pw,str);
+  
+  //CRIAR USER
 }
 
 void cria_string(char s[], int max){
@@ -96,8 +82,25 @@ void cria_string(char s[], int max){
   s[i]='\0';
 }
 
-void flag(userdb utilizador[], int n){
+void flag(){
   int j;
+  int n = sizeof(users);
   for(j=0;j<n;j++)
-    printf("User:%128s| Password:%128s\n",utilizador[j].username,utilizador[j].password);
+  if(users[j].username != NULL && users[j].password != NULL){
+    printf("User:%128s| Password:%128s\n", users[j].username, users[j].password);
+  }
 }
+
+int main() {
+  int input=1;
+  do{
+    clearScreen();
+    menu();
+    scanf("%d",&input);
+    actionTree(input);
+  }while (1);
+  
+  return 0;
+}
+
+
