@@ -4,18 +4,20 @@
 #include <ctype.h>
 #include <math.h>
 #include <time.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdarg.h>
 #include <termios.h>
 #include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 #include <pwd.h>
 #include <dirent.h>
 #include "const.c"
 #include "lib_dir.c"
 #include "lib_files.c"
+#include "lib_users.c"
 
 /* 
 * I: Writes to console a string with typewritter effect

@@ -50,7 +50,3 @@ int deleteDir(const char* mydir){
 int createDir(const char* mydir){
     return mkdir(mydir, 0777);
 }
-
-
-
-

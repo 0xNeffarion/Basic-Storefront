@@ -14,13 +14,13 @@ char* getUsersFilePath(){
 /* 
 * I: Check if file exists
 * P: char* f: file
-* R: 0 if exists, otherwise 1
+* R: true if exists, otherwise false
 */
 int fileExists(const char* f){
     if(access(f, F_OK) != -1) {
-        return 0; // Exists
+        return true; // Exists
     } else {
-        return 1;
+        return false;
     }
 }
 
@@ -28,36 +28,44 @@ int fileExists(const char* f){
 /* 
 * I: Reads a specified line
 * P: char* f: file | int line: line to read (0+) | char[] out: output from line
-* R: 0 if line was read, otherwise 1
+* R: true if line was read, otherwise false
 */
 int readline(const char* f, const int line, char out[]){
     FILE *fa = fopen(f, "r");
     if(fa!=NULL && line >= 0){
-        int i = 0, size = sizeof(out);
+        int i = 0, size = strlen(out);
         while(fgets(out,size,fa) != NULL){
             if(i==line){
                 fclose(fa);
-                return 0;
+                return true;
             }
             i++;
         }
     }
 
     fclose(fa);
-    return -1;
+    return false;
+}
+
+int cutLine(const char* f, const int line, const int n, char out[]){
+    FILE *fa = fopen(f, "r");
+    if(fa!=NULL && line >= 0 && n >= 0){
+        return true;
+    }
+    return false;
 }
 
 /* 
 * I: Appends string to end of file
 * P: char* f: file | char* appstr: char string
-* R: 0 if it appends without errors, otherwise 1
+* R: true if it appends without errors, otherwise false
 */
 int append(const char* f, const char* appstr){
     FILE *fa = fopen(f, "a");
-    int r = 1;
+    int r = false;
     if(fa!=NULL){
 	    if(fprintf(fa,"%s",appstr) > 0){
-	        r = 0;
+	        r = true;
 	    }
 	}
 
@@ -68,13 +76,13 @@ int append(const char* f, const char* appstr){
 /* 
 * I: Creates blank empty file
 * P: char* f: file | char[] str: char string
-* R: 0 if it appends without errors, otherwise 1
+* R: true if it appends without errors, otherwise false
 */
 int create(const char* f){
     FILE *fa = fopen(f, "ab+");
-    int r = 1;
+    int r = false;
     if(fa!=NULL){
-	   r = 0;
+	   r = true;
 	}
 
     fclose(fa);

@@ -1,12 +1,4 @@
 #include "../lib.c"
-
-typedef struct{
-   int uid;
-  char username[30];
-  char password[128];
-} userdb;
-
-userdb users[256];
 int nextId = 0;
 
 void sair(){
@@ -49,17 +41,18 @@ void listarUsers(){
   int n = sizeof(users);
   for(j=0;j<n;j++)
   if(users[j].username != NULL && users[j].password != NULL){
+    if(strlen(users[j].username) > 1)
     printf("User:%128s| Password:%128s\n", users[j].username, users[j].password);
   }
 }
 
 void menu(){
-  ePrint("** Menu **\n");
-  ePrint("1) Criar Novo Utilizador\n");
-  ePrint("2) Gerir Stocks\n");
-  ePrint("3) Ver Estatisticas\n");
-  ePrint("4) Flag\n");
-  ePrint("5) Sair\n");
+  ePrint(COLOR_YELLOW "** Menu **" COLOR_RESET "\n");
+  ePrint(COLOR_CYAN "1)" COLOR_RESET " Criar Novo Utilizador\n");
+  ePrint(COLOR_CYAN "2)" COLOR_RESET " Gerir Stocks\n");
+  ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver Estatisticas\n");
+  ePrint(COLOR_CYAN "4)" COLOR_RESET " Flag\n");
+  ePrint(COLOR_CYAN "5)" COLOR_RESET " Sair\n");
   ePrint("Insira a opção desejada:\n\n");
 }
 
