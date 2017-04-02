@@ -5,6 +5,10 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+#include <locale.h>
+#include <wctype.h>
+#include <wchar.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdarg.h>
@@ -18,6 +22,10 @@
 #include "lib_dir.c"
 #include "lib_files.c"
 #include "lib_users.c"
+
+void ePrint(char *text);
+void clearScreen();
+void fillArray(int *data, int size, int value);
 
 /* 
 * I: Writes to console a string with typewritter effect

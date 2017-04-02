@@ -1,14 +1,19 @@
+
+void getUsersFilePath(char buff[]);
+int fileExists(char* f);
+int readline(const char* f, const int line, char out[]);
+int append(const char* f, const char* appstr);
+int create(const char* f);
+
 /* 
 * I: Retrieves full filepath for users data file
 * P: -
 * R: Users data file path
 */
-char* getUsersFilePath(){
-    char *dataDir = getDataDirectory();
-    char* retVal = malloc(512);
-    sprintf(retVal, "%s/%s", dataDir, USERS_FILENAME);
-    free(dataDir);
-    return retVal;
+void getUsersFilePath(char buff[]){
+    char b[512];
+    getDataDirectory(b);
+    sprintf(buff, "%s/%s", b, USERS_FILENAME);
 }
 
 /* 
@@ -16,7 +21,7 @@ char* getUsersFilePath(){
 * P: char* f: file
 * R: true if exists, otherwise false
 */
-int fileExists(const char* f){
+int fileExists(char* f){
     if(access(f, F_OK) != -1) {
         return true; // Exists
     } else {
@@ -47,13 +52,6 @@ int readline(const char* f, const int line, char out[]){
     return false;
 }
 
-int cutLine(const char* f, const int line, const int n, char out[]){
-    FILE *fa = fopen(f, "r");
-    if(fa!=NULL && line >= 0 && n >= 0){
-        return true;
-    }
-    return false;
-}
 
 /* 
 * I: Appends string to end of file
@@ -72,6 +70,7 @@ int append(const char* f, const char* appstr){
     fclose(fa);
     return r;
 }
+
 
 /* 
 * I: Creates blank empty file

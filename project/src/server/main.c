@@ -1,5 +1,10 @@
 #include "../lib.c"
-int nextId = 0;
+
+void sair();
+void novoUser();
+void listarUsers();
+void menu();
+void actions(const int val);
 
 void sair(){
     clearScreen();
@@ -24,18 +29,6 @@ void novoUser(){
   //CRIAR USER
 }
 
-void cria_string(char s[], int max){
-  int i=0;
-  char c;
-  while(isdigit(c) || isalpha(c)) {
-    c=getchar();
-  }
-  s[i++]=c;
-  while((s[i]=getchar() != '\n') && i < max)
-    i++;
-  s[i]='\0';
-}
-
 void listarUsers(){
   int j;
   int n = sizeof(users);
@@ -48,12 +41,12 @@ void listarUsers(){
 
 void menu(){
   ePrint(COLOR_YELLOW "** Menu **" COLOR_RESET "\n");
-  ePrint(COLOR_CYAN "1)" COLOR_RESET " Criar Novo Utilizador\n");
-  ePrint(COLOR_CYAN "2)" COLOR_RESET " Gerir Stocks\n");
-  ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver Estatisticas\n");
-  ePrint(COLOR_CYAN "4)" COLOR_RESET " Flag\n");
+  ePrint(COLOR_CYAN "1)" COLOR_RESET " Criar novo utilizador\n");
+  ePrint(COLOR_CYAN "2)" COLOR_RESET " Gerir stocks\n");
+  ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver estatisticas\n");
+  ePrint(COLOR_CYAN "4)" COLOR_RESET " Listar utilizadores\n");
   ePrint(COLOR_CYAN "5)" COLOR_RESET " Sair\n");
-  ePrint("Insira a opção desejada:\n\n");
+  ePrint("Insira a opcao desejada:\n\n");
 }
 
 void actions(const int val){
@@ -89,7 +82,9 @@ void actions(const int val){
 }
 
 int main() {
+  setlocale(LC_ALL, "en_US.UTF-8");
   int input=1;
+  parseUsers();
   do{
     clearScreen();
     menu();

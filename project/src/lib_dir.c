@@ -1,17 +1,22 @@
-char* getHomeDirectory(){
+
+void getHomeDirectory(char buff[]);
+void getDataDirectory(char buff[]);
+int dirExists(const char* mydir);
+int deleteDir(const char* mydir);
+int createDir(const char* mydir);
+
+void getHomeDirectory(char buff[]){
     char* homedir = malloc(512);
     if ((homedir = getenv("HOME")) == NULL) {
         homedir = getpwuid(getuid())->pw_dir;
     }
-    return homedir;
+    sprintf(buff,"%s",homedir);
 }
 
-char* getDataDirectory(){
-    char* homedir = getHomeDirectory();
-    char* end = malloc(512);
-    sprintf(end, "%s/%s", homedir, DATA_FOLDERNAME);
-    free(homedir);
-    return end;
+void getDataDirectory(char buff[]){
+    char b[512];
+    getHomeDirectory(b);
+    sprintf(buff, "%s/%s", b, DATA_FOLDERNAME);
 }
 
 int dirExists(const char* mydir){
