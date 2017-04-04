@@ -23,16 +23,16 @@
 #include "lib_files.c"
 #include "lib_users.c"
 
-void ePrint(char *text);
+void ePrint(const char *text);
 void clearScreen();
 void fillArray(int *data, int size, int value);
 
-/* 
+/*
 * I: Writes to console a string with typewritter effect
 * P: char* text: text to write
 * R: -
 */
-void ePrint(char *text){
+void ePrint(const char *text){
     int i = 0;
     int len = strlen(text);
     while(text[i] != '\0'){
@@ -43,7 +43,7 @@ void ePrint(char *text){
     }
 }
 
-/* 
+/*
 * I: Clears console/terminal screen
 * P: -
 * R: -
@@ -52,7 +52,7 @@ void clearScreen(){
     printf("\033[2J\033[1;1H");
 }
 
-/* 
+/*
 * I: Fills array with a value
 * P: int *data: array pointer | int size: array size
 * P: int value: value to fill array
@@ -64,4 +64,3 @@ void fillArray(int *data, int size, int value){
         data[i] = value;
     }
 }
-

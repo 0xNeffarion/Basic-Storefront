@@ -17,7 +17,7 @@ void novoUser(){
   clearScreen();
   char usr[30];
   char pw[128];
-  
+
   printf("Insira o nome de utilizador [Max. 30 caracteres]: \n");
   if(scanf("%s", &usr[0]) < 0){
     printf("Erro a inserir utilizador!\n");
@@ -25,7 +25,7 @@ void novoUser(){
   }
   char *str = getpass("Insira a password [Max. 128 caracteres]:\n");
   strcpy(pw,str);
-  
+
   //CRIAR USER
 }
 
@@ -35,7 +35,7 @@ void listarUsers(){
   for(j=0;j<n;j++)
   if(users[j].username != NULL && users[j].password != NULL){
     if(strlen(users[j].username) > 1)
-    printf("User:%128s| Password:%128s\n", users[j].username, users[j].password);
+    printf("User:%s| Password:%s\n", users[j].username, users[j].password);
   }
 }
 
@@ -89,11 +89,9 @@ int main() {
     clearScreen();
     menu();
     if(scanf("%d",&input) >= 1){
-      actions(input);  
+      actions(input);
     }
   }while(1);
-  
+
   return 0;
 }
-
-

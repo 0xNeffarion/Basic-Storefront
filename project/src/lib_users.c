@@ -38,3 +38,44 @@ void parseUsers(){
 		}
 	}
 }
+
+int validatePassword(int userid, char* pw){
+  int i = 0, size = sizeof(users);
+  for(i = 0; i < size; i++){
+    if(users[i].username != NULL && users[i].uid != NULL){
+      if(users[i].uid == userid){
+        if(strcmp(&(users[i].password[0]), pw) == 0){
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+int getIdByUsername(char[] user, char[] out){
+    int i = 0, size = sizeof(users);
+    for(i = 0; i < size; i++){
+      if(users[i].username != NULL && users[i].uid != NULL){
+        if(strcmp(&(users[i].username[0]), user) == 0){
+          return users[i].uid;
+        }
+      }
+    }
+
+    return -1;
+}
+
+int getUsernameById(int id, char[] out){
+    int i = 0, size = sizeof(users);
+    for(i = 0; i < size; i++){
+      if(users[i].username != NULL && users[i].uid != NULL){
+        if(users[i].uid == id){
+          strcpy(out, users[i].username);
+          return users[i].uid;
+        }
+      }
+    }
+
+    return -1;
+}

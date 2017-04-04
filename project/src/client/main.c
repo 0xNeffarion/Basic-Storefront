@@ -86,7 +86,7 @@ void actionsaldo(const int opt) {
   }
   case 3:{
     break;
-  } 
+  }
   default:{
     ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 3!\n");
     scanf("%d",&opt);
@@ -147,7 +147,7 @@ void actionslista(const int opt){
   }
   case 4:{
     break;
-  } 
+  }
   default:{
     ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 3!\n");
     scanf("%d",&opt);
