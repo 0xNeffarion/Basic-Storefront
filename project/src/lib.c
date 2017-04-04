@@ -34,7 +34,6 @@ void fillArray(int *data, int size, int value);
 */
 void ePrint(const char *text){
     int i = 0;
-    int len = strlen(text);
     while(text[i] != '\0'){
         printf("%c", (text[i]));
         fflush(stdout);
