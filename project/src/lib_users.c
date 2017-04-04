@@ -10,6 +10,10 @@ userdb users[256];
 int numRegs = 0;
 
 void parseUsers();
+int validatePassword(int userid, char* pw);
+int getIdByUsername(char[] user, char[] out);
+int getIdByUsername(char[] user, char[] out);
+int getUsernameById(int id, char[] out);
 
 void parseUsers(){
 	char fp[512];
