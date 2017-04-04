@@ -2,6 +2,8 @@ typedef struct{
    int uid;
   char username[30];
   char password[128];
+  float balance;
+  int buylist[128];
 } userdb;
 
 userdb users[256];
