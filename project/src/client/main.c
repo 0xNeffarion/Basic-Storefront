@@ -62,8 +62,9 @@ void saldo(){
   ePrint(COLOR_CYAN "2)" COLOR_RESET " Adicionar Saldo.\n");
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Voltar ao menu inicial.\n");
   ePrint("Insira a opção desejada(1-3):\n");
-  scanf("%d",&opt);
-  actionsaldo(opt);
+  if(scanf("%d",&opt)>0){
+    actionsaldo(opt);
+  }
 }
 
 void actionsaldo(const int opt) {
@@ -80,8 +81,11 @@ void actionsaldo(const int opt) {
   case 2:{
     clearScreen();
     ePrint("Insira a quantia a adicionar ao seu saldo (em euros)!\n");
-    scanf("%d",&add);
-    saldo();
+    if(scanf("%d",&add) > 0){
+      int s = 0;
+
+      saldo();
+    }
     break;
   }
   case 3:{
@@ -89,8 +93,10 @@ void actionsaldo(const int opt) {
   }
   default:{
     ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 3!\n");
-    scanf("%d",&opt);
-    actionsaldo(opt);
+    int val = 0;
+    if(scanf("%d",&val) > 0){
+      actionsaldo(val);
+    }
     break;
   }
   }
@@ -106,8 +112,9 @@ void lista(){
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Adicionar produtos à Lista de Compras.\n");
   ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n");
   ePrint("Insira a opção desejada(1-4):\n");
-  scanf("%d",&opt);
-  actionslista(opt);
+  if(scanf("%d",&opt) > 0){
+    actionslista(opt);
+  }
 }
 
 void actionslista(const int opt){
@@ -120,9 +127,10 @@ void actionslista(const int opt){
     int items=1;
     for(int i=0;i<items;i++) {
       int flag;
-      scanf("%d",&flag);
-      if(flag!=0) {
-	//adicionar na struct
+      if(scanf("%d",&flag) > 0){
+        if(flag!=0) {
+  	       //adicionar na struct
+        }
       }
       else
 	break;
@@ -149,9 +157,11 @@ void actionslista(const int opt){
     break;
   }
   default:{
-    ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 3!\n");
-    scanf("%d",&opt);
-    actionslista(opt);
+    printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
+    int val = 0;
+    if(scanf("%d",&val) > 0){
+      actionslista(val);
+    }
     break;
   }
   }
@@ -163,7 +173,7 @@ int main(){
   do{
     clearScreen();
     menu();
-    if(scanf("%d",&input) >= 1) {
+    if(scanf("%d",&input) > 0) {
       actions(input);
     }
   }while(1);

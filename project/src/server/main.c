@@ -83,19 +83,21 @@ void actions(const int val){
 }
 
 void startupActions(){
+  clearScreen();
+  setlocale(LC_ALL, "en_US.UTF-8");
   char fp[512];
   getUsersFilePath(fp);
   char dr[512];
   getDataDirectory(dr);
-  if(dirExists(&dr[0]) == false){
-    if(createDir(&dr[0]) == false){
+  if(!dirExists(&dr[0])){
+    if(!createDir(&dr[0])){
       printErr("Nao foi possivel criar diretorio de registo\n");
       exit(1);
       return;
     }
   }
-  if(fileExists(&fp[0]) == false){
-    if(create(&fp[0]) == false){
+  if(!fileExists(&fp[0])){
+    if(!create(&fp[0])){
       printErr("Nao foi possivel criar ficheiro de registo\n");
       exit(1);
       return;
@@ -104,10 +106,8 @@ void startupActions(){
 }
 
 int main() {
-  setlocale(LC_ALL, "en_US.UTF-8");
   startupActions();
   int input=1;
-  clearScreen();
   parseUsers();
   do{
     menu();

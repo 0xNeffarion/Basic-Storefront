@@ -1,8 +1,8 @@
 void getHomeDirectory(char buff[]);
 void getDataDirectory(char buff[]);
-int dirExists(const char* mydir);
-int deleteDir(const char* mydir);
-int createDir(const char* mydir);
+bool dirExists(const char* mydir);
+bool deleteDir(const char* mydir);
+bool createDir(const char* mydir);
 
 
 /*
@@ -34,7 +34,7 @@ void getDataDirectory(char buff[]){
 * P: char* mydir: directory to check
 * R: true if exists, otherwise false
 */
-int dirExists(const char* mydir){
+bool dirExists(const char* mydir){
     DIR* cdir = opendir(mydir);
     int returnVal = false;
     if (cdir){
@@ -52,7 +52,7 @@ int dirExists(const char* mydir){
 * P: char* mydir: directory path to delete
 * R: true if it was deleted, otherwise false
 */
-int deleteDir(const char* mydir){
+bool deleteDir(const char* mydir){
     char params[256];
     sprintf(params, "-rf \"%s\"", mydir);
     char* d = &params[0];
@@ -76,7 +76,7 @@ int deleteDir(const char* mydir){
 * P: char* mydir: directory path to create
 * R: false if failed, true otherwise
 */
-int createDir(const char* mydir){
+bool createDir(const char* mydir){
     int r = mkdir(mydir, 0777);
     if(r==-1){
       return false;

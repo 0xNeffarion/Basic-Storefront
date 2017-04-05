@@ -13,7 +13,7 @@ void parseUsers();
 void deleteUser(int id);
 int getLastId();
 int createUser(char name[], char pw[]);
-int validatePassword(int userid, char* pw);
+bool validatePassword(int userid, char* pw);
 int getIdByUsername(char user[], char out[]);
 int getUsernameById(int id, char out[]);
 
@@ -91,12 +91,12 @@ void deleteUser(int id){
 
   if(fr!=NULL && fw!=NULL){
     char line[256];
-    while(fgets(line,sizeof(line),fp_users) != NULL){
+    while(fgets(line,sizeof(line),fr) != NULL){
       if(strlen(line) > 1){
         char* tk_id = strtok(line,FILE_DELIM);
         int myid = atoi(tk_id);
         if(myid != id){
-          fprintf(fw,"%s\n", &line);
+          fprintf(fw,"%s\n", &line[0]);
         }
       }
     }
@@ -116,17 +116,17 @@ int createUser(char name[], char pw[]){
   if(fileExists(&fp[0])==true){
     FILE *fa = fopen(&fp[0], "a");
     if(fa != NULL){
-      fprintf(fa,"%d[#]%s[#]%s[#]0[#]-1\n",name,pw);
-      fclose(fa);
       int myid = getLastId()+1;
+      fprintf(fa,"%d[#]%s[#]%s[#]0[#]-1\n",myid,name,pw);
+      fclose(fa);
       printf("Utilizador %s registado com sucesso! Id: %d\n\n", name, myid);
       return myid;
     }
   }
-  return false;
+  return -1;
 }
 
-int validatePassword(int userid, char* pw){
+bool validatePassword(int userid, char* pw){
   int i = 0, size = sizeof(users);
   for(i = 0; i < size; i++){
     if(users[i].username != NULL && users[i].uid > 0){

@@ -19,14 +19,12 @@
 #include <pwd.h>
 #include <dirent.h>
 #include "const.c"
-#include "lib_dir.c"
-#include "lib_files.c"
-#include "lib_users.c"
 
 void ePrint(const char *text);
 void printErr(const char *fmt, ...);
 void clearScreen();
 void fillArray(int *data, int size, int value);
+bool isInt(const char *str);
 
 /*
 * I: Writes to console a string with typewritter effect
@@ -77,3 +75,34 @@ void fillArray(int *data, int size, int value){
         data[i] = value;
     }
 }
+
+/*
+* I: Checks if string is a valid integer
+* P: char* str: string to check
+* R: true if string is an int, otherwise false
+*/
+bool isInt(const char *str)
+{
+   if (*str == '-'){
+      ++str;
+   }
+
+   if (!*str){
+      return false;
+   }
+
+   while (*str){
+      if (!isdigit(*str))
+         return false;
+      else
+         ++str;
+   }
+   return true;
+}
+
+
+// DECLARATIONS
+
+#include "lib_dir.c"
+#include "lib_files.c"
+#include "lib_users.c"
