@@ -24,6 +24,7 @@
 #include "lib_users.c"
 
 void ePrint(const char *text);
+void printErr(const char *fmt, ...);
 void clearScreen();
 void fillArray(int *data, int size, int value);
 
@@ -40,6 +41,19 @@ void ePrint(const char *text){
         usleep(1000*40/TEXT_WRITE_SPEED);
         i++;
     }
+}
+
+/*
+* I: Printf wrapper for errors
+* P: Same as printf
+* R: -
+*/
+void printErr(const char *fmt, ...) {
+    printf(COLOR_RED "[ERRO] " COLOR_RESET);
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt , args);
+    va_end(args);
 }
 
 /*

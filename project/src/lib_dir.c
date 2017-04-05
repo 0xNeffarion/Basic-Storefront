@@ -1,10 +1,15 @@
-
 void getHomeDirectory(char buff[]);
 void getDataDirectory(char buff[]);
 int dirExists(const char* mydir);
 int deleteDir(const char* mydir);
 int createDir(const char* mydir);
 
+
+/*
+* I: Retrieves home directory path
+* P: char[] buff: buffer to output
+* R: -
+*/
 void getHomeDirectory(char buff[]){
     char* homedir = malloc(512);
     if ((homedir = getenv("HOME")) == NULL) {
@@ -13,26 +18,40 @@ void getHomeDirectory(char buff[]){
     sprintf(buff,"%s",homedir);
 }
 
+/*
+* I: Retrieves data directory path in home
+* P: char[] buff: buffer to output
+* R: -
+*/
 void getDataDirectory(char buff[]){
     char b[512];
     getHomeDirectory(b);
     sprintf(buff, "%s/%s", b, DATA_FOLDERNAME);
 }
 
+/*
+* I: Checks if directory exists
+* P: char* mydir: directory to check
+* R: true if exists, otherwise false
+*/
 int dirExists(const char* mydir){
     DIR* cdir = opendir(mydir);
-    int returnVal = 0;
+    int returnVal = false;
     if (cdir){
-        returnVal = 0;
+        returnVal = true;
         closedir(cdir);
     }else{
-        returnVal = -1;
+        returnVal = false;
     }
-    
-    free(cdir);
+
     return returnVal;
 }
 
+/*
+* I: Deletes specified directory, including sub files and directories
+* P: char* mydir: directory path to delete
+* R: true if it was deleted, otherwise false
+*/
 int deleteDir(const char* mydir){
     char params[256];
     sprintf(params, "-rf \"%s\"", mydir);
@@ -44,14 +63,24 @@ int deleteDir(const char* mydir){
         wait(NULL);
         usleep(1000*1000);
         if(!dirExists(mydir)){
-            return 0;
+            return true;
         }
-        return 1;
+        return false;
     }
-    
-    return 1;
+
+    return false;
 }
 
+/*
+* I: Creates new directory with full chmod access (777)
+* P: char* mydir: directory path to create
+* R: false if failed, true otherwise
+*/
 int createDir(const char* mydir){
-    return mkdir(mydir, 0777);
+    int r = mkdir(mydir, 0777);
+    if(r==-1){
+      return false;
+    }else{
+      return true;
+    }
 }

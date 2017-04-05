@@ -89,11 +89,11 @@ int append(const char* f, const char* appstr){
 * R: true if it creates without errors, otherwise false
 */
 int create(const char* f){
-    FILE *fa = fopen(f, "ab+");
+    FILE *fa = fopen(f, "w+");
     int r = false;
     if(fa!=NULL){
 	   r = true;
-	}
+	  }
 
     fclose(fa);
     return r;

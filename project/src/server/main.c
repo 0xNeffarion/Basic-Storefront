@@ -4,6 +4,7 @@ void sair();
 void novoUser();
 void listarUsers();
 void menu();
+void startupActions();
 void actions(const int val);
 
 void sair(){
@@ -19,8 +20,8 @@ void novoUser(){
   char pw[128];
 
   printf("Insira o nome de utilizador [Max. 30 caracteres]: \n");
-  if(scanf("%s", &usr[0]) < 0){
-    printf("Erro a inserir utilizador!\n");
+  if(scanf("%s", &usr[0]) <= 1){
+    printErr("Erro a inserir utilizador!\n");
     return;
   }
   char *str = getpass("Insira a password [Max. 128 caracteres]:\n");
@@ -46,7 +47,7 @@ void menu(){
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver estatisticas\n");
   ePrint(COLOR_CYAN "4)" COLOR_RESET " Listar utilizadores\n");
   ePrint(COLOR_CYAN "5)" COLOR_RESET " Sair\n");
-  ePrint("Insira a opcao desejada:\n\n");
+  ePrint("Insira a opcao desejada (1-5):\n\n");
 }
 
 void actions(const int val){
@@ -71,7 +72,7 @@ void actions(const int val){
       break;
     }
     default:{
-      printf("[ERRO] Opção invalida! Escolha valores de 1 a 5\n");
+      printErr("Opção invalida! Escolha valores de 1 a 5\n");
       int n = 0;
       if(scanf("%d",&n) >= 1){
         actions(n);
@@ -81,16 +82,39 @@ void actions(const int val){
   }
 }
 
+void startupActions(){
+  char fp[512];
+  getUsersFilePath(fp);
+  char dr[512];
+  getDataDirectory(dr);
+  if(dirExists(&dr[0]) == false){
+    if(createDir(&dr[0]) == false){
+      printErr("Nao foi possivel criar diretorio de registo\n");
+      exit(1);
+      return;
+    }
+  }
+  if(fileExists(&fp[0]) == false){
+    if(create(&fp[0]) == false){
+      printErr("Nao foi possivel criar ficheiro de registo\n");
+      exit(1);
+      return;
+    }
+  }
+}
+
 int main() {
   setlocale(LC_ALL, "en_US.UTF-8");
+  startupActions();
   int input=1;
+  clearScreen();
   parseUsers();
   do{
-    clearScreen();
     menu();
     if(scanf("%d",&input) >= 1){
       actions(input);
     }
+    clearScreen();
   }while(1);
 
   return 0;

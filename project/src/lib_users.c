@@ -10,10 +10,12 @@ userdb users[256];
 int numRegs = 0;
 
 void parseUsers();
+void deleteUser(int id);
+int getLastId();
+int createUser(char name[], char pw[]);
 int validatePassword(int userid, char* pw);
-int getIdByUsername(char[] user, char[] out);
-int getIdByUsername(char[] user, char[] out);
-int getUsernameById(int id, char[] out);
+int getIdByUsername(char user[], char out[]);
+int getUsernameById(int id, char out[]);
 
 void parseUsers(){
 	char fp[512];
@@ -49,7 +51,7 @@ int getLastId(){
   FILE *fr = fopen(&fp[0], "r");
   int i = -1;
   if(fr!=NULL){
-    while(fgets(line,sizeof(line),f) != NULL){
+    while(fgets(line,sizeof(line),fr) != NULL){
       if(strlen(line)>1){
         char* tk_id = strtok(line,FILE_DELIM);
         int u = atoi(tk_id);
@@ -70,17 +72,17 @@ void deleteUser(int id){
 	getUsersTempFilePath(fp_temp);
 
   if(fileExists(&fp_users[0])==false){
-    printf("Ficheiro com os utilizadores nao existe!\n");
+    printErr("Ficheiro com os utilizadores nao existe!\n");
     return;
   }
 
   if(id < 0){
-    printf("ID negativo\n");
+    printErr("ID negativo\n");
     return;
   }
 
   if(getLastId() < id){
-    printf("Utilizador com o id %d nao existe\n", id);
+    printErr("Utilizador com o id %d nao existe\n", id);
     return;
   }
 
@@ -94,7 +96,7 @@ void deleteUser(int id){
         char* tk_id = strtok(line,FILE_DELIM);
         int myid = atoi(tk_id);
         if(myid != id){
-          fprintf(fw,"%s\n", &line) > 0
+          fprintf(fw,"%s\n", &line);
         }
       }
     }
@@ -114,10 +116,10 @@ int createUser(char name[], char pw[]){
   if(fileExists(&fp[0])==true){
     FILE *fa = fopen(&fp[0], "a");
     if(fa != NULL){
-      fprintf(fa,"%d[#]%s[#]%s[#]0[#]-1\n",nome,password);
+      fprintf(fa,"%d[#]%s[#]%s[#]0[#]-1\n",name,pw);
       fclose(fa);
       int myid = getLastId()+1;
-      printf("Utilizador %s registado com sucesso! Id: %d\n\n", nome, myid);
+      printf("Utilizador %s registado com sucesso! Id: %d\n\n", name, myid);
       return myid;
     }
   }
