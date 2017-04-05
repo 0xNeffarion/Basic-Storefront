@@ -7,13 +7,24 @@ int create(const char* f);
 
 /*
 * I: Retrieves full filepath for users data file
-* P: -
-* R: Users data file path
+* P: char[] buff: buffer to output
+* R: -
 */
 void getUsersFilePath(char buff[]){
     char b[512];
     getDataDirectory(b);
     sprintf(buff, "%s/%s", b, USERS_FILENAME);
+}
+
+/*
+* I: Retrieves full filepath for users temp data file
+* P: char[] buff: buffer to output
+* R: -
+*/
+void getUsersTempFilePath(char buff[]){
+    char b[512];
+    getDataDirectory(b);
+    sprintf(buff, "%s/%s", b, USERS_TEMP_FILENAME);
 }
 
 /*

@@ -1,6 +1,8 @@
 #define USERS_FILENAME "reg_users.data"
+#define USERS_TEMP_FILENAME "reg_users_temp.data"
 #define DATA_FOLDERNAME "labc_sm_data"
 #define FILE_DELIM "[#]"
+#define BUYLIST_DELIM ";"
 #define TEXT_WRITE_SPEED 5.0
 
 #define COLOR_RED     "\x1b[31m"
