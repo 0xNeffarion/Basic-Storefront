@@ -46,7 +46,7 @@ void actions(const int opt){
       break;
     }
     default:{
-      ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 4!\n");
+      printErr("Opção inválida! Escolha entre a opção 1 a 4!\n");
       int opt = 0;
       if(scanf("%d",&opt) >= 1){
         actions(opt);
@@ -95,7 +95,7 @@ void actionsaldo(const int opt) {
     break;
   }
   default:{
-    ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 3!\n");
+    printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
     int opt = 0;
     if(scanf("%d",&opt) > 0){
       actionsaldo(opt);
@@ -230,7 +230,7 @@ void actionsestatisticas(const int opt){
     break;
   }
   default:{
-    ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 4!\n");
+    printErr("Opção inválida! Escolha entre a opção 1 a 4!\n");
     int opt = 0;
     if(scanf("%d",&opt) > 0){
       actionsestatisticas(opt);
