@@ -2,11 +2,13 @@
 
 void sair();
 void menu();
-void actions(const int val);
+void actions(const int opt);
 void saldo();
 void actionsaldo(const int opt);
 void lista();
 void actionslista(const int opt);
+void estatisticas();
+void actionsestatisticas(const int opt);
 
 void sair(){
   clearScreen();
@@ -19,13 +21,13 @@ void menu(){
   ePrint(COLOR_YELLOW "** Menu **" COLOR_RESET "\n");
   ePrint(COLOR_CYAN "1)" COLOR_RESET " Gerir Saldo\n");
   ePrint(COLOR_CYAN "2)" COLOR_RESET " Gerir Lista de Compras\n");
-  ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver Estatisticas\n");
+  ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver Estatísticas\n");
   ePrint(COLOR_CYAN "4)" COLOR_RESET " Logout\n");
   ePrint("Insira a opção desejada(1-4):\n");
 }
 
-void actions(const int val){
-  switch(val) {
+void actions(const int opt){
+  switch(opt) {
     case 1:{
       saldo();
       break;
@@ -35,6 +37,7 @@ void actions(const int val){
       break;
     }
     case 3:{
+      estatisticas();
       break;
     }
     case 4:{
@@ -44,9 +47,9 @@ void actions(const int val){
     }
     default:{
       ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 4!\n");
-      int n = 0;
-      if(scanf("%d",&n) >= 1){
-        actions(n);
+      int opt = 0;
+      if(scanf("%d",&opt) >= 1){
+        actions(opt);
       }
       break;
     }
@@ -93,9 +96,9 @@ void actionsaldo(const int opt) {
   }
   default:{
     ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 3!\n");
-    int val = 0;
-    if(scanf("%d",&val) > 0){
-      actionsaldo(val);
+    int opt = 0;
+    if(scanf("%d",&opt) > 0){
+      actionsaldo(opt);
     }
     break;
   }
@@ -110,8 +113,9 @@ void lista(){
   ePrint(COLOR_CYAN "1)" COLOR_RESET " Criar Lista de Compras.\n");
   ePrint(COLOR_CYAN "2)" COLOR_RESET " Consultar Lista de Compras.\n");
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Adicionar produtos à Lista de Compras.\n");
-  ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n");
-  ePrint("Insira a opção desejada(1-4):\n");
+  ePrint(COLOR_CYAN "4)" COLOR_RESET " Comprar produtos da lista.\n");
+  ePrint(COLOR_CYAN "5)" COLOR_RESET " Voltar ao menu inicial.\n"); 
+  ePrint("Insira a opção desejada(1-5):\n");
   if(scanf("%d",&opt) > 0){
     actionslista(opt);
   }
@@ -127,10 +131,9 @@ void actionslista(const int opt){
     int items=1;
     for(int i=0;i<items;i++) {
       int flag;
-      if(scanf("%d",&flag) > 0){
-        if(flag!=0) {
-  	       //adicionar na struct
-        }
+      scanf("%d",&flag);
+      if(flag!=0) {
+	//adicionar na struct
       }
       else
 	break;
@@ -143,6 +146,7 @@ void actionslista(const int opt){
     //aceder à lista na struct
     clearScreen();
     ePrint("A sua lista é composta pelos seguintes produtos:");
+    //ler produtos da struct lista do utilizador
     printf("\n");
     usleep(1000*2000);
     lista();
@@ -154,13 +158,82 @@ void actionslista(const int opt){
     break;
   }
   case 4:{
+    clearScreen();
+    ePrint("Total a pagar: (teste) \n"); //fazer soma do valor de todos os produtos da lista
+    ePrint("Acabou de comprar os produtos que estão na sua lista!\n");
+    usleep(1000*2000);
+    lista();
+    break;
+  }
+  case 5:{
     break;
   }
   default:{
-    printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
-    int val = 0;
-    if(scanf("%d",&val) > 0){
-      actionslista(val);
+    printErr("Opção inválida! Escolha entre a opção 1 a 5!\n");
+    int opt = 0;
+    if(scanf("%d",&opt) > 0){
+      actionslista(opt);
+    }
+    break;
+  }
+  }
+}
+
+void estatisticas() {
+  int opt=0;
+  clearScreen();
+  ePrint(COLOR_YELLOW "** Estatísticas **" COLOR_RESET "\n");
+  ePrint(COLOR_CYAN "1)" COLOR_RESET " Quantidade total de produtos comprados.\n");
+  ePrint(COLOR_CYAN "2)" COLOR_RESET " Quantidade comprada de um determinado produto.\n");
+  ePrint(COLOR_CYAN "3)" COLOR_RESET " Valor total gasto num determinado produto.\n");
+  //adicionar mais estatisticas?
+  ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n"); 
+  ePrint("Insira a opção desejada(1-4):\n");
+  if(scanf("%d",&opt) > 0){
+    actionsestatisticas(opt);
+  }
+}
+
+void actionsestatisticas(const int opt){
+  switch(opt){
+  case 1:{
+    //Falta criar um contador associado ao user
+    clearScreen();
+    ePrint("Comprou (teste) produtos.\n");
+    usleep(1000*2000);
+    estatisticas();
+    break;
+  }
+  case 2:{
+    int prod;
+    clearScreen();
+    ePrint("Insira o código do produto!\n");
+    scanf("%d",&prod);
+    //aceder a um contador?
+    ePrint("Comprou (teste) quantidade do produto.\n");
+    usleep(1000*2000);
+    estatisticas();
+    break;
+  }
+  case 3:{
+    int prod;
+    clearScreen();
+    ePrint("Insira o código do produto!\n");
+    scanf("%d",&prod);
+    //contador*preço
+    ePrint("Gastou (teste) euros no produto.\n");
+    usleep(1000*2000);
+    estatisticas();
+    break;
+  }
+  case 4:{
+    break;
+  }
+  default:{
+    ePrint(COLOR_RED "ERRO!" COLOR_RESET " Opção inválida! Escolha entre a opção 1 a 4!\n");
+    int opt = 0;
+    if(scanf("%d",&opt) > 0){
+      actionsestatisticas(opt);
     }
     break;
   }
@@ -168,13 +241,13 @@ void actionslista(const int opt){
 }
 
 int main(){
-  int input=1;
+  int opt=1;
   //parseUsers();
   do{
     clearScreen();
     menu();
-    if(scanf("%d",&input) > 0) {
-      actions(input);
+    if(scanf("%d",&opt) > 0) {
+      actions(opt);
     }
   }while(1);
     return 0;
