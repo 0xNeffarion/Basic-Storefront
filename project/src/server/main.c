@@ -109,6 +109,8 @@ int main() {
   startupActions();
   int input=1;
   parseUsers();
+  char o[256] = "user1";
+  printf("\n## %d ##\n", getIdByUsername(o));
   do{
     menu();
     if(scanf("%d",&input) >= 1){

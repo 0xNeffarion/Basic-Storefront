@@ -25,6 +25,7 @@ void printErr(const char *fmt, ...);
 void clearScreen();
 void fillArray(int *data, int size, int value);
 bool isInt(const char *str);
+int* intcpy(int const * src, size_t len);
 
 /*
 * I: Writes to console a string with typewritter effect
@@ -98,6 +99,17 @@ bool isInt(const char *str)
          ++str;
    }
    return true;
+}
+
+/*
+* I: Copies/Duplicates int array
+* P: int * src: first index pointer, len: lenght to copy
+* R: Copied array
+*/
+int* intcpy(int const * src, size_t len){
+   int * p = malloc(len * sizeof(int));
+   memcpy(p, src, len * sizeof(int));
+   return p;
 }
 
 

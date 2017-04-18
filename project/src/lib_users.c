@@ -14,7 +14,7 @@ void deleteUser(int id);
 int getLastId();
 int createUser(char name[], char pw[]);
 bool validatePassword(int userid, char* pw);
-int getIdByUsername(char user[], char out[]);
+int getIdByUsername(char user[]);
 int getUsernameById(int id, char out[]);
 int getPosition(int id);
 
@@ -31,11 +31,37 @@ void parseUsers(){
 					char* tk_id = strtok(line,FILE_DELIM);
 					char* tk_user = strtok(NULL,FILE_DELIM);
 					char* tk_pw = strtok(NULL,FILE_DELIM);
-					printf("PARSED USER %d: %s\n", atoi(tk_id),tk_user);
-
+          char* tk_bal = strtok(NULL,FILE_DELIM);
+          char* tk_list = strtok(NULL,FILE_DELIM);
+					printf("PARSED USER %d: %s | PASS: %s\n", atoi(tk_id),tk_user,tk_pw);
 					users[i].uid = atoi(tk_id);
+          users[i].balance = atof(tk_bal);
 					strcpy(users[i].username,tk_user);
 					strcpy(users[i].password,tk_pw);
+          printf("buylist: %s\n", tk_list);
+          int flag = 0, z = 1;
+          while(1){
+            if(flag==0){
+              char* tk = strtok(tk_list, BUYLIST_DELIM);
+              flag = 1;
+              if(tk != NULL && strlen(tk) >= 1){
+                int val = atoi(tk);
+                users[i].buylist[0] = val;
+              }else{
+                break;
+              }
+            }else{
+              char* tk = strtok(NULL, BUYLIST_DELIM);
+              if(tk != NULL && strlen(tk) >= 1){
+                int val = atoi(tk);
+                users[i].buylist[z] = val;
+                z++;
+              }else{
+                break;
+              }
+            }
+          }
+
 					i++;
 				}
 			}
@@ -57,7 +83,9 @@ int getLastId(){
         char* tk_id = strtok(line,FILE_DELIM);
         int u = atoi(tk_id);
         if(u>0){
-          i = u;
+          if(u>i){
+            i = u;
+          }
         }
       }
     }
@@ -73,7 +101,7 @@ void deleteUser(int id){
 	getUsersTempFilePath(fp_temp);
 
   if(fileExists(&fp_users[0])==false){
-    printErr("Ficheiro com os utilizadores nao existe!\n");
+    printErr("Ficheiro de utilizadores nao existe!\n");
     return;
   }
 
@@ -82,22 +110,25 @@ void deleteUser(int id){
     return;
   }
 
-  if(getLastId() < id){
-    printErr("Utilizador com o id %d nao existe\n", id);
-    return;
-  }
-
+  int did = 0;
   FILE *fr = fopen(fp_users, "r");
   FILE *fw = fopen(fp_temp, "w+");
 
   if(fr!=NULL && fw!=NULL){
     char line[256];
+    char linecp[256];
     while(fgets(line,sizeof(line),fr) != NULL){
+      if(strcmp(line,"\n") == 0 || strcmp(line,"\r\n") == 0){
+        continue;
+      }
       if(strlen(line) > 1){
+        strcpy(linecp,line);
         char* tk_id = strtok(line,FILE_DELIM);
         int myid = atoi(tk_id);
         if(myid != id){
-          fprintf(fw,"%s\n", &line[0]);
+          fprintf(fw,"%s", &linecp[0]);
+        }else{
+          did = 1;
         }
       }
     }
@@ -107,6 +138,10 @@ void deleteUser(int id){
 
     remove(fp_users);
     rename(fp_temp,fp_users);
+
+    if(did==1){
+      printErr("Utilizador com o id '%d' nao existe\n", id);
+    }
 
   }
 }
@@ -118,9 +153,9 @@ int createUser(char name[], char pw[]){
     FILE *fa = fopen(&fp[0], "a");
     if(fa != NULL){
       int myid = getLastId()+1;
-      fprintf(fa,"%d[#]%s[#]%s[#]0[#]-1\n",myid,name,pw);
+      fprintf(fa,"\n%d[#]%s[#]%s[#]0.0[#]-1",myid,name,pw);
       fclose(fa);
-      printf("Utilizador %s registado com sucesso! Id: %d\n\n", name, myid);
+      printf("Utilizador [%s] registado com sucesso! Id: %d\n\n", name, myid);
       return myid;
     }
   }
@@ -141,7 +176,7 @@ bool validatePassword(int userid, char* pw){
   return false;
 }
 
-int getIdByUsername(char user[], char out[]){
+int getIdByUsername(char user[]){
     int i = 0, size = sizeof(users);
     for(i = 0; i < size; i++){
       if(users[i].username != NULL && users[i].uid > 0){
