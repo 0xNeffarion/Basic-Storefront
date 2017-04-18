@@ -16,6 +16,7 @@ int createUser(char name[], char pw[]);
 bool validatePassword(int userid, char* pw);
 int getIdByUsername(char user[], char out[]);
 int getUsernameById(int id, char out[]);
+int getPosition(int id);
 
 void parseUsers(){
 	char fp[512];
@@ -153,13 +154,26 @@ int getIdByUsername(char user[], char out[]){
     return -1;
 }
 
-int getUsernameById(int id, char out[]){
+int get(int id, char out[]){
     int i = 0, size = sizeof(users);
     for(i = 0; i < size; i++){
       if(users[i].username != NULL && users[i].uid > 0){
         if(users[i].uid == id){
           strcpy(out, users[i].username);
           return users[i].uid;
+        }
+      }
+    }
+
+    return -1;
+}
+
+int getPosition(int id) {
+    int i = 0, size = sizeof(users);
+    for(i = 0; i < size; i++){
+      if(users[i].username != NULL && users[i].uid > 0){
+        if(users[i].uid == id) {
+          return i;
         }
       }
     }
