@@ -1,15 +1,39 @@
 #include "../lib.c"
 
+void startupActions();
 int login();
 void sair();
 void menu();
-void actions(const int opt);
-void saldo();
-void actionsaldo(const int opt);
-void lista();
-void actionslista(const int opt);
+void actions(const int opt, const int log);
+void saldo(const int log);
+void actionsaldo(const int opt, const int log);
+void lista(const int log);
+void actionslista(const int opt, const int log);
 void estatisticas();
 void actionsestatisticas(const int opt);
+
+void startupActions(){
+  clearScreen();
+  setlocale(LC_ALL, "en_US.UTF-8");
+  char fp[512];
+  getUsersFilePath(fp);
+  char dr[512];
+  getDataDirectory(dr);
+  if(!dirExists(&dr[0])){
+    if(!createDir(&dr[0])){
+      printErr("Nao foi possivel criar diretorio de registo\n");
+      exit(1);
+      return;
+    }
+  }
+  if(!fileExists(&fp[0])){
+    if(!create(&fp[0])){
+      printErr("Nao foi possivel criar ficheiro de registo\n");
+      exit(1);
+      return;
+    }
+  }
+}
 
 int login(){
   char usr[30];
@@ -19,7 +43,7 @@ int login(){
   clearScreen();
   printf("Username: ");
   scanf("%s", usr);
-  id=getIdByUsername(usr, usr);
+  id=getIdByUsername(usr);
   if (id==-1) {
     printErr("Utilizador não encontrado\n");
     usleep(1000*1500);
@@ -54,14 +78,14 @@ void menu(){
   ePrint("Insira a opção desejada(1-4):\n");
 }
 
-void actions(const int opt){
+void actions(const int opt, const int log){
   switch(opt) {
     case 1:{
-      saldo();
+      saldo(log);
       break;
     }
     case 2:{
-      lista();
+      lista(log);
       break;
     }
     case 3:{
@@ -77,46 +101,59 @@ void actions(const int opt){
       printErr("Opção inválida! Escolha entre a opção 1 a 4!\n");
       int opt = 0;
       if(scanf("%d",&opt) >= 1){
-        actions(opt);
+        actions(opt,log);
       }
       break;
     }
   }
 }
 
-void saldo(){
-  //Criar variável na struct
-  int opt=0;
+void saldo(const int log){
+  int opt;
   clearScreen();
   ePrint(COLOR_YELLOW "** Saldo **" COLOR_RESET "\n");
   ePrint(COLOR_CYAN "1)" COLOR_RESET " Consultar Saldo.\n");
   ePrint(COLOR_CYAN "2)" COLOR_RESET " Adicionar Saldo.\n");
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Voltar ao menu inicial.\n");
   ePrint("Insira a opção desejada(1-3):\n");
-  if(scanf("%d",&opt)>0){
-    actionsaldo(opt);
+  scanf("%d",&opt);
+  if(opt>=1 && opt<=3){
+    actionsaldo(opt,log);
+  }
+  else {
+    clearScreen();
+    printErr("Escolha entre a opção 1 a 3!\n");
+    usleep(1000*1500);
+    saldo(log);
   }
 }
 
-void actionsaldo(const int opt) {
-  int add;
+void actionsaldo(const int opt, const int log) {
+  float add;
   switch(opt){
   case 1:{
-    //Falta aceder à struct para obter o saldo do user
     clearScreen();
-    ePrint("O seu saldo atual é: teste euros\n");
+    ePrint("O seu saldo atual é:"); printf(" %.2f euros\n", users[log].balance);
     usleep(1000*2000);
-    saldo();
+    saldo(log);
     break;
   }
   case 2:{
     clearScreen();
     ePrint("Insira a quantia a adicionar ao seu saldo (em euros)!\n");
-    if(scanf("%d",&add) > 0){
-      int s = 0;
-
-      saldo();
+    scanf("%f",&add);
+    if(add > 0){
+      users[log].balance+=add;
+      clearScreen();
+      ePrint("Saldo adicionado com sucesso!\n");
+      usleep(1000*1500);
     }
+    else {
+      clearScreen();
+      printErr("Tem que adicionar um valor superior a 0 ao seu saldo!\n");
+      usleep(1000*2500);
+    }
+    saldo(log);
     break;
   }
   case 3:{
@@ -126,14 +163,14 @@ void actionsaldo(const int opt) {
     printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
     int opt = 0;
     if(scanf("%d",&opt) > 0){
-      actionsaldo(opt);
+      actionsaldo(opt,log);
     }
     break;
   }
   }
 }
 
-void lista(){
+void lista(const int log){
   //Criar variável na struct
   int opt=0;
   clearScreen();
@@ -145,11 +182,11 @@ void lista(){
   ePrint(COLOR_CYAN "5)" COLOR_RESET " Voltar ao menu inicial.\n"); 
   ePrint("Insira a opção desejada(1-5):\n");
   if(scanf("%d",&opt) > 0){
-    actionslista(opt);
+    actionslista(opt,log);
   }
 }
 
-void actionslista(const int opt){
+void actionslista(const int opt, const int log){
   switch(opt){
   case 1:{
     //aceder à lista na struct
@@ -167,22 +204,27 @@ void actionslista(const int opt){
 	break;
       items++;
     }
-    lista();
+    lista(log);
     break;
   }
   case 2:{
-    //aceder à lista na struct
     clearScreen();
-    ePrint("A sua lista é composta pelos seguintes produtos:");
-    //ler produtos da struct lista do utilizador
-    printf("\n");
+    int size=sizeof(users[log].buylist);
+    if (size==0)
+      ePrint("Não tem produtos na sua lista!");
+    else {
+      ePrint("A sua lista é composta pelos seguintes produtos:\n");
+      for(int i=0; i < size; i++) {
+	printf("%d\n",users[log].buylist[i]);
+      }
+    }
     usleep(1000*2000);
-    lista();
+    lista(log);
     break;
   }
   case 3:{
     clearScreen();
-    actionslista(1);
+    actionslista(1,log);
     break;
   }
   case 4:{
@@ -190,7 +232,7 @@ void actionslista(const int opt){
     ePrint("Total a pagar: (teste) \n"); //fazer soma do valor de todos os produtos da lista
     ePrint("Acabou de comprar os produtos que estão na sua lista!\n");
     usleep(1000*2000);
-    lista();
+    lista(log);
     break;
   }
   case 5:{
@@ -200,7 +242,7 @@ void actionslista(const int opt){
     printErr("Opção inválida! Escolha entre a opção 1 a 5!\n");
     int opt = 0;
     if(scanf("%d",&opt) > 0){
-      actionslista(opt);
+      actionslista(opt,log);
     }
     break;
   }
@@ -269,6 +311,7 @@ void actionsestatisticas(const int opt){
 }
 
 int main(){
+  startupActions();
   users[0].uid=1;
   strcpy(users[0].username, "teste");
   strcpy(users[0].password, "teste");
@@ -281,7 +324,7 @@ int main(){
       clearScreen();
       menu();
       if(scanf("%d",&opt) > 0) {
-	actions(opt);
+	actions(opt,log);
       }
     }while(1);
   }
