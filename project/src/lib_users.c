@@ -154,7 +154,7 @@ int getIdByUsername(char user[], char out[]){
     return -1;
 }
 
-int get(int id, char out[]){
+int getUsernameById(int id, char out[]){
     int i = 0, size = sizeof(users);
     for(i = 0; i < size; i++){
       if(users[i].username != NULL && users[i].uid > 0){
@@ -169,14 +169,14 @@ int get(int id, char out[]){
 }
 
 int getPosition(int id) {
-    int i = 0, size = sizeof(users);
-    for(i = 0; i < size; i++){
-      if(users[i].username != NULL && users[i].uid > 0){
-        if(users[i].uid == id) {
-          return i;
-        }
+  int i = 0, size = sizeof(users);
+  for(i = 0; i < size; i++){
+    if(users[i].username != NULL && users[i].uid > 0){
+      if(users[i].uid == id) {
+	return i;
       }
     }
-
-    return -1;
+  }
+  
+  return -1;
 }
