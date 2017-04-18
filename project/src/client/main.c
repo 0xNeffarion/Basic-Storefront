@@ -1,5 +1,6 @@
 #include "../lib.c"
 
+int login();
 void sair();
 void menu();
 void actions(const int opt);
@@ -10,9 +11,36 @@ void actionslista(const int opt);
 void estatisticas();
 void actionsestatisticas(const int opt);
 
+int login(){
+  char usr[30];
+  char pwd[128];
+  int id;
+  bool val;
+  clearScreen();
+  printf("Username: ");
+  scanf("%s", usr);
+  id=getIdByUsername(usr, usr);
+  if (id==-1) {
+    printErr("Utilizador não encontrado\n");
+    usleep(1000*1500);
+    return -1;
+  }
+  else {
+    printf("Password: ");
+    scanf("%s", pwd);
+    val=validatePassword(id, pwd);
+    if (val==true)
+      return getPosition(id);
+    else if (val==false) {
+      printErr("Password incorreta!\n");
+      return -1;
+    }
+  }
+} 
+
 void sair(){
   clearScreen();
-  printf("Saindo... Volte sempre!\n");
+  ePrint("Saindo... Volte sempre!\n");
   usleep(1000*1500); //1,5s
   exit(0);
 }
@@ -241,14 +269,25 @@ void actionsestatisticas(const int opt){
 }
 
 int main(){
-  int opt=1;
-  //parseUsers();
-  do{
-    clearScreen();
-    menu();
-    if(scanf("%d",&opt) > 0) {
-      actions(opt);
-    }
-  }while(1);
-    return 0;
+  users[0].uid=1;
+  strcpy(users[0].username, "teste");
+  strcpy(users[0].password, "teste");
+  int opt=0, log=0;
+  log=login();
+  if (log > -1) {
+    ePrint("Login efetuado com sucesso! Bem-vindo!\n");
+    usleep(1000*1000);
+    do{
+      clearScreen();
+      menu();
+      if(scanf("%d",&opt) > 0) {
+	actions(opt);
+      }
+    }while(1);
+  }
+  else {
+    printErr("O login falhou! Tente novamente!\n");
+    log=login();
+  }
+  return 0;
 }
