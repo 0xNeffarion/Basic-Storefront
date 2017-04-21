@@ -166,14 +166,12 @@ int createUser(char name[], char pw[], bool isadmin){
   if(fileExists(&fp[0])==true){
     FILE *fa = fopen(&fp[0], "a");
     if(fa != NULL){
-      int a = 0;
+      int a = -1;
       if(isadmin==true){
         a = 1;
-      }else{
-        a = -1;
       }
       int myid = getLastId()+1;
-      fprintf(fa,"\n%d[#]%s[#]%s[#]%d[#]0.0[#]-1",myid,name,a,pw);
+      fprintf(fa,"\n%d[#]%s[#]%s[#]%d[#]0.00[#]-1",myid,name,pw,a);
       fclose(fa);
       printf("Utilizador [%s] registado com sucesso! Id: %d\n\n", name, myid);
       parseUsers();
@@ -186,9 +184,9 @@ int createUser(char name[], char pw[], bool isadmin){
 bool validatePassword(int userid, char* pw){
   int i = 0, size = numUsers;
   for(i = 0; i < size; i++){
-    if(users[i].username != NULL && users[i].uid > 0){
+    if(users[i].valid == true){
       if(users[i].uid == userid){
-        if(strcmp(&(users[i].password[0]), pw) == 0){
+        if(strcmp((users[i].password), pw) == 0){
           return true;
         }
       }
