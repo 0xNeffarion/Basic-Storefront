@@ -10,5 +10,5 @@ stockdb stock[512];
 int numItems = 0;
 
 void parseStock(){
-  
+  // TODO
 }

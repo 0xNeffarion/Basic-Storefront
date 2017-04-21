@@ -79,13 +79,13 @@ void listarUsers(){
 }
 
 void menu(){
-  ePrint(COLOR_YELLOW "** Menu **" COLOR_RESET "\n");
-  ePrint(COLOR_CYAN "1)" COLOR_RESET " Criar novo utilizador\n");
-  ePrint(COLOR_CYAN "2)" COLOR_RESET " Gerir stocks\n");
-  ePrint(COLOR_CYAN "3)" COLOR_RESET " Ver estatisticas\n");
-  ePrint(COLOR_CYAN "4)" COLOR_RESET " Listar utilizadores\n");
-  ePrint(COLOR_CYAN "5)" COLOR_RESET " Sair\n");
-  ePrint("Insira a opcao desejada (1-5):\n\n");
+  ePrint(COLOR_YELLOW " +++ Menu Principal +++ " COLOR_RESET "\n");
+  ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Criar novo utilizador [🗸]\n");
+  ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Gerir stocks [↺]\n");
+  ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Ver estatisticas [🗸]\n");
+  ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Listar utilizadores [🗸]\n");
+  ePrint(COLOR_CYAN "[5] ‣" COLOR_RESET " Sair [⇲]\n\n");
+  ePrint("Insira a opcao desejada (1-5):\n");
 }
 
 void actions(const int val){
@@ -125,6 +125,8 @@ void startupActions(){
   setlocale(LC_ALL, "en_US.UTF-8");
   char fp[512];
   getUsersFilePath(fp);
+  char st[512];
+  getStocksFilePath(st);
   char dr[512];
   getDataDirectory(dr);
   if(!dirExists(&dr[0])){
@@ -136,7 +138,14 @@ void startupActions(){
   }
   if(!fileExists(&fp[0])){
     if(!create(&fp[0])){
-      printErr("Nao foi possivel criar ficheiro de registo\n");
+      printErr("Nao foi possivel criar ficheiro de registo (users)\n");
+      exit(1);
+      return;
+    }
+  }
+  if(!fileExists(&st[0])){
+    if(!create(&st[0])){
+      printErr("Nao foi possivel criar ficheiro de registo (stocks)\n");
       exit(1);
       return;
     }

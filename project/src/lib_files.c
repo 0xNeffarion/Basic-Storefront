@@ -1,6 +1,8 @@
 
 void getUsersFilePath(char buff[]);
 void getUsersTempFilePath(char buff[]);
+void getStocksFilePath(char buff[]);
+void getStocksTempFilePath(char buff[]);
 bool fileExists(char* f);
 bool readline(const char* f, const int line, char out[]);
 bool append(const char* f, const char* appstr);
@@ -63,7 +65,6 @@ bool fileExists(char* f){
     }
 }
 
-
 /*
 * I: Reads a specified line
 * P: char* f: file | int line: line to read (0+) | char[] out: output from line
@@ -86,7 +87,6 @@ bool readline(const char* f, const int line, char out[]){
     return false;
 }
 
-
 /*
 * I: Appends string to end of file
 * P: char* f: file | char* appstr: char string
@@ -104,7 +104,6 @@ bool append(const char* f, const char* appstr){
     fclose(fa);
     return r;
 }
-
 
 /*
 * I: Creates blank empty file
