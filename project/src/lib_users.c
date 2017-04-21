@@ -14,7 +14,7 @@ int numUsers = 0;
 void parseUsers();
 void deleteUser(int id);
 int getLastId();
-int createUser(char name[], char pw[]);
+int createUser(char name[], char pw[], bool isadmin);
 bool validatePassword(int userid, char* pw);
 int getIdByUsername(char user[]);
 int getUsernameById(int id, char out[]);
@@ -153,21 +153,27 @@ void deleteUser(int id){
     rename(fp_temp,fp_users);
 
     if(did==1){
-      printErr("Utilizador com o id '%d' nao existe\n", id);
+      printErr("Utilizador '%d' nao existe\n", id);
     }
     parseUsers();
 
   }
 }
 
-int createUser(char name[], char pw[]){
+int createUser(char name[], char pw[], bool isadmin){
   char fp[512];
 	getUsersFilePath(fp);
   if(fileExists(&fp[0])==true){
     FILE *fa = fopen(&fp[0], "a");
     if(fa != NULL){
+      int a = 0;
+      if(isadmin==true){
+        a = 1;
+      }else{
+        a = -1;
+      }
       int myid = getLastId()+1;
-      fprintf(fa,"\n%d[#]%s[#]%s[#]0.0[#]-1",myid,name,pw);
+      fprintf(fa,"\n%d[#]%s[#]%s[#]%d[#]0.0[#]-1",myid,name,a,pw);
       fclose(fa);
       printf("Utilizador [%s] registado com sucesso! Id: %d\n\n", name, myid);
       parseUsers();
