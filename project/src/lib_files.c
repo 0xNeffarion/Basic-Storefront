@@ -18,7 +18,7 @@ void getUsersFilePath(char buff[]){
 }
 
 /*
-* I: Retrieves full filepath for users temp data file
+* I: Retrieves full filepath for users temp data temporary file
 * P: char[] buff: buffer to output
 * R: -
 */
@@ -26,6 +26,28 @@ void getUsersTempFilePath(char buff[]){
     char b[512];
     getDataDirectory(b);
     sprintf(buff, "%s/%s", b, USERS_TEMP_FILENAME);
+}
+
+/*
+* I: Retrieves full filepath for items stock data file
+* P: char[] buff: buffer to output
+* R: -
+*/
+void getStocksFilePath(char buff[]){
+    char b[512];
+    getDataDirectory(b);
+    sprintf(buff, "%s/%s", b, ITEMS_FILENAME);
+}
+
+/*
+* I: Retrieves full filepath for items stock data temporary file
+* P: char[] buff: buffer to output
+* R: -
+*/
+void getStocksTempFilePath(char buff[]){
+    char b[512];
+    getDataDirectory(b);
+    sprintf(buff, "%s/%s", b, ITEMS_TEMP_FILENAME);
 }
 
 /*

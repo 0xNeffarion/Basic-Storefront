@@ -20,7 +20,7 @@ void novoUser(){
   char pw[128];
   char ad;
   printf("Criar administrador ou utilizador? (a/u): \n");
-  if(scanf(" %c", &ad) <= 0){
+  if(scanf(" %c", &ad) != 1){
     printErr("Erro a inserir tipo de user!\n\n");
     return;
   }
@@ -34,8 +34,16 @@ void novoUser(){
     printErr("Erro a inserir utilizador!\n\n");
     return;
   }
+  if(strlen(usr) > 29 || strlen(usr) < 3){
+    printErr("Erro a inserir utilizador! (tamanho do nome)\n\n");
+    return;
+  }
   char *str = getpass("Insira a password [Max. 128 caracteres]:\n");
   strcpy(pw,str);
+  if(strlen(pw) > 127 || strlen(pw) < 3){
+    printErr("Erro a inserir utilizador! (tamanho da password)\n\n");
+    return;
+  }
   bool admin = false;
   if(ad == 'a'){
     admin = true;
@@ -67,10 +75,7 @@ void listarUsers(){
       }
     }
   }
-
   printf("\n\n");
-
-
 }
 
 void menu(){

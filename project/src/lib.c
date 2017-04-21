@@ -84,7 +84,10 @@ void fillArray(int *data, int size, int value){
 */
 bool isInt(const char* str)
 {
-  return (atoi(str) != 0);
+  if((atoi(str) != 0)){
+    return true;
+  }
+  return false;
 }
 
 /*
@@ -99,8 +102,22 @@ int* intcpy(int const * src, size_t len){
 }
 
 
+void RemoveSpaces(char* src){
+  char* i = src;
+  char* j = src;
+  while(*j != 0)
+  {
+    *i = *j++;
+    if(*i != ' ')
+      i++;
+  }
+  *i = 0;
+}
+
+
 // DECLARATIONS
 
 #include "lib_dir.c"
 #include "lib_files.c"
 #include "lib_users.c"
+#include "lib_stocks.c"

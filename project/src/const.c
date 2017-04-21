@@ -1,5 +1,7 @@
 #define USERS_FILENAME "reg_users.data"
 #define USERS_TEMP_FILENAME "reg_users_temp.data"
+#define ITEMS_FILENAME "items_stock.data"
+#define ITEMS_TEMP_FILENAME "items_stock_temp.data"
 #define DATA_FOLDERNAME "labc_sm_data"
 #define FILE_DELIM "[#]"
 #define BUYLIST_DELIM ";"
