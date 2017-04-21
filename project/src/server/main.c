@@ -31,13 +31,29 @@ void novoUser(){
 }
 
 void listarUsers(){
-  int j;
-  int n = sizeof(users);
-  for(j=0;j<n;j++)
-  if(users[j].username != NULL && users[j].password != NULL){
-    if(strlen(users[j].username) > 1)
-    printf("User:%s| Password:%s\n", users[j].username, users[j].password);
+  int i = 0, size = numUsers;
+  parseUsers();
+  if(size >= 1){
+    printf("Administradores: Cor verde\n");
+    printf("Utilizadores: Cor branca\n\n");
+    printf("ID - Username - Balance\n");
+  }else{
+    printf("Nao existem utilizadores registados!\n");
+    return;
   }
+  for(; i < size; i++){
+    if(users[i].valid == true){
+      if(users[i].admin == true){
+        printf(COLOR_GREEN "[%d] - %s - %.2f€\n" COLOR_RESET, users[i].uid, users[i].username, users[i].balance);
+      }else{
+        printf("[%d] - %s - %.2f€\n", users[i].uid, users[i].username, users[i].balance);
+      }
+    }
+  }
+
+  printf("\n\n");
+
+
 }
 
 void menu(){
@@ -109,14 +125,13 @@ int main() {
   startupActions();
   int input=1;
   parseUsers();
-  char o[256] = "user1";
-  printf("\n## %d ##\n", getIdByUsername(o));
   do{
     menu();
     if(scanf("%d",&input) >= 1){
+      clearScreen();
       actions(input);
     }
-    clearScreen();
+
   }while(1);
 
   return 0;

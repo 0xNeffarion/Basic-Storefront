@@ -82,23 +82,9 @@ void fillArray(int *data, int size, int value){
 * P: char* str: string to check
 * R: true if string is an int, otherwise false
 */
-bool isInt(const char *str)
+bool isInt(const char* str)
 {
-   if (*str == '-'){
-      ++str;
-   }
-
-   if (!*str){
-      return false;
-   }
-
-   while (*str){
-      if (!isdigit(*str))
-         return false;
-      else
-         ++str;
-   }
-   return true;
+  return (atoi(str) != 0);
 }
 
 /*

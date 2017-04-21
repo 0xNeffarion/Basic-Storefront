@@ -4,7 +4,6 @@ bool dirExists(const char* mydir);
 bool deleteDir(const char* mydir);
 bool createDir(const char* mydir);
 
-
 /*
 * I: Retrieves home directory path
 * P: char[] buff: buffer to output
