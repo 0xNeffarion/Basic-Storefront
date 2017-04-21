@@ -80,10 +80,10 @@ void listarUsers(){
 
 void menu(){
   ePrint(COLOR_YELLOW " +++ Menu Principal +++ " COLOR_RESET "\n");
-  ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Criar novo utilizador [🗸]\n");
-  ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Gerir stocks [↺]\n");
-  ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Ver estatisticas [🗸]\n");
-  ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Listar utilizadores [🗸]\n");
+  ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Criar novo utilizador\n");
+  ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Gerir stocks\n");
+  ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Ver estatisticas\n");
+  ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Listar utilizadores\n");
   ePrint(COLOR_CYAN "[5] ‣" COLOR_RESET " Sair [⇲]\n\n");
   ePrint("Insira a opcao desejada (1-5):\n");
 }
