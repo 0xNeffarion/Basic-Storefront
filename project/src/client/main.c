@@ -37,27 +37,28 @@ void startupActions(){
 
 int login(){
   char usr[30];
-  char pwd[128];
+  //char pwd[128];
   int id;
   bool val;
   clearScreen();
+  ePrint(COLOR_GREEN "***Login***" COLOR_RESET "\n");
   printf("Username: ");
   scanf("%s", usr);
   id=getIdByUsername(usr);
   if (id==-1) {
-    printErr("Utilizador não encontrado\n");
+    printErr("O Utilizador que inseriu não foi encontrado! Tente novamente!\n");
     usleep(1000*1500);
-    return -1;
+    login();
   }
   else {
-    printf("Password: ");
-    scanf("%s", pwd);
+    char *pwd = getpass("Password: ");
     val=validatePassword(id, pwd);
     if (val==true)
       return getPosition(id);
     else if (val==false) {
-      printErr("Password incorreta!\n");
-      return -1;
+      printErr("Password incorreta! Tente novamente!\n");
+      usleep(1000*1500);
+      login();
     }
   }
 } 
@@ -312,10 +313,8 @@ void actionsestatisticas(const int opt){
 
 int main(){
   startupActions();
-  users[0].uid=1;
-  strcpy(users[0].username, "teste");
-  strcpy(users[0].password, "teste");
-  int opt=0, log=0;
+  parseUsers();
+  int opt=0, log=-1;
   log=login();
   if (log > -1) {
     ePrint("Login efetuado com sucesso! Bem-vindo!\n");
@@ -327,10 +326,6 @@ int main(){
 	actions(opt,log);
       }
     }while(1);
-  }
-  else {
-    printErr("O login falhou! Tente novamente!\n");
-    log=login();
   }
   return 0;
 }
