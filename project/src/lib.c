@@ -25,121 +25,121 @@ void printErr(const char *fmt, ...);
 void clearScreen();
 void fillArray(int *data, int size, int value);
 bool isInt(const char *str);
-int* intcpy(int const * src, size_t len);
-void removeSpaces(char* src);
+int *intcpy(int const *src, size_t len);
+void removeSpaces(char *src);
 unsigned int rand_interval(unsigned int min, unsigned int max);
 
 /*
-* I: Writes to console a string with typewritter effect
-* P: char* text: text to write
-* R: -
-*/
+ * I: Writes to console a string with typewritter effect
+ * P: char* text: text to write
+ * R: -
+ */
 void ePrint(const char *text){
-    int i = 0;
-    while(text[i] != '\0'){
-        printf("%c", (text[i]));
-        fflush(stdout);
-        usleep(1000*40/TEXT_WRITE_SPEED);
-        i++;
-    }
+	int i = 0;
+
+	while(text[i] != '\0'){
+		printf("%c", (text[i]));
+		fflush(stdout);
+		usleep(1000 * 40 / TEXT_WRITE_SPEED);
+		i++;
+	}
 }
 
 /*
-* I: Printf wrapper for errors
-* P: Same as printf
-* R: -
-*/
-void printErr(const char *fmt, ...) {
-    printf(COLOR_RED "[ERRO] " COLOR_RESET);
-    va_list args;
-    va_start(args, fmt);
-    vprintf(fmt , args);
-    va_end(args);
+ * I: Printf wrapper for errors
+ * P: Same as printf
+ * R: -
+ */
+void printErr(const char *fmt, ...){
+	printf(COLOR_RED "[ERRO] " COLOR_RESET);
+	va_list args;
+	va_start(args, fmt);
+	vprintf(fmt, args);
+	va_end(args);
 }
 
 /*
-* I: Clears console/terminal screen
-* P: -
-* R: -
-*/
+ * I: Clears console/terminal screen
+ * P: -
+ * R: -
+ */
 void clearScreen(){
-    printf("\033[2J\033[1;1H");
+	printf("\033[2J\033[1;1H");
 }
 
 /*
-* I: Fills array with a value
-* P: int *data: array pointer | int size: array size
-* P: int value: value to fill array
-* R: -
-*/
+ * I: Fills array with a value
+ * P: int *data: array pointer | int size: array size
+ * P: int value: value to fill array
+ * R: -
+ */
 void fillArray(int *data, int size, int value){
-    int i = 0;
-    for(i = 0; i < size; i++){
-        data[i] = value;
-    }
+	int i = 0;
+
+	for(i = 0; i < size; i++){
+		data[i] = value;
+	}
 }
 
 /*
-* I: Checks if string is a valid integer
-* P: char* str: string to check
-* R: true if string is an int, otherwise false
-*/
-bool isInt(const char* str)
-{
-  if((atoi(str) != 0)){
-    return true;
-  }
-  return false;
+ * I: Checks if string is a valid integer
+ * P: char* str: string to check
+ * R: true if string is an int, otherwise false
+ */
+bool isInt(const char *str){
+	if((atoi(str) != 0)){
+		return(true);
+	}
+	return(false);
 }
 
 /*
-* I: Copies/Duplicates int array
-* P: int * src: first index pointer, len: lenght to copy
-* R: Copied array
-*/
-int* intcpy(int const * src, size_t len){
-   int * p = malloc(len * sizeof(int));
-   memcpy(p, src, len * sizeof(int));
-   return p;
+ * I: Copies/Duplicates int array
+ * P: int * src: first index pointer, len: lenght to copy
+ * R: Copied array
+ */
+int *intcpy(int const *src, size_t len){
+	int *p = malloc(len * sizeof(int));
+
+	memcpy(p, src, len * sizeof(int));
+	return(p);
 }
 
 /*
-* I: Removes spaces from string
-* P: char* src: string to remove spaces
-* R: -
-*/
-void removeSpaces(char* src){
-  char* i = src;
-  char* j = src;
-  while(*j != 0)
-  {
-    *i = *j++;
-    if(*i != ' ')
-      i++;
-  }
-  *i = 0;
+ * I: Removes spaces from string
+ * P: char* src: string to remove spaces
+ * R: -
+ */
+void removeSpaces(char *src){
+	char *i = src;
+	char *j = src;
+
+	while(*j != 0){
+		*i = *j++;
+		if(*i != ' '){
+			i++;
+		}
+	}
+	*i = 0;
 }
 
 /*
-* I: Generates random number
-* P: int min: minimum, int max: maximum (exclusive)
-* R: random number between min and max-1
-*/
-unsigned int rand_interval(unsigned int min, unsigned int max)
-{
-    int r;
-    const unsigned int range = 1 + max - min;
-    const unsigned int buckets = RAND_MAX / range;
-    const unsigned int limit = buckets * range;
+ * I: Generates random number
+ * P: int min: minimum, int max: maximum (exclusive)
+ * R: random number between min and max-1
+ */
+unsigned int rand_interval(unsigned int min, unsigned int max){
+	int r;
+	const unsigned int range   = 1 + max - min;
+	const unsigned int buckets = RAND_MAX / range;
+	const unsigned int limit   = buckets * range;
 
-    do
-    {
-        r = rand();
-    } while (r >= limit);
+	do {
+		r = rand();
+	} while(r >= limit);
 
-    return min + (r / buckets);
+	return(min + (r / buckets));
 }
-
 
 // DECLARATIONS
 

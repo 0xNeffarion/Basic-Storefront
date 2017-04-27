@@ -5,19 +5,18 @@
 #include "stocks_sv.c"
 #include "actions_sv.c"
 
-int main() {
-  startupActions();
-  int input=1;
-  parseUsers();
-  parseStock();
-  do{
-    menu();
-    if(scanf("%d",&input) >= 1){
-      clearScreen();
-      actions(input);
-    }
+int main(){
+	startupActions();
+	int input = 1;
+	parseUsers();
+	parseStock();
+	do {
+		menu();
+		if(scanf("%d", &input) >= 1){
+			clearScreen();
+			actions(input);
+		}
+	} while(1);
 
-  }while(1);
-
-  return 0;
+	return(0);
 }
