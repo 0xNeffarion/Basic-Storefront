@@ -61,7 +61,7 @@ int login(){
       login();
     }
   }
-} 
+}
 
 void sair(){
   clearScreen();
@@ -180,7 +180,7 @@ void lista(const int log){
   ePrint(COLOR_CYAN "2)" COLOR_RESET " Consultar Lista de Compras.\n");
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Adicionar produtos à Lista de Compras.\n");
   ePrint(COLOR_CYAN "4)" COLOR_RESET " Comprar produtos da lista.\n");
-  ePrint(COLOR_CYAN "5)" COLOR_RESET " Voltar ao menu inicial.\n"); 
+  ePrint(COLOR_CYAN "5)" COLOR_RESET " Voltar ao menu inicial.\n");
   ePrint("Insira a opção desejada(1-5):\n");
   if(scanf("%d",&opt) > 0){
     actionslista(opt,log);
@@ -215,7 +215,8 @@ void actionslista(const int opt, const int log){
       ePrint("Não tem produtos na sua lista!");
     else {
       ePrint("A sua lista é composta pelos seguintes produtos:\n");
-      for(int i=0; i < size; i++) {
+      int i = 0;
+      for(i=0; i < size; i++) {
 	printf("%d\n",users[log].buylist[i]);
       }
     }
@@ -258,7 +259,7 @@ void estatisticas() {
   ePrint(COLOR_CYAN "2)" COLOR_RESET " Quantidade comprada de um determinado produto.\n");
   ePrint(COLOR_CYAN "3)" COLOR_RESET " Valor total gasto num determinado produto.\n");
   //adicionar mais estatisticas?
-  ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n"); 
+  ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n");
   ePrint("Insira a opção desejada(1-4):\n");
   if(scanf("%d",&opt) > 0){
     actionsestatisticas(opt);

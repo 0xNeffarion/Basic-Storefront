@@ -26,6 +26,8 @@ void clearScreen();
 void fillArray(int *data, int size, int value);
 bool isInt(const char *str);
 int* intcpy(int const * src, size_t len);
+void removeSpaces(char* src);
+unsigned int rand_interval(unsigned int min, unsigned int max);
 
 /*
 * I: Writes to console a string with typewritter effect
@@ -101,8 +103,12 @@ int* intcpy(int const * src, size_t len){
    return p;
 }
 
-
-void RemoveSpaces(char* src){
+/*
+* I: Removes spaces from string
+* P: char* src: string to remove spaces
+* R: -
+*/
+void removeSpaces(char* src){
   char* i = src;
   char* j = src;
   while(*j != 0)
@@ -112,6 +118,26 @@ void RemoveSpaces(char* src){
       i++;
   }
   *i = 0;
+}
+
+/*
+* I: Generates random number
+* P: int min: minimum, int max: maximum (exclusive)
+* R: random number between min and max-1
+*/
+unsigned int rand_interval(unsigned int min, unsigned int max)
+{
+    int r;
+    const unsigned int range = 1 + max - min;
+    const unsigned int buckets = RAND_MAX / range;
+    const unsigned int limit = buckets * range;
+
+    do
+    {
+        r = rand();
+    } while (r >= limit);
+
+    return min + (r / buckets);
 }
 
 

@@ -8,6 +8,8 @@ typedef struct{
   bool valid;
 } userdb;
 
+// FILE LAYOUT: ID[#]USERNAME[#]PASSWORD[#]ADMIN[#]BALANCE[#]BUYLIST
+
 userdb users[512];
 int numUsers = 0;
 
