@@ -20,6 +20,7 @@
 #include <dirent.h>
 #include "const.c"
 
+void enterPrompt();
 void ePrint(const char *text);
 void printErr(const char *fmt, ...);
 void clearScreen();
@@ -28,6 +29,19 @@ bool isInt(const char *str);
 int *intcpy(int const *src, size_t len);
 void removeSpaces(char *src);
 unsigned int rand_interval(unsigned int min, unsigned int max);
+
+/*
+ * I: Prompts user to press enter to continue
+ * P: -
+ * R: -
+ */
+void enterPrompt(){
+	printf("Pressione [Enter] para continuar.\n");
+	while(getchar() != '\n'){
+		;
+	}
+	getchar();
+}
 
 /*
  * I: Writes to console a string with typewritter effect

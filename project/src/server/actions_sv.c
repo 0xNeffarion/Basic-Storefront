@@ -42,22 +42,27 @@ void actionsStocks(const int val){
 	}
 
 	case 2: {
+		criarItem();
 		break;
 	}
 
 	case 3: {
+		editarPreco();
 		break;
 	}
 
 	case 4: {
+		editarQuantidade();
 		break;
 	}
 
 	case 5: {
+		editarNome();
 		break;
 	}
 
 	case 6: {
+		eliminarItem();
 		break;
 	}
 
@@ -99,7 +104,7 @@ void actions(const int val){
 				clearScreen();
 				actionsStocks(inputstocks);
 			}
-			if(inputstocks == 6){
+			if(inputstocks == 7){
 				clearScreen();
 				break;
 			}

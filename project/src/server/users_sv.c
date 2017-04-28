@@ -48,27 +48,28 @@ void novoUser(){
 }
 
 void listarUsers(){
-	int i = 0, size = numUsers;
-
 	parseUsers();
-	if(size >= 1){
-		printf("Administradores: Cor verde\n");
-		printf("Utilizadores: Cor branca\n\n");
-		printf("ID - Username - Balance\n");
-	}
-	else{
-		printf("Nao existem utilizadores registados!\n");
+	int i = 0;
+	if(getLastId() < 0){
+		printf("Nao existem utilizadores registados!\n\n");
 		return;
 	}
-	for(; i < size; i++){
+	printf("Tabela de utilizadores:\n\n");
+	printf("|-%-4s-|-%-30s-|-%-25s-|-%-8s-|\n", "----", "------------------------------", "-------------------------", "--------");
+	printf("| " COLOR_YELLOW "%-4s" COLOR_RESET " | " COLOR_YELLOW "%-30s " COLOR_RESET "| " COLOR_YELLOW "%-25s " COLOR_RESET "| " COLOR_YELLOW "%-8s" COLOR_RESET " |\n", "ID", "NOME", "PASSWORD", "SALDO");
+	printf("|-%-4s-|-%-30s-|-%-25s-|-%-8s-|\n", "----", "------------------------------", "-------------------------", "--------");
+	for(i = 0; i < numUsers; i++){
 		if(users[i].valid == true){
 			if(users[i].admin == true){
-				printf(COLOR_GREEN "[%d] - %s - %.2f€\n" COLOR_RESET, users[i].uid, users[i].username, users[i].balance);
+				printf("| %-4d | "COLOR_GREEN "%-30s"COLOR_RESET " | %-25s | %-7.2f€ |\n", users[i].uid, users[i].username, users[i].password, users[i].balance);
 			}
 			else{
-				printf("[%d] - %s - %.2f€\n", users[i].uid, users[i].username, users[i].balance);
+				printf("| %-4d | %-30s | %-25s | %-7.2f€ |\n", users[i].uid, users[i].username, users[i].password, users[i].balance);
 			}
 		}
 	}
+	printf("|-%-4s-|-%-30s-|-%-25s-|-%-8s-|\n", "----", "------------------------------", "-------------------------", "--------");
 	printf("\n\n");
+	enterPrompt();
+	clearScreen();
 }

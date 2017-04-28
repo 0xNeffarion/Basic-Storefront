@@ -11,27 +11,39 @@ typedef struct {
 stockdb stocks[512];
 int     numItems = 0;
 
+void resetStruct();
 void parseStock();
 void writeStock();
+void getNome(int id, char out[]);
+int getQuant(int id);
+float getPreco(int id);
+int getItemPosition(int id);
 int getLastStockId();
-void deleteStockItem(int id);
+bool deleteStockItem(int id);
 int createItem(char name[], int quant, float price);
-void changeItemPrice(int id, float newprice);
-void changeItemQuant(int id, int newquant);
-void changeItemName(int id, float newprice);
+bool changeItemPrice(int id, float newprice);
+bool changeItemQuant(int id, int newquant);
+bool changeItemName(int id, char newname[]);
 
-// TODO (remake)
+void resetStruct(){
+	memset(stocks, 0, sizeof(stocks));
+}
 
 void parseStock(){
 	char fp[512];
 
 	getStocksFilePath(fp);
+	resetStruct();
 	int i = 0;
 	if(fileExists(&fp[0]) == true){
 		FILE *f = fopen(&fp[0], "r");
 		if(f != NULL){
 			char line[256];
 			while(fgets(line, sizeof(line), f) != NULL){
+				if(strcmp(line, "\n") == 0){
+					continue;
+				}
+
 				if(strlen(line) > 1){
 					char *tk_id    = strtok(line, FILE_DELIM);
 					char *tk_nome  = strtok(NULL, FILE_DELIM);
@@ -46,14 +58,19 @@ void parseStock(){
 				}
 			}
 			fclose(f);
+			numItems = i + 1;
+
+			i++;
+			for(; i < 256; i++){
+				stocks[i].valid = false;
+			}
+		}
+		else{
+			printErr("Impossivel ler ficheiro de stocks!\n");
 		}
 	}
-
-	numItems = i + 1;
-
-	i++;
-	for(; i < 256; i++){
-		stocks[i].valid = false;
+	else{
+		printErr("Ficheiro de stocks nao existe!\n");
 	}
 }
 
@@ -66,8 +83,8 @@ void writeStock(){
 	getStocksTempFilePath(fp_temp);
 	FILE *fw = fopen(&fp_temp[0], "w");
 	if(fw != NULL){
-		int i = 0, size = numItems;
-		for(i = 0; i < size; i++){
+		int i = 0;
+		for(i = 0; i < 512; i++){
 			if(stocks[i].valid == true){
 				fprintf(fw, "%d[#]%s[#]%.2f[#]%d\n", stocks[i].uid, stocks[i].nome, stocks[i].preco, stocks[i].quantidade);
 			}
@@ -88,10 +105,13 @@ int getLastStockId(){
 	int  i   = -1;
 	if(fr != NULL){
 		while(fgets(line, sizeof(line), fr) != NULL){
+			if(strcmp(line, "\n") == 0){
+				continue;
+			}
 			if(strlen(line) > 1){
 				char *tk_id = strtok(line, FILE_DELIM);
 				int  u      = atoi(tk_id);
-				if(u > 0){
+				if(u >= 0){
 					if(u > i){
 						i = u;
 					}
@@ -103,275 +123,164 @@ int getLastStockId(){
 	return(i);
 }
 
-void deleteStockItem(int id){
-	char fp_stocks[512];
+int getItemPosition(int id){
+	int i = 0, size = numItems;
 
-	getStocksFilePath(fp_stocks);
-	char fp_temp[512];
-	getStocksTempFilePath(fp_temp);
+	for(i = 0; i < size; i++){
+		if(stocks[i].valid == true){
+			if(stocks[i].uid == id){
+				return(i);
+			}
+		}
+	}
 
-	if(fileExists(&fp_stocks[0]) == false){
-		printErr("Ficheiro de stocks nao existe!\n");
+	return(-1);
+}
+
+int getQuant(int id){
+	const int mid = getItemPosition(id);
+
+	if(mid < 0){
+		return(-1);
+	}
+
+	if(stocks[mid].valid == false){
+		return(-1);
+	}
+
+	return(stocks[mid].quantidade);
+}
+
+float getPreco(int id){
+	const int mid = getItemPosition(id);
+
+	if(mid < 0){
+		return(-1);
+	}
+
+	if(stocks[mid].valid == false){
+		return(-1);
+	}
+
+	return(stocks[mid].preco);
+}
+
+void getNome(int id, char out[]){
+	const int mid = getItemPosition(id);
+
+	if(mid < 0){
 		return;
 	}
 
-	if(id < 0){
-		printErr("ID negativo\n");
+	if(stocks[mid].valid == false){
 		return;
 	}
 
-	int  did = 0;
-	FILE *fr = fopen(fp_stocks, "r");
-	FILE *fw = fopen(fp_temp, "w+");
+	strcpy(out, stocks[mid].nome);
+}
 
-	if(fr != NULL && fw != NULL){
-		char line[256];
-		char linecp[256];
-		while(fgets(line, sizeof(line), fr) != NULL){
-			if(strcmp(line, "\n") == 0 || strcmp(line, "\r\n") == 0){
-				continue;
-			}
-			if(strlen(line) > 1){
-				strcpy(linecp, line);
-				char *tk_id = strtok(line, FILE_DELIM);
-				int  myid   = atoi(tk_id);
-				if(myid != id){
-					fprintf(fw, "%s", &linecp[0]);
-				}
-				else{
-					did = 1;
-				}
-			}
-		}
+bool deleteStockItem(int id){
+	int size = numItems;
+	int pos  = getItemPosition(id);
 
-		fclose(fr);
-		fclose(fw);
+	stocks[pos].valid = false;
+	writeStock();
+	parseStock();
 
-		remove(fp_stocks);
-		rename(fp_temp, fp_stocks);
-
-		if(did == 1){
-			printErr("Item '%d' nao existe\n", id);
-		}
-		parseStock();
+	if(size != numItems){
+		return(true);
+	}
+	else{
+		return(false);
 	}
 }
 
 int createItem(char name[], int quant, float price){
-	char fp[512];
+	int size   = numItems;
+	int next   = size + 1;
+	int nextId = getLastStockId() + 1;
 
-	getStocksFilePath(fp);
-	if(fileExists(&fp[0]) == true){
-		FILE *fa = fopen(&fp[0], "a");
-		if(fa != NULL){
-			int myid = getLastStockId() + 1;
-			fprintf(fa, "\n%d[#]%s[#]%.2f[#]%d", myid, name, price, quant);
-			fclose(fa);
-			printf("Item [%s] registado em stock com sucesso! Id: %d\n\n", name, myid);
-			parseStock();
-			return(myid);
-		}
+	stocks[next].valid      = true;
+	stocks[next].quantidade = quant;
+	stocks[next].preco      = price;
+	stocks[next].uid        = nextId;
+	strcpy(stocks[next].nome, name);
+	writeStock();
+	parseStock();
+
+	if(getLastStockId() == nextId){
+		return(nextId);
 	}
-	return(-1);
-}
-
-void changeItemPrice(int id, float newprice){
-	char fp_stocks[512];
-
-	getStocksFilePath(fp_stocks);
-	char fp_temp[512];
-	getStocksTempFilePath(fp_temp);
-
-	if(fileExists(&fp_stocks[0]) == false){
-		printErr("Ficheiro de stocks nao existe!\n");
-		return;
-	}
-
-	if(id < 0){
-		printErr("ID negativo\n");
-		return;
-	}
-
-	int  did = 0;
-	FILE *fr = fopen(fp_stocks, "r");
-	FILE *fw = fopen(fp_temp, "w+");
-
-	if(fr != NULL && fw != NULL){
-		char line[256];
-		char linecp[256];
-		while(fgets(line, sizeof(line), fr) != NULL){
-			if(strcmp(line, "\n") == 0 || strcmp(line, "\r\n") == 0){
-				continue;
-			}
-			if(strlen(line) > 1){
-				strcpy(linecp, line);
-				char *tk_id = strtok(line, FILE_DELIM);
-				int  myid   = atoi(tk_id);
-				if(myid != id){
-					fprintf(fw, "%s", &linecp[0]);
-				}
-				else{
-					char linetok[256];
-					strcpy(linetok, linecp);
-					char *tk_id    = strtok(linetok, FILE_DELIM);
-					char *tk_nome  = strtok(NULL, FILE_DELIM);
-					char *tk_preco = strtok(NULL, FILE_DELIM);
-					char *tk_quant = strtok(NULL, FILE_DELIM);
-
-					char cutnome[60];
-					int  cutid = atoi(tk_id);
-					strcpy(cutnome, tk_nome);
-					float cutpreco = atof(tk_preco);
-					int   cutqt    = atoi(tk_quant);
-
-					fprintf(fw, "\n%d[#]%s[#]%.2f[#]%d", cutid, cutnome, newprice, cutqt);
-				}
-			}
-		}
-
-		fclose(fr);
-		fclose(fw);
-
-		remove(fp_stocks);
-		rename(fp_temp, fp_stocks);
-
-		if(did == 1){
-			printErr("Item '%d' nao existe\n", id);
-		}
-		parseStock();
+	else{
+		return(-1);
 	}
 }
 
-void changeItemQuant(int id, int newquant){
-	char fp_stocks[512];
+bool changeItemPrice(int id, float newprice){
+	const int size = numItems;
+	const int pos  = getItemPosition(id);
 
-	getStocksFilePath(fp_stocks);
-	char fp_temp[512];
-	getStocksTempFilePath(fp_temp);
-
-	if(fileExists(&fp_stocks[0]) == false){
-		printErr("Ficheiro de stocks nao existe!\n");
-		return;
+	if(pos == -1 || id < 0 || size < 0){
+		return(false);
 	}
 
-	if(id < 0){
-		printErr("ID negativo\n");
-		return;
+	if(stocks[pos].valid == true){
+		stocks[pos].preco = newprice;
 	}
 
-	int  did = 0;
-	FILE *fr = fopen(fp_stocks, "r");
-	FILE *fw = fopen(fp_temp, "w+");
+	writeStock();
+	parseStock();
 
-	if(fr != NULL && fw != NULL){
-		char line[256];
-		char linecp[256];
-		while(fgets(line, sizeof(line), fr) != NULL){
-			if(strcmp(line, "\n") == 0 || strcmp(line, "\r\n") == 0){
-				continue;
-			}
-			if(strlen(line) > 1){
-				strcpy(linecp, line);
-				char *tk_id = strtok(line, FILE_DELIM);
-				int  myid   = atoi(tk_id);
-				if(myid != id){
-					fprintf(fw, "%s", &linecp[0]);
-				}
-				else{
-					char linetok[256];
-					strcpy(linetok, linecp);
-					char *tk_id    = strtok(linetok, FILE_DELIM);
-					char *tk_nome  = strtok(NULL, FILE_DELIM);
-					char *tk_preco = strtok(NULL, FILE_DELIM);
-					char *tk_quant = strtok(NULL, FILE_DELIM);
-
-					char cutnome[60];
-					int  cutid = atoi(tk_id);
-					strcpy(cutnome, tk_nome);
-					float cutpreco = atof(tk_preco);
-					int   cutqt    = atoi(tk_quant);
-
-					fprintf(fw, "\n%d[#]%s[#]%.2f[#]%d", cutid, cutnome, cutpreco, newquant);
-				}
-			}
-		}
-
-		fclose(fr);
-		fclose(fw);
-
-		remove(fp_stocks);
-		rename(fp_temp, fp_stocks);
-
-		if(did == 1){
-			printErr("Item '%d' nao existe\n", id);
-		}
-		parseStock();
+	if(stocks[pos].preco == newprice){
+		return(true);
+	}
+	else{
+		return(false);
 	}
 }
 
-void changeItemName(int id, float newprice){
-	char fp_stocks[512];
+bool changeItemQuant(int id, int newquant){
+	const int size = numItems;
+	const int pos  = getItemPosition(id);
 
-	getStocksFilePath(fp_stocks);
-	char fp_temp[512];
-	getStocksTempFilePath(fp_temp);
-
-	if(fileExists(&fp_stocks[0]) == false){
-		printErr("Ficheiro de stocks nao existe!\n");
-		return;
+	if(pos == -1 || id < 0 || size < 0){
+		return(false);
 	}
 
-	if(id < 0){
-		printErr("ID negativo\n");
-		return;
+	if(stocks[pos].valid == true){
+		stocks[pos].quantidade = newquant;
 	}
 
-	int  did = 0;
-	FILE *fr = fopen(fp_stocks, "r");
-	FILE *fw = fopen(fp_temp, "w+");
+	writeStock();
+	parseStock();
 
-	if(fr != NULL && fw != NULL){
-		char line[256];
-		char linecp[256];
-		while(fgets(line, sizeof(line), fr) != NULL){
-			if(strcmp(line, "\n") == 0 || strcmp(line, "\r\n") == 0){
-				continue;
-			}
-			if(strlen(line) > 1){
-				strcpy(linecp, line);
-				char *tk_id = strtok(line, FILE_DELIM);
-				int  myid   = atoi(tk_id);
-				if(myid != id){
-					fprintf(fw, "%s", &linecp[0]);
-				}
-				else{
-					char linetok[256];
-					strcpy(linetok, linecp);
-					char *tk_id    = strtok(linetok, FILE_DELIM);
-					char *tk_nome  = strtok(NULL, FILE_DELIM);
-					char *tk_preco = strtok(NULL, FILE_DELIM);
-					char *tk_quant = strtok(NULL, FILE_DELIM);
+	if(stocks[pos].quantidade == newquant){
+		return(true);
+	}
+	else{
+		return(false);
+	}
+}
 
-					char cutnome[60];
-					int  cutid = atoi(tk_id);
-					strcpy(cutnome, tk_nome);
-					float cutpreco = atof(tk_preco);
-					int   cutqt    = atoi(tk_quant);
+bool changeItemName(int id, char newname[]){
+	const int size = numItems;
+	const int pos  = getItemPosition(id);
 
-					fprintf(fw, "\n%d[#]%s[#]%.2f[#]%d", cutid, cutnome, newprice, cutqt);
-				}
-			}
-		}
+	if(pos == -1 || id < 0 || size < 0){
+		return(false);
+	}
 
-		fclose(fr);
-		fclose(fw);
+	if(stocks[pos].valid == true){
+		strcpy(stocks[pos].nome, newname);
+	}
 
-		remove(fp_stocks);
-		rename(fp_temp, fp_stocks);
+	writeStock();
+	parseStock();
 
-		if(did == 1){
-			printErr("Item '%d' nao existe\n", id);
-		}
-		parseStock();
+	if(strcmp(stocks[pos].nome, newname) == 0){
+		return(true);
+	}
+	else{
+		return(false);
 	}
 }
