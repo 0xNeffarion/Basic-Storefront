@@ -4,6 +4,7 @@ typedef struct {
 	char  password[128];
 	float balance;
 	int   buylist[128];
+        int quant[128];
 	bool  admin;
 	bool  valid;
 } userdb;
@@ -73,6 +74,7 @@ void parseUsers(){
 						z++;
 					}
 					memcpy(users[i].buylist, buyl, z);
+					memcpy(users[i].quant, buyl, z);
 					i++;
 				}
 			}
