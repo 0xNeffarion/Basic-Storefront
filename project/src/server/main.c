@@ -4,12 +4,35 @@
 #include "users_sv.c"
 #include "stocks_sv.c"
 #include "actions_sv.c"
+#include "login_sv.c"
 
-int main(){
+int main(int argc, char **argv);
+void mainActions();
+
+int main(int argc, char **argv){
+	if(argc == 3){
+		if(strcmp(argv[1], "reset") == 0){
+			if(strcmp(argv[2], "users") == 0){
+				char fp[512];
+				getUsersFilePath(fp);
+				remove(fp);
+				printf("Ficheiro de utilizadores removido!\n");
+				exit(0);
+			}
+		}
+	}
+
 	startupActions();
-	int input = 1;
 	parseUsers();
 	parseStock();
+	login();
+	mainActions();
+	return(0);
+}
+
+void mainActions(){
+	int input = 1;
+
 	do {
 		menu();
 		if(scanf("%d", &input) >= 1){
@@ -17,6 +40,4 @@ int main(){
 			actions(input);
 		}
 	} while(1);
-
-	return(0);
 }

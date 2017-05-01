@@ -77,7 +77,6 @@ void parseStock(){
 void writeStock(){
 	char fp[512];
 	char fp_temp[512];
-	char line[256];
 
 	getStocksFilePath(fp);
 	getStocksTempFilePath(fp_temp);
@@ -102,7 +101,7 @@ int getLastStockId(){
 
 	getStocksFilePath(fp);
 	FILE *fr = fopen(&fp[0], "r");
-	int  i   = -1;
+	int  i   = 0;
 	if(fr != NULL){
 		while(fgets(line, sizeof(line), fr) != NULL){
 			if(strcmp(line, "\n") == 0){
@@ -111,7 +110,7 @@ int getLastStockId(){
 			if(strlen(line) > 1){
 				char *tk_id = strtok(line, FILE_DELIM);
 				int  u      = atoi(tk_id);
-				if(u >= 0){
+				if(u > 0){
 					if(u > i){
 						i = u;
 					}

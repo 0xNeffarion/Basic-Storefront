@@ -24,6 +24,15 @@ void startupActions(){
 			exit(1);
 			return;
 		}
+		else{
+			char *ca = "1[#]gestor[#]admin[#]1[#]0.00[#]0[#]-1\n";
+			if(append(&fp[0], ca)){
+				printf("Nao foi encontrado utilizadores! Utilizador gestor criado!\n");
+			}
+			else{
+				exit(1);
+			}
+		}
 	}
 	if(!fileExists(&st[0])){
 		if(!create(&st[0])){

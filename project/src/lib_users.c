@@ -4,24 +4,79 @@ typedef struct {
 	char  password[128];
 	float balance;
 	int   buylist[128];
-        int quant[128];
+	int   quantidade[128];
 	bool  admin;
 	bool  valid;
 } userdb;
 
-// FILE LAYOUT: ID[#]USERNAME[#]PASSWORD[#]ADMIN[#]BALANCE[#]BUYLIST
+// FILE LAYOUT: ID[#]USERNAME[#]PASSWORD[#]ADMIN[#]BALANCE[#]QUANTIDADE[#]BUYLIST
 
 userdb users[512];
 int    numUsers = 0;
 
 void parseUsers();
-void deleteUser(int id);
-int getLastId();
+void writeUsers();
+void resetUsers();
+bool deleteUser(int id);
+int getLastUserId();
 int createUser(char name[], char pw[], bool isadmin);
 bool validatePassword(int userid, char *pw);
 int getIdByUsername(char user[]);
-int getUsernameById(int id, char out[]);
-int getPosition(int id);
+void getUsernameById(int id, char out[]);
+int getUserPosition(int id);
+
+void resetUsers(){
+	memset(users, 0, sizeof(users));
+}
+
+void writeUsers(){
+	char fp[512];
+	char fp_temp[512];
+
+	getUsersFilePath(fp);
+	getUsersTempFilePath(fp_temp);
+	FILE *fw = fopen(&fp_temp[0], "w");
+	if(fw != NULL){
+		int i = 0;
+		for(i = 0; i < 512; i++){
+			if(users[i].valid == true){
+				char by[512];
+				char qt[512];
+				int  admin = 0;
+				int  k     = 0;
+				for(k = 0; k < 127; k++){
+					if(k > 0){
+						if(users[i].buylist[k] > 0){
+							sprintf(by, "%s;%d", by, users[i].buylist[k]);
+						}
+					}
+					else if(k == 0){
+						sprintf(by, "%d", users[i].buylist[k]);
+					}
+				}
+				for(k = 0; k < 127; k++){
+					if(k > 0){
+						if(users[i].quantidade[k] > 0){
+							sprintf(qt, "%s;%d", qt, users[i].quantidade[k]);
+						}
+					}
+					else if(k == 0){
+						sprintf(qt, "%d", users[i].quantidade[k]);
+					}
+				}
+				if(users[i].admin == true){
+					admin = 1;
+				}
+				fprintf(fw, "%d[#]%s[#]%s[#]%d[#]%.2f[#]%s[#]%s\n", users[i].uid, users[i].username,
+						users[i].password, admin, users[i].balance, qt, by);
+			}
+		}
+
+		fclose(fw);
+		remove(fp);
+		rename(fp_temp, fp);
+	}
+}
 
 void parseUsers(){
 	char fp[512];
@@ -33,12 +88,16 @@ void parseUsers(){
 		if(f != NULL){
 			char line[256];
 			while(fgets(line, sizeof(line), f) != NULL){
+				if(strcmp(line, "\n") == 0){
+					continue;
+				}
 				if(strlen(line) > 1){
 					char *tk_id    = strtok(line, FILE_DELIM);
 					char *tk_user  = strtok(NULL, FILE_DELIM);
 					char *tk_pw    = strtok(NULL, FILE_DELIM);
 					char *tk_admin = strtok(NULL, FILE_DELIM);
 					char *tk_bal   = strtok(NULL, FILE_DELIM);
+					char *tk_qt    = strtok(NULL, FILE_DELIM);
 					char *tk_list  = strtok(NULL, FILE_DELIM);
 					users[i].uid     = atoi(tk_id);
 					users[i].balance = atof(tk_bal);
@@ -50,9 +109,35 @@ void parseUsers(){
 						users[i].admin = true;
 					}
 
-					int  *buyl = malloc(128);
-					int  z     = 1;
-					char *tkb  = strtok(tk_list, BUYLIST_DELIM);
+					int  *qtlist = malloc(128);
+					int  z       = 1;
+					char *tkb2   = strtok(tk_qt, BUYLIST_DELIM);
+					if(strcmp(tkb2, "0") == 0){
+						i++;
+						continue;
+					}
+					else{
+						*qtlist = strtol(tkb2, NULL, 0);
+					}
+
+					while(tkb2 != NULL || strlen(tkb2) >= 1){
+						tkb2 = strtok(NULL, BUYLIST_DELIM);
+						if(tkb2 != NULL){
+							int val = strtol(tkb2, NULL, 0);
+							qtlist++;
+							*qtlist = val;
+						}
+						else{
+							break;
+						}
+						z++;
+					}
+
+					memcpy(users[i].quantidade, qtlist, z);
+
+					int *buyl = malloc(128);
+					z = 1;
+					char *tkb = strtok(tk_list, BUYLIST_DELIM);
 					if(strcmp(tkb, "-1") == 0){
 						i++;
 						continue;
@@ -73,8 +158,9 @@ void parseUsers(){
 						}
 						z++;
 					}
+
 					memcpy(users[i].buylist, buyl, z);
-					memcpy(users[i].quant, buyl, z);
+
 					i++;
 				}
 			}
@@ -90,7 +176,7 @@ void parseUsers(){
 	}
 }
 
-int getLastId(){
+int getLastUserId(){
 	char fp[512];
 	char line[256];
 
@@ -114,101 +200,67 @@ int getLastId(){
 	return(i);
 }
 
-void deleteUser(int id){
-	char fp_users[512];
-
-	getUsersFilePath(fp_users);
-	char fp_temp[512];
-	getUsersTempFilePath(fp_temp);
-
-	if(fileExists(&fp_users[0]) == false){
-		printErr("Ficheiro de utilizadores nao existe!\n");
-		return;
-	}
-
+bool deleteUser(int id){
+	parseUsers();
 	if(id < 0){
 		printErr("ID negativo\n");
-		return;
+		return(false);
 	}
 
-	int  did = 0;
-	FILE *fr = fopen(fp_users, "r");
-	FILE *fw = fopen(fp_temp, "w+");
+	int size = numUsers;
+	int pos  = getUserPosition(id);
+	users[pos].valid = false;
 
-	if(fr != NULL && fw != NULL){
-		char line[256];
-		char linecp[256];
-		while(fgets(line, sizeof(line), fr) != NULL){
-			if(strcmp(line, "\n") == 0 || strcmp(line, "\r\n") == 0){
-				continue;
-			}
-			if(strlen(line) > 1){
-				strcpy(linecp, line);
-				char *tk_id = strtok(line, FILE_DELIM);
-				int  myid   = atoi(tk_id);
-				if(myid != id){
-					fprintf(fw, "%s", &linecp[0]);
-				}
-				else{
-					did = 1;
-				}
-			}
-		}
+	writeUsers();
+	parseUsers();
 
-		fclose(fr);
-		fclose(fw);
-
-		remove(fp_users);
-		rename(fp_temp, fp_users);
-
-		if(did == 1){
-			printErr("Utilizador '%d' nao existe\n", id);
-		}
-		parseUsers();
+	if(size != numUsers){
+		return(true);
+	}
+	else{
+		return(false);
 	}
 }
 
 int createUser(char name[], char pw[], bool isadmin){
-	char fp[512];
+	int size   = numUsers;
+	int next   = size + 1;
+	int nextId = getLastUserId() + 1;
 
-	getUsersFilePath(fp);
-	if(fileExists(&fp[0]) == true){
-		FILE *fa = fopen(&fp[0], "a");
-		if(fa != NULL){
-			int a = -1;
-			if(isadmin == true){
-				a = 1;
-			}
-			int myid = getLastId() + 1;
-			fprintf(fa, "\n%d[#]%s[#]%s[#]%d[#]0.00[#]-1", myid, name, pw, a);
-			fclose(fa);
-			printf("Utilizador [%s] registado com sucesso! Id: %d\n\n", name, myid);
-			parseUsers();
-			return(myid);
-		}
+	users[next].uid     = nextId;
+	users[next].valid   = true;
+	users[next].admin   = isadmin;
+	users[next].balance = 0.00;
+
+
+	strcpy(users[next].username, name);
+	strcpy(users[next].password, pw);
+
+	writeUsers();
+	parseUsers();
+
+	if(getLastUserId() == nextId){
+		return(nextId);
 	}
-	return(-1);
+	else{
+		return(-1);
+	}
 }
 
 bool validatePassword(int userid, char *pw){
-	int i = 0, size = numUsers;
-
-	for(i = 0; i < size; i++){
-		if(users[i].valid == true){
-			if(users[i].uid == userid){
-				if(strcmp((users[i].password), pw) == 0){
-					return(true);
-				}
-			}
-		}
+	parseUsers();
+	if(strcmp(users[getUserPosition(userid)].password, pw) == 0){
+		return(true);
 	}
+
 	return(false);
 }
 
 int getIdByUsername(char user[]){
-	int i = 0, size = numUsers;
+	parseUsers();
+	int i = 0;
 
-	for(; i < size; i++){
+	for(; i < numUsers; i++){
 		if(users[i].valid == true){
 			if(strcmp(users[i].username, user) == 0){
 				return(users[i].uid);
@@ -219,25 +271,17 @@ int getIdByUsername(char user[]){
 	return(-1);
 }
 
-int getUsernameById(int id, char out[]){
-	int i = 0, size = numUsers;
+void getUsernameById(int id, char out[]){
+	parseUsers();
+	int pos = getUserPosition(id);
 
-	for(i = 0; i < size; i++){
-		if(users[i].valid == true){
-			if(users[i].uid == id){
-				strcpy(out, users[i].username);
-				return(users[i].uid);
-			}
-		}
-	}
-
-	return(-1);
+	strcpy(out, users[pos].username);
 }
 
-int getPosition(int id){
-	int i = 0, size = numUsers;
+int getUserPosition(int id){
+	int i = 0;
 
-	for(i = 0; i < size; i++){
+	for(; i < numUsers; i++){
 		if(users[i].valid == true){
 			if(users[i].uid == id){
 				return(i);

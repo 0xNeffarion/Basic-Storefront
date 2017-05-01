@@ -2,6 +2,7 @@ void menu();
 void menuStocks();
 
 void menu(){
+	printf(COLOR_YELLOW "Loggado como: %s " COLOR_RESET "\n\n", myusr);
 	ePrint(COLOR_YELLOW " +++ Menu Principal +++ " COLOR_RESET "\n");
 	ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Criar novo utilizador\n");
 	ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Gerir stocks\n");

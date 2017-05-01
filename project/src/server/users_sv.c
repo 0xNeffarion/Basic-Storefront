@@ -50,7 +50,7 @@ void novoUser(){
 void listarUsers(){
 	parseUsers();
 	int i = 0;
-	if(getLastId() < 0){
+	if(getLastUserId() < 0){
 		printf("Nao existem utilizadores registados!\n\n");
 		return;
 	}
