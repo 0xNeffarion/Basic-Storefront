@@ -96,10 +96,16 @@ void actionslista(const int opt, const int log){
 		  printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
 		  scanf("%d",&o);
 		}
-		if (o==1) {
+		if (o!=3 && items==0) {
+		  clearScreen();
+		  printErr("Não tem produtos na sua lista!\n");
+		  enterPrompt();
+		  lista(log);
+		}
+		else if (o==1 && items!=0) {
 		  mod(log);
 		}
-		else if(o==2) {
+		else if(o==2 && items!=0) {
 		  remprod(items, log);
 		}
 		else {
@@ -109,11 +115,9 @@ void actionslista(const int opt, const int log){
 	}
 		  
 	case 5: {
+	        int fc=0;
 		clearScreen();
-		//falta completar
-		ePrint("Total a pagar: (teste) \n"); //fazer soma do valor de todos os produtos da lista
-		ePrint("Acabou de comprar os produtos que estão na sua lista!\n");
-		usleep(1000 * 2000);
+		//fc=compra();
 		lista(log);
 		break;
 	}
