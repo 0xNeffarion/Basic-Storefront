@@ -57,11 +57,9 @@ void actions(const int opt, const int log){
 	}
 
 	default: {
+	        clearScreen();
 		printErr("Opção inválida! Escolha entre a opção 1 a 4!\n");
-		int opt = 0;
-		if(scanf("%d", &opt) >= 1){
-			actions(opt, log);
-		}
+		enterPrompt();
 		break;
 	}
 	}

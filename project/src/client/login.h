@@ -12,8 +12,9 @@ int login(){
 	scanf("%s", usr);
 	id = getIdByUsername(usr);
 	if(id == -1){
+	        clearScreen();
 		printErr("O Utilizador que inseriu não foi encontrado! Tente novamente!\n");
-		usleep(1000 * 1500);
+	        enterPrompt();
 		login();
 	}
 	else{
@@ -23,8 +24,9 @@ int login(){
 			return(getPosition(id));
 		}
 		else if(val == false){
+		        clearScreen();
 			printErr("Password incorreta! Tente novamente!\n");
-			usleep(1000 * 1500);
+			enterPrompt();
 			login();
 		}
 	}

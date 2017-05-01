@@ -39,6 +39,7 @@ void actionslista(const int opt, const int log){
 	case 1: {
 		clearScreen();
 		if (items > 0) {
+		  clearScreen();
 		  printErr("Já possui uma lista! Por favor selecione a opção nº3!\n");
 		  enterPrompt();
 		  lista(log);
@@ -51,6 +52,7 @@ void actionslista(const int opt, const int log){
 	case 2: {
 		clearScreen();
 		if(items == 0){
+		        clearScreen();
 		        printErr("Não tem produtos na sua lista!\n");
 		        enterPrompt();
 			lista(log);
@@ -75,6 +77,7 @@ void actionslista(const int opt, const int log){
 	case 3: {
 		clearScreen();
 		if (items==0) {
+		  clearScreen();
 		  printErr("Não possui uma lista! Utilize a opção nº1 para criar uma!\n");
 		  enterPrompt();
 		  lista(log);
@@ -91,21 +94,26 @@ void actionslista(const int opt, const int log){
 		ePrint(COLOR_CYAN "1)" COLOR_RESET " Modificar quantidade de um produto.\n");
 		ePrint(COLOR_CYAN "2)" COLOR_RESET " Remover produto.\n");
 		ePrint(COLOR_CYAN "3)" COLOR_RESET " Voltar ao menu anterior.\n");
+		ePrint("Insira a opção desejada(1-3): ");
 		scanf("%d",&o);
-	        while (o!=1 && o!=2 && o!=3) {
+	        if (o!=1 && o!=2 && o!=3) {
+		  clearScreen();
 		  printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
-		  scanf("%d",&o);
+		  enterPrompt();
+		  actionslista(4,log);
 		}
-		if (o!=3 && items==0) {
+		else if (o!=3 && items==0) {
 		  clearScreen();
 		  printErr("Não tem produtos na sua lista!\n");
 		  enterPrompt();
 		  lista(log);
 		}
 		else if (o==1 && items!=0) {
+		  clearScreen();
 		  mod(log);
 		}
 		else if(o==2 && items!=0) {
+		  clearScreen();
 		  remprod(items, log);
 		}
 		else {
@@ -127,6 +135,7 @@ void actionslista(const int opt, const int log){
 	}
 
 	default: {
+	        clearScreen();
 		printErr("Opção inválida! Escolha entre a opção 1 a 6!\n");
 		enterPrompt();
 		lista(log);
@@ -144,10 +153,12 @@ void addprod(const int items, const int log){
 	if (add < 0) {
 	  clearScreen();
 	  printErr("Tem que selecionar um código de produto maior do que 0!\n");
+	  enterPrompt();
 	  addprod(items,log);
 	}
         while(add > 0) {
 	  e=existe(log,add);
+	  //printf("E:%d\n",e);
 	  if (e>0) {
 	    clearScreen();
 	    printErr("O produto já se encontra na sua lista!\n");
@@ -164,6 +175,8 @@ void addprod(const int items, const int log){
 	    while(q <= 0){
 	      clearScreen();
 	      printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
+	      enterPrompt();
+	      clearScreen();
 	      ePrint("Selecione a quantidade prentendida: ");
 	      scanf("%d",&q);
 	    }
@@ -186,6 +199,7 @@ void addprod(const int items, const int log){
 	  else {
 	    clearScreen();
 	    printErr("Produto não encontrado! Tente novamente!\n");
+	    enterPrompt();
 	    addprod(items,log);
 	  }
 	  clearScreen();
@@ -218,6 +232,7 @@ void remprod(const int items, const int log){
 	  lista(log);
         }
       else if (flag == 0 && rem>0) {
+	clearScreen();
 	printErr("Produto não encontrado, tente novamente!\n");
 	enterPrompt();
 	remprod(items,log);
@@ -229,6 +244,7 @@ void remprod(const int items, const int log){
 
 void mod(const int log) {
   int m=0, e=0, nq=0, fq=0, fp=0;
+  clearScreen();
   ePrint("Selecione o produto a modificar a quantidade: ");
   scanf("%d",&m);
   e=existe(log,m);
@@ -243,6 +259,7 @@ void mod(const int log) {
   }
   if (e>=0){
     fp=vp(m);
+    clearScreen();
     printf("%d disponiveis.\n",stocks[fp].quantidade);
     ePrint("Selecione a nova quantidade pretendida: ");
     scanf("%d",&nq);
