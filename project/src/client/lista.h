@@ -20,7 +20,7 @@ void lista(const int log){
 	ePrint(COLOR_CYAN "4)" COLOR_RESET " Alterar Lista de Compras.\n");
 	ePrint(COLOR_CYAN "5)" COLOR_RESET " Comprar produtos da lista.\n");
 	ePrint(COLOR_CYAN "6)" COLOR_RESET " Voltar ao menu inicial.\n");
-	ePrint("Insira a opção desejada(1-6):\n");
+	ePrint("Insira a opção desejada(1-6): ");
 	if(scanf("%d", &opt) > 0){
 		actionslista(opt, log);
 	}
@@ -128,10 +128,8 @@ void actionslista(const int opt, const int log){
 
 	default: {
 		printErr("Opção inválida! Escolha entre a opção 1 a 6!\n");
-		int opt = 0;
-		if(scanf("%d", &opt) > 0){
-			actionslista(opt, log);
-		}
+		enterPrompt();
+		lista(log);
 		break;
 	}
 	}
