@@ -147,6 +147,7 @@ void actionslista(const int opt, const int log){
 void addprod(const int items, const int log){
   int add, q, e=0, fp=0, fq=0;
         int j = items;
+	clearScreen();
 	ePrint("Pressine '0' quando terminar de adicionar produtos à sua lista!\n");
         ePrint("Adicione o código do produto à sua lista: ");
         scanf("%d",&add);
@@ -227,6 +228,7 @@ void remprod(const int items, const int log){
             users[log].buylist[i]=users[log].buylist[i+1];
 	    users[log].quant[i]=users[log].quant[i+1];
           }
+	  clearScreen();
           ePrint("Produto removido com sucesso!\n");
 	  enterPrompt();
 	  lista(log);
