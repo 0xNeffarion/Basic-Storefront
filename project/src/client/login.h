@@ -21,7 +21,7 @@ int login(){
 		char *pwd = getpass("Password: ");
 		val = validatePassword(id, pwd);
 		if(val == true){
-			return(getPosition(id));
+			return(getUserPosition(id));
 		}
 		else if(val == false){
 		        clearScreen();

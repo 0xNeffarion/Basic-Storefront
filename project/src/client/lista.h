@@ -64,7 +64,7 @@ void actionslista(const int opt, const int log){
 		  printf("|-%-6s-|-%-10s-|\n", "------", "----------");
 
 		  for(int i = 0; i < items; i++){
-		    printf("| %-6d | %-10d |\n", users[log].buylist[i], users[log].quant[i]);
+		    printf("| %-6d | %-10d |\n", users[log].buylist[i], users[log].quantidade[i]);
 		  }
 		  printf("|-%-6s-|-%-10s-|\n", "------", "----------");
 		  printf("\n\n");
@@ -189,7 +189,7 @@ void addprod(const int items, const int log){
 	      fq=vq(fp,q);
 	    }
 	    if(fq==1){
-	      users[log].quant[j]=q;
+	      users[log].quantidade[j]=q;
 	      j++;
 	      clearScreen();
 	      ePrint("Produto adicionado com sucesso à sua lista!\n");
@@ -225,7 +225,7 @@ void remprod(const int items, const int log){
           }
           for (int i = rf; users[log].buylist[i]>0; i++) {
             users[log].buylist[i]=users[log].buylist[i+1];
-	    users[log].quant[i]=users[log].quant[i+1];
+	    users[log].quantidade[i]=users[log].quantidade[i+1];
           }
 	  clearScreen();
           ePrint("Produto removido com sucesso!\n");
@@ -285,7 +285,7 @@ void mod(const int log) {
       fq=vq(fp,nq);
     }
     if(fq==1){
-      users[log].quant[e]=nq;
+      users[log].quantidade[e]=nq;
       clearScreen();
       ePrint("Quantidade modificada com sucesso!\n");
       enterPrompt();
