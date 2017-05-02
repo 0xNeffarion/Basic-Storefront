@@ -159,5 +159,5 @@ unsigned int rand_interval(unsigned int min, unsigned int max){
 
 #include "lib_dir.c"
 #include "lib_files.c"
-#include "lib_users.c"
 #include "lib_stocks.c"
+#include "lib_users.c"

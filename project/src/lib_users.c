@@ -93,6 +93,7 @@ void writeUsers(){
 void parseUsers(){
 	char fp[512];
 
+	resetUsers();
 	getUsersFilePath(fp);
 	int i = 0;
 	if(fileExists(&fp[0]) == true){
@@ -124,12 +125,15 @@ void parseUsers(){
 					int  *qtlist = malloc(128);
 					int  z       = 1;
 					char *tkb2   = strtok(tk_qt, BUYLIST_DELIM);
+					printf("LENDO QUANTIDADE\n");
 					if(strcmp(tkb2, "0") == 0){
 						i++;
+						printf("%d - QT[0] = N/A\n", i);
 						continue;
 					}
 					else{
 						*qtlist = strtol(tkb2, NULL, 0);
+						printf("%d - QT[0] = %d\n", i, *qtlist);
 					}
 
 					while(tkb2 != NULL || strlen(tkb2) >= 1){
@@ -138,6 +142,7 @@ void parseUsers(){
 							int val = strtol(tkb2, NULL, 0);
 							qtlist++;
 							*qtlist = val;
+							printf("%d - QT[%d] = %d\n", i, z, val);
 						}
 						else{
 							break;
