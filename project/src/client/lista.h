@@ -126,8 +126,12 @@ void actionslista(const int opt, const int log){
 	case 5: {
 	        int fc=0;
 		clearScreen();
-		//fc=compra();
-		lista(log);
+		fc=compra(log, items);
+		if (fc==0) {lista(log);}
+		else if(fc==1) {
+		  ePrint("Compra efetuada com sucesso!\n");
+		  lista(log);
+		}
 		break;
 	}
 
