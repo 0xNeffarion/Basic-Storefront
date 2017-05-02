@@ -128,15 +128,12 @@ void parseUsers(){
 					int  *qtlist = malloc(128);
 					int  z       = 1;
 					char *tkb2   = strtok(tk_qt, BUYLIST_DELIM);
-					printf("LENDO QUANTIDADE\n");
 					if(strcmp(tkb2, "0") == 0){
 						i++;
-						printf("%d - QT[0] = N/A\n", i);
 						continue;
 					}
 					else{
 						users[i].quantidade[0] = strtol(tkb2, NULL, 0);
-						printf("%d - QT[0] = %d\n", i, users[i].quantidade[0]);
 					}
 
 					while(tkb2 != NULL || strlen(tkb2) >= 1){
@@ -144,7 +141,6 @@ void parseUsers(){
 						if(tkb2 != NULL){
 							int val = strtol(tkb2, NULL, 0);
 							users[i].quantidade[z] = val;
-							printf("%d - QT[%d] = %d\n", i, z, users[i].quantidade[z]);
 							z++;
 						}
 						else{
@@ -152,7 +148,6 @@ void parseUsers(){
 						}
 					}
 
-					int *buyl = malloc(128);
 					z = 1;
 					char *tkb = strtok(tk_list, BUYLIST_DELIM);
 					if(strcmp(tkb, "-1") == 0){
@@ -160,24 +155,20 @@ void parseUsers(){
 						continue;
 					}
 					else{
-						*buyl = strtol(tkb, NULL, 0);
+						users[i].buylist[z] = strtol(tkb, NULL, 0);
 					}
 
 					while(tkb != NULL || strlen(tkb) >= 1){
 						tkb = strtok(NULL, BUYLIST_DELIM);
 						if(tkb != NULL){
 							int val = strtol(tkb, NULL, 0);
-							buyl++;
-							*buyl = val;
+							users[i].buylist[z] = val;
+							z++;
 						}
 						else{
 							break;
 						}
-						z++;
 					}
-
-					memcpy(users[i].buylist, buyl, z);
-
 					i++;
 				}
 			}

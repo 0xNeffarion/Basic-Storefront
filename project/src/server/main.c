@@ -31,17 +31,6 @@ int main(int argc, char **argv){
 
 	startupActions();
 	parseUsers();
-
-	printf("numusers = %d\n", numUsers);
-	int i = 0;
-	for(i = 0; i < numUsers; i++){
-		char buff[256];
-		getAllQuantidade(getUserId(i), buff);
-		printf("User #%d - %s\n", i, buff);
-	}
-
-	return(0);
-
 	parseStock();
 	login();
 	mainActions();
