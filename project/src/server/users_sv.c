@@ -45,6 +45,10 @@ void novoUser(){
 		printErr("Erro a criar user!\n\n");
 		return;
 	}
+	else{
+		clearScreen();
+		printf("Utilizador criado com sucesso!\n");
+	}
 }
 
 void listarUsers(){

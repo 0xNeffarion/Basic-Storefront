@@ -20,10 +20,22 @@ void resetUsers();
 bool deleteUser(int id);
 int getLastUserId();
 int createUser(char name[], char pw[], bool isadmin);
-bool validatePassword(int userid, char *pw);
+bool validatePassword(const int userid, char *pw);
 int getIdByUsername(char user[]);
 void getUsernameById(int id, char out[]);
-int getUserPosition(int id);
+float getBalance(const int id);
+int getUserPosition(const int id);
+bool isAdmin(const int id);
+bool isValid(const int id);
+int getQuantidade(const int id, const int buylist_index);
+void removeAllItems(const int id, const int itemid);
+void removeItem(const int id, const int itemid, const int quant);
+void addItem(const int id, const int itemid, const int quant);
+int getLastBuylistIndex(const int id);
+void addBalance(const int id, float b);
+void removeBalance(const int id, float b);
+int getTotalQuant(const int id);
+int getBuyListItemId(const int id, const int buylist_index);
 
 void resetUsers(){
 	memset(users, 0, sizeof(users));
@@ -247,7 +259,7 @@ int createUser(char name[], char pw[], bool isadmin){
 	}
 }
 
-bool validatePassword(int userid, char *pw){
+bool validatePassword(const int userid, char *pw){
 	parseUsers();
 	if(strcmp(users[getUserPosition(userid)].password, pw) == 0){
 		return(true);
@@ -257,7 +269,6 @@ bool validatePassword(int userid, char *pw){
 }
 
 int getIdByUsername(char user[]){
-	parseUsers();
 	int i = 0;
 
 	for(; i < numUsers; i++){
@@ -271,14 +282,14 @@ int getIdByUsername(char user[]){
 	return(-1);
 }
 
-void getUsernameById(int id, char out[]){
+void getUsernameById(const int id, char out[]){
 	parseUsers();
 	int pos = getUserPosition(id);
 
 	strcpy(out, users[pos].username);
 }
 
-int getUserPosition(int id){
+int getUserPosition(const int id){
 	int i = 0;
 
 	for(; i < numUsers; i++){
@@ -290,4 +301,145 @@ int getUserPosition(int id){
 	}
 
 	return(-1);
+}
+
+float getBalance(const int id){
+	const int pos = getUserPosition(id);
+
+	return(users[pos].balance);
+}
+
+bool isAdmin(const int id){
+	const int pos = getUserPosition(id);
+
+	return(users[pos].admin);
+}
+
+bool isValid(const int id){
+	const int pos = getUserPosition(id);
+
+	return(users[pos].valid);
+}
+
+int getQuantidade(const int id, const int buylist_index){
+	const int pos = getUserPosition(id);
+
+	return(users[pos].quantidade[buylist_index]);
+}
+
+int getBuyListItemId(const int id, const int buylist_index){
+	const int pos = getUserPosition(id);
+
+	return(users[pos].buylist[buylist_index]);
+}
+
+int getTotalQuant(const int id){
+	const int pos  = getUserPosition(id);
+	int       sum  = 0;
+	int       i    = 0;
+	int       size = sizeof(users[pos].quantidade);
+
+	for(i = 0; i < size; i++){
+		if(users[pos].quantidade[i] > 0){
+			sum += users[pos].quantidade[i];
+		}
+	}
+
+	return(sum);
+}
+
+void removeBalance(const int id, float b){
+	const int pos = getUserPosition(id);
+
+	users[pos].balance -= b;
+}
+
+void addBalance(const int id, float b){
+	const int pos = getUserPosition(id);
+
+	users[pos].balance += b;
+}
+
+int getLastBuylistIndex(const int id){
+	const int pos_user = getUserPosition(id);
+	int       i        = 0;
+	int       index    = -1;
+	int       size     = sizeof(users[pos_user].buylist);
+
+	for(i = 0; i < size; i++){
+		if(users[pos_user].buylist[i] > 0){
+			index = i;
+		}
+	}
+
+	return(index);
+}
+
+void addItem(const int id, const int itemid, const int quant){
+	const int pos_user = getUserPosition(id);
+	const int pos_item = getItemPosition(itemid);
+	bool      exists   = false;
+	int       arr      = -1;
+	int       i        = 0;
+	const int size     = sizeof(users[pos_user].buylist);
+
+	for(i = 0; i < size; i++){
+		if(users[pos_user].buylist[i] == itemid){
+			exists = true;
+			arr    = i;
+			break;
+		}
+	}
+
+	if(exists == true){
+		users[pos_user].quantidade[arr] += quant;
+	}
+	else{
+		int lastindex = getLastBuylistIndex(id);
+		users[pos_user].buylist[lastindex + 1]     = itemid;
+		users[pos_user].quantidade[lastindex + 1] += quant;
+	}
+}
+
+void removeItem(const int id, const int itemid, const int quant){
+	const int pos_user = getUserPosition(id);
+	const int pos_item = getItemPosition(itemid);
+	bool      exists   = false;
+	int       arr      = -1;
+	int       i        = 0;
+	const int size     = sizeof(users[pos_user].buylist);
+
+	for(i = 0; i < size; i++){
+		if(users[pos_user].buylist[i] == itemid){
+			exists = true;
+			arr    = i;
+			break;
+		}
+	}
+
+	if(exists == true){
+		users[pos_user].quantidade[arr] -= quant;
+	}
+}
+
+void removeAllItems(const int id, const int itemid){
+	const int pos_user = getUserPosition(id);
+	const int pos_item = getItemPosition(itemid);
+	bool      exists   = false;
+	int       arr      = -1;
+	int       i        = 0;
+	const int size     = sizeof(users[pos_user].buylist);
+
+	for(i = 0; i < size; i++){
+		if(users[pos_user].buylist[i] == itemid){
+			exists = true;
+			arr    = i;
+			break;
+		}
+	}
+
+	if(exists == true){
+		users[pos_user].quantidade[arr] = 0;
+		users[pos_user].buylist[arr]    = 0;
+	}
 }
