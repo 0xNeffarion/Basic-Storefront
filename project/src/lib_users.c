@@ -35,7 +35,10 @@ int getLastBuylistIndex(const int id);
 void addBalance(const int id, float b);
 void removeBalance(const int id, float b);
 int getTotalQuant(const int id);
+int getUserId(const int index);
 int getBuyListItemId(const int id, const int buylist_index);
+void getAllBuylistItems(const int id, char out[]);
+void getAllQuantidade(const int id, char out[]);
 
 void resetUsers(){
 	memset(users, 0, sizeof(users));
@@ -132,25 +135,22 @@ void parseUsers(){
 						continue;
 					}
 					else{
-						*qtlist = strtol(tkb2, NULL, 0);
-						printf("%d - QT[0] = %d\n", i, *qtlist);
+						users[i].quantidade[0] = strtol(tkb2, NULL, 0);
+						printf("%d - QT[0] = %d\n", i, users[i].quantidade[0]);
 					}
 
 					while(tkb2 != NULL || strlen(tkb2) >= 1){
 						tkb2 = strtok(NULL, BUYLIST_DELIM);
 						if(tkb2 != NULL){
 							int val = strtol(tkb2, NULL, 0);
-							qtlist++;
-							*qtlist = val;
-							printf("%d - QT[%d] = %d\n", i, z, val);
+							users[i].quantidade[z] = val;
+							printf("%d - QT[%d] = %d\n", i, z, users[i].quantidade[z]);
+							z++;
 						}
 						else{
 							break;
 						}
-						z++;
 					}
-
-					memcpy(users[i].quantidade, qtlist, z);
 
 					int *buyl = malloc(128);
 					z = 1;
@@ -185,7 +185,7 @@ void parseUsers(){
 		}
 	}
 
-	numUsers = i + 1;
+	numUsers = i;
 
 	i++;
 	for(; i < 256; i++){
@@ -447,4 +447,50 @@ void removeAllItems(const int id, const int itemid){
 		users[pos_user].quantidade[arr] = 0;
 		users[pos_user].buylist[arr]    = 0;
 	}
+}
+
+int getUserId(const int index){
+	return(users[index].uid);
+}
+
+void getAllBuylistItems(const int id, char out[]){
+	const int pos       = getUserPosition(id);
+	char      list[256] = "";
+	int       k         = 0;
+
+	printf("size: %d\n", sizeof(users[pos].buylist));
+	for(k = 0; k < 127; k++){
+		if(users[pos].buylist[k] > 0){
+			char buff[256] = "";
+			if(k != 0){
+				sprintf(list, "%s;%d", list, users[pos].buylist[k]);
+			}
+			else{
+				sprintf(list, "%d", users[pos].buylist[k]);
+			}
+		}
+	}
+
+	strcpy(out, list);
+}
+
+void getAllQuantidade(const int id, char out[]){
+	const int pos       = getUserPosition(id);
+	char      list[256] = "";
+	int       k         = 0;
+
+	printf("size: %d\n", sizeof(users[pos].quantidade));
+	for(k = 0; k < 127; k++){
+		if(users[pos].quantidade[k] > 0){
+			char buff[256] = "";
+			if(k != 0){
+				sprintf(list, "%s;%d", list, users[pos].quantidade[k]);
+			}
+			else{
+				sprintf(list, "%d", users[pos].quantidade[k]);
+			}
+		}
+	}
+
+	strcpy(out, list);
 }
