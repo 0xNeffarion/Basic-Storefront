@@ -36,6 +36,7 @@ void actionsaldo(const int opt, const int log){
 			users[log].balance += add;
 			clearScreen();
 			ePrint("Saldo adicionado com sucesso!\n");
+			writeUsers();
 		        enterPrompt();
 		}
 		else{
