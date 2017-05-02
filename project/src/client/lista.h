@@ -11,6 +11,7 @@ int vq(const int id, const int q);
 
 void lista(const int log){
 	int opt = 0;
+	parseStock();
 	
 	clearScreen();
 	ePrint(COLOR_YELLOW "** Lista **" COLOR_RESET "\n");
@@ -167,7 +168,7 @@ void addprod(const int items, const int log){
 	}
 	else if (add > 0 && e<0) {
 	  fp=vp(add);
-	  if (fp > 0) {
+	  if (fp >= 0) {
 	    users[log].buylist[j] = add;
 	    printf("%d disponiveis.\n",stocks[fp].quantidade);
 	    ePrint("Selecione a quantidade prentendida: ");
@@ -193,6 +194,7 @@ void addprod(const int items, const int log){
 	      j++;
 	      clearScreen();
 	      ePrint("Produto adicionado com sucesso à sua lista!\n");
+	      writeUsers();
 	      enterPrompt();
 	    }
 	  }
@@ -204,6 +206,9 @@ void addprod(const int items, const int log){
 	  }
 	  clearScreen();
 	  addprod(j,log);
+	}
+	else if(add==0) {
+	  lista(log);
 	}
 	else {
 	  lista(log);
@@ -288,6 +293,7 @@ void mod(const int log) {
       users[log].quantidade[e]=nq;
       clearScreen();
       ePrint("Quantidade modificada com sucesso!\n");
+      writeUsers();
       enterPrompt();
     }
   }
