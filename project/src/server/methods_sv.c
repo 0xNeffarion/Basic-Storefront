@@ -7,7 +7,7 @@ void sair(){
 	for(i = 0; i < 5; i++){
 		fflush(stdout);
 		printf(".");
-		usleep(1000 * 250);
+		usleep(1000 * 150);
 	}
 	printf("\n\n");
 	exit(0);

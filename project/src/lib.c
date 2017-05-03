@@ -25,10 +25,11 @@ void ePrint(const char *text);
 void printErr(const char *fmt, ...);
 void clearScreen();
 void fillArray(int *data, int size, int value);
+void removeSpaces(char *src);
 bool isInt(const char *str);
 int *intcpy(int const *src, size_t len);
-void removeSpaces(char *src);
 unsigned int rand_interval(unsigned int min, unsigned int max);
+unsigned int crc32b(char *message);
 
 /*
  * I: Prompts user to press enter to continue
@@ -155,9 +156,33 @@ unsigned int rand_interval(unsigned int min, unsigned int max){
 	return(min + (r / buckets));
 }
 
+/*
+ * I: Simple strig hashing with crc32
+ * P: char* message: string to hash
+ * R: digested string
+ */
+unsigned int crc32b(char *message){
+	int          i, j;
+	unsigned int byte, crc, mask;
+
+	i   = 0;
+	crc = 0xFFFFFFFF;
+	while(message[i] != 0){
+		byte = message[i];
+		crc  = crc ^ byte;
+		for(j = 7; j >= 0; j--){
+			mask = -(crc & 1);
+			crc  = (crc >> 1) ^ (0xEDB88320 & mask);
+		}
+		i = i + 1;
+	}
+	return(~crc);
+}
+
 // DECLARATIONS
 
 #include "lib_dir.c"
 #include "lib_files.c"
 #include "lib_stocks.c"
 #include "lib_users.c"
+#include "lib_stats.c"

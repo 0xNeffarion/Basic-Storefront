@@ -8,7 +8,7 @@ int login(){
 	clearScreen();
 	printf(COLOR_GREEN "+++ Login +++" COLOR_RESET "\n");
 	printf("Username: ");
-	if(scanf("%s", usr) <= 0){
+	if(scanf("%[^\n]s", usr) <= 0){
 		printErr("Tem que inserir um utilizador!\n");
 		usleep(1000 * 2500);
 		login();

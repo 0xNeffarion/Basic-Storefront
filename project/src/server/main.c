@@ -42,7 +42,7 @@ void mainActions(){
 
 	do {
 		menu();
-		if(scanf("%d", &input) >= 1){
+		if(scanf("%1d", &input) >= 1){
 			clearScreen();
 			actions(input);
 		}

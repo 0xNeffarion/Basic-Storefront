@@ -17,28 +17,29 @@ int    numUsers = 0;
 void parseUsers();
 void writeUsers();
 void resetUsers();
-bool deleteUser(int id);
-int getLastUserId();
-int createUser(char name[], char pw[], bool isadmin);
-bool validatePassword(const int userid, char *pw);
-int getIdByUsername(char user[]);
 void getUsernameById(int id, char out[]);
-float getBalance(const int id);
-int getUserPosition(const int id);
-bool isAdmin(const int id);
-bool isValid(const int id);
-int getQuantidade(const int id, const int buylist_index);
 void removeAllItems(const int id, const int itemid);
 void removeItem(const int id, const int itemid, const int quant);
 void addItem(const int id, const int itemid, const int quant);
-int getLastBuylistIndex(const int id);
 void addBalance(const int id, float b);
 void removeBalance(const int id, float b);
+void getAllBuylistItems(const int id, char out[]);
+void getAllQuantidade(const int id, char out[]);
+bool deleteUser(int id);
+bool validatePassword(const int userid, char *pw);
+bool isAdmin(const int id);
+bool isValid(const int id);
+int getLastUserId();
+int createUser(char name[], char pw[], bool isadmin);
+int getIdByUsername(char user[]);
+int getUserPosition(const int id);
+int getQuantidade(const int id, const int buylist_index);
+int getLastBuylistIndex(const int id);
 int getTotalQuant(const int id);
 int getUserId(const int index);
 int getBuyListItemId(const int id, const int buylist_index);
-void getAllBuylistItems(const int id, char out[]);
-void getAllQuantidade(const int id, char out[]);
+int getIndexFromBuylist(const int id, const int itemid);
+float getBalance(const int id);
 
 void resetUsers(){
 	memset(users, 0, sizeof(users));
@@ -125,9 +126,8 @@ void parseUsers(){
 						users[i].admin = true;
 					}
 
-					int  *qtlist = malloc(128);
-					int  z       = 1;
-					char *tkb2   = strtok(tk_qt, BUYLIST_DELIM);
+					int  z     = 1;
+					char *tkb2 = strtok(tk_qt, BUYLIST_DELIM);
 					if(strcmp(tkb2, "0") == 0){
 						i++;
 						continue;
@@ -240,9 +240,12 @@ int createUser(char name[], char pw[], bool isadmin){
 	users[next].admin   = isadmin;
 	users[next].balance = 0.00;
 
+	unsigned int out        = crc32b(pw);
+	char         outstr[32] = "";
+	sprintf(outstr, "%x", out);
 
 	strcpy(users[next].username, name);
-	strcpy(users[next].password, pw);
+	strcpy(users[next].password, outstr);
 
 	writeUsers();
 	parseUsers();
@@ -257,7 +260,12 @@ int createUser(char name[], char pw[], bool isadmin){
 
 bool validatePassword(const int userid, char *pw){
 	parseUsers();
-	if(strcmp(users[getUserPosition(userid)].password, pw) == 0){
+	unsigned int out        = crc32b(pw);
+	char         outstr[32] = "";
+	sprintf(outstr, "%x", out);
+
+
+	if(strcmp(users[getUserPosition(userid)].password, outstr) == 0){
 		return(true);
 	}
 
@@ -330,12 +338,11 @@ int getBuyListItemId(const int id, const int buylist_index){
 }
 
 int getTotalQuant(const int id){
-	const int pos  = getUserPosition(id);
-	int       sum  = 0;
-	int       i    = 0;
-	int       size = sizeof(users[pos].quantidade);
+	const int pos = getUserPosition(id);
+	int       sum = 0;
+	int       i   = 0;
 
-	for(i = 0; i < size; i++){
+	for(i = 0; i < 127; i++){
 		if(users[pos].quantidade[i] > 0){
 			sum += users[pos].quantidade[i];
 		}
@@ -360,9 +367,8 @@ int getLastBuylistIndex(const int id){
 	const int pos_user = getUserPosition(id);
 	int       i        = 0;
 	int       index    = -1;
-	int       size     = sizeof(users[pos_user].buylist);
 
-	for(i = 0; i < size; i++){
+	for(i = 0; i < 127; i++){
 		if(users[pos_user].buylist[i] > 0){
 			index = i;
 		}
@@ -373,7 +379,6 @@ int getLastBuylistIndex(const int id){
 
 void addItem(const int id, const int itemid, const int quant){
 	const int pos_user = getUserPosition(id);
-	const int pos_item = getItemPosition(itemid);
 	bool      exists   = false;
 	int       arr      = -1;
 	int       i        = 0;
@@ -399,7 +404,6 @@ void addItem(const int id, const int itemid, const int quant){
 
 void removeItem(const int id, const int itemid, const int quant){
 	const int pos_user = getUserPosition(id);
-	const int pos_item = getItemPosition(itemid);
 	bool      exists   = false;
 	int       arr      = -1;
 	int       i        = 0;
@@ -420,7 +424,6 @@ void removeItem(const int id, const int itemid, const int quant){
 
 void removeAllItems(const int id, const int itemid){
 	const int pos_user = getUserPosition(id);
-	const int pos_item = getItemPosition(itemid);
 	bool      exists   = false;
 	int       arr      = -1;
 	int       i        = 0;
@@ -449,10 +452,8 @@ void getAllBuylistItems(const int id, char out[]){
 	char      list[256] = "";
 	int       k         = 0;
 
-	printf("size: %d\n", sizeof(users[pos].buylist));
 	for(k = 0; k < 127; k++){
 		if(users[pos].buylist[k] > 0){
-			char buff[256] = "";
 			if(k != 0){
 				sprintf(list, "%s;%d", list, users[pos].buylist[k]);
 			}
@@ -470,10 +471,8 @@ void getAllQuantidade(const int id, char out[]){
 	char      list[256] = "";
 	int       k         = 0;
 
-	printf("size: %d\n", sizeof(users[pos].quantidade));
 	for(k = 0; k < 127; k++){
 		if(users[pos].quantidade[k] > 0){
-			char buff[256] = "";
 			if(k != 0){
 				sprintf(list, "%s;%d", list, users[pos].quantidade[k]);
 			}
@@ -484,4 +483,19 @@ void getAllQuantidade(const int id, char out[]){
 	}
 
 	strcpy(out, list);
+}
+
+int getIndexFromBuylist(const int id, const int itemid){
+	const int pos = getUserPosition(id);
+	int       i   = 0;
+
+	for(i = 0; i < 127; i++){
+		if(users[pos].buylist[i] > 0){
+			if(users[pos].buylist[i] == itemid){
+				return(i);
+			}
+		}
+	}
+
+	return(-1);
 }

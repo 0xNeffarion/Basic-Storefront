@@ -32,7 +32,7 @@ void editarNome(){
 
 	clearScreen();
 	printf("Insira o novo nome:\n");
-	if(scanf("%s", &novonome[0]) < 0){
+	if(scanf("%s", &novonome[0]) <= -1){
 		printErr("Nao foi possivel ler nome!\n");
 		return;
 	}

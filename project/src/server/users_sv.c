@@ -17,7 +17,7 @@ void novoUser(){
 	}
 	clearScreen();
 	printf("Insira o nome de utilizador [Max. 30 caracteres]: \n");
-	if(scanf("%s", &usr[0]) <= 0){
+	if(scanf("%30s", &usr[0]) <= 0){
 		printErr("Erro a inserir utilizador!\n\n");
 		return;
 	}
@@ -60,7 +60,7 @@ void listarUsers(){
 	}
 	printf("Tabela de utilizadores:\n\n");
 	printf("|-%-4s-|-%-30s-|-%-25s-|-%-8s-|\n", "----", "------------------------------", "-------------------------", "--------");
-	printf("| " COLOR_YELLOW "%-4s" COLOR_RESET " | " COLOR_YELLOW "%-30s " COLOR_RESET "| " COLOR_YELLOW "%-25s " COLOR_RESET "| " COLOR_YELLOW "%-8s" COLOR_RESET " |\n", "ID", "NOME", "PASSWORD", "SALDO");
+	printf("| " COLOR_YELLOW "%-4s" COLOR_RESET " | " COLOR_YELLOW "%-30s " COLOR_RESET "| " COLOR_YELLOW "%-25s " COLOR_RESET "| " COLOR_YELLOW "%-8s" COLOR_RESET " |\n", "ID", "NOME", "PASSWORD (Hash)", "SALDO");
 	printf("|-%-4s-|-%-30s-|-%-25s-|-%-8s-|\n", "----", "------------------------------", "-------------------------", "--------");
 	for(i = 0; i < numUsers; i++){
 		if(users[i].valid == true){

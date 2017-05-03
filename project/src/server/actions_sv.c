@@ -25,7 +25,7 @@ void startupActions(){
 			return;
 		}
 		else{
-			char *ca = "1[#]gestor[#]admin[#]1[#]0.00[#]0[#]-1\n";
+			char *ca = "1[#]gestor[#]880e0d76[#]1[#]0.00[#]0[#]-1\n";  //pw: admin
 			if(append(&fp[0], ca)){
 				printf("Nao foi encontrado utilizadores! Utilizador gestor criado!\n");
 			}
@@ -42,6 +42,8 @@ void startupActions(){
 		}
 	}
 }
+
+int lock = 0;
 
 void actionsStocks(const int val){
 	switch(val){
@@ -87,11 +89,15 @@ void actionsStocks(const int val){
 	}
 
 	default: {
-		printErr("Opção invalida! Escolha valores de 1 a 8\n\n");
-		int n = 0;
-		menuStocks();
-		if(scanf("%d", &n) >= 1){
-			actionsStocks(n);
+		if(lock == 0){
+			printErr("Opção invalida! Escolha valores de 1 a 8\n\n");
+			int n = 0;
+			menuStocks();
+			lock = 1;
+			if(scanf("%1d", &n) >= 1){
+				lock = 0;
+				actionsStocks(n);
+			}
 		}
 		break;
 	}
@@ -107,15 +113,19 @@ void actions(const int val){
 
 	case 2: {
 		do {
-			menuStocks();
-			int inputstocks = 0;
-			if(scanf("%d", &inputstocks) >= 1){
-				clearScreen();
-				actionsStocks(inputstocks);
-			}
-			if(inputstocks == 7){
-				clearScreen();
-				break;
+			if(lock == 0){
+				menuStocks();
+				lock = 1;
+				int inputstocks = 0;
+				if(scanf("%1d", &inputstocks) >= 1){
+					lock = 0;
+					clearScreen();
+					actionsStocks(inputstocks);
+				}
+				if(inputstocks == 7){
+					clearScreen();
+					break;
+				}
 			}
 		} while(1);
 		break;
