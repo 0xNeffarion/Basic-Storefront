@@ -6,6 +6,7 @@ int login(){
 	int  id;
 	bool val;
 
+	parseUsers();
 	clearScreen();
 	ePrint(COLOR_GREEN "***Login***" COLOR_RESET "\n");
 	printf("Username: ");
