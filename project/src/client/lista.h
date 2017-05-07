@@ -64,7 +64,10 @@ void actionslista(const int opt, const int log){
 
 		  for(int i = 0; i < items; i++){
 		    int pid=vp(users[log].buylist[i]); //id do produto
-		    printf("| %-6d | %-10d | %-5d |\n", users[log].buylist[i], users[log].quantidade[i], stocks[pid].quantidade);
+		    char q[2];
+		    if (pid>=0) {strcpy(q,"Sim");}
+		    else if (pid==-2) {strcpy(q,"Nao");}
+		    printf("| %-6d | %-10d | %-5s |\n", users[log].buylist[i], users[log].quantidade[i], q);
 		  }
 		  printf("|-%-6s-|-%-10s-|-%-5s-|\n", "------", "----------", "-----");
 		  printf("\n\n");
