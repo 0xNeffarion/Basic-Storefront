@@ -42,8 +42,9 @@ void actionslista(const int opt, const int log){
 		  enterPrompt();
 		  lista(log);
 		}
-		else 
+		else {
 		  addprod(items,log);
+		}
 		break;
 	}
 
@@ -187,7 +188,6 @@ void addprod(const int items, const int log){
 	    clearScreen();
 	    printErr("O produto de momento não se encontra em stock!\n");
 	    enterPrompt();
-	    addprod(items,log);
 	  }
 	  else if (fp >= 0) {
 	    parseStock();
@@ -216,6 +216,7 @@ void addprod(const int items, const int log){
 	      clearScreen();
 	      printErr("Selecionou uma quantidade superior ao stock existente!\n");
 	      enterPrompt();
+	      clearScreen();
 	      ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
 	      printf("Código do produto: %d\n",add);
 	      printf("%d disponiveis.\n",stocks[fp].quantidade);
@@ -352,7 +353,6 @@ void mod(const int log) {
       }
     }
   }
-  lista(log);
 }
 
 int existe(const int log, const int add){
