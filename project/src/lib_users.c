@@ -150,12 +150,12 @@ void parseUsers(){
 
 					z = 1;
 					char *tkb = strtok(tk_list, BUYLIST_DELIM);
-					if(strcmp(tkb, "-1") == 0){
+					if(strcmp(tkb, "0") == 0){
 						i++;
 						continue;
 					}
 					else{
-						users[i].buylist[z] = strtol(tkb, NULL, 0);
+						users[i].buylist[0] = strtol(tkb, NULL, 0);
 					}
 
 					while(tkb != NULL || strlen(tkb) >= 1){
