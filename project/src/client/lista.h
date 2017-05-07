@@ -1,13 +1,11 @@
-//Prototype para a lista de compras, falta guardar lista no ficheiro.
-
 void lista(const int log);
 void actionslista(const int opt, const int log);
-void addprod(const int items, const int log);
-void remprod(const int items, const int log);
-void mod(const int log);
-int existe(const int log, const int add);
-int vp(const int add);
-int vq(const int id, const int q);
+void addprod(const int items, const int log); //adiciona produto
+void remprod(const int items, const int log); //remove produto
+void mod(const int log); //modifica lista
+int existe(const int log, const int add); //verifica se produto existe na lista
+int vp(const int add); //verifica produto em stock
+int vq(const int id, const int q); //verifica quantidade do produto em stock
 
 void lista(const int log){
 	int opt = 0;
@@ -60,14 +58,15 @@ void actionslista(const int opt, const int log){
 		}
 		else{
 		  printf("Lista de Compras:\n\n");
-		  printf("|-%-6s-|-%-10s-|\n", "------", "----------");
-		  printf("| " COLOR_GREEN "%-6s" COLOR_RESET " | " COLOR_GREEN "%-10s " COLOR_RESET "|\n", "Código", "Quantidade");
-		  printf("|-%-6s-|-%-10s-|\n", "------", "----------");
+		  printf("|-%-6s-|-%-10s-|-%-5s-|\n", "------", "----------", "-----");
+		  printf("| " COLOR_GREEN "%-6s" COLOR_RESET " | " COLOR_GREEN "%-10s " COLOR_RESET "| " COLOR_GREEN "%-5s " COLOR_RESET "|\n", "Código", "Quantidade", "Stock");
+		  printf("|-%-6s-|-%-10s-|-%-5s-|\n", "------", "----------", "-----");
 
 		  for(int i = 0; i < items; i++){
-		    printf("| %-6d | %-10d |\n", users[log].buylist[i], users[log].quantidade[i]);
+		    int pid=vp(users[log].buylist[i]); //id do produto
+		    printf("| %-6d | %-10d | %-5d |\n", users[log].buylist[i], users[log].quantidade[i], stocks[pid].quantidade);
 		  }
-		  printf("|-%-6s-|-%-10s-|\n", "------", "----------");
+		  printf("|-%-6s-|-%-10s-|-%-5s-|\n", "------", "----------", "-----");
 		  printf("\n\n");
 		  enterPrompt();
 		  lista(log);
@@ -128,9 +127,13 @@ void actionslista(const int opt, const int log){
 	        int fc=0;
 		clearScreen();
 		fc=compra(log, items);
-		if (fc==0) {lista(log);}
+		if (fc==0) {
+		  lista(log);
+		}
 		else if(fc==1) {
+		  clearScreen();
 		  ePrint("Compra efetuada com sucesso!\n");
+		  enterPrompt();
 		  lista(log);
 		}
 		break;
@@ -154,9 +157,13 @@ void addprod(const int items, const int log){
   int add=0, q=0, e=0, fp=0, fq=0;
         int j = items;
 	clearScreen();
+	ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
 	ePrint("Pressine '0' quando terminar de adicionar produtos à sua lista!\n");
         ePrint("Adicione o código do produto à sua lista: ");
         scanf("%d",&add);
+	if(add==0) {
+	  lista(log);
+	}
 	e=existe(log,add);
 	if (add < 0) {
 	  clearScreen();
@@ -173,8 +180,17 @@ void addprod(const int items, const int log){
 	}
 	else if (add > 0 && e<0) {
 	  fp=vp(add);
-	  if (fp >= 0) {
+	  if (fp==-2) {
+	    clearScreen();
+	    printErr("O produto de momento não se encontra em stock!\n");
+	    enterPrompt();
+	    addprod(items,log);
+	  }
+	  else if (fp >= 0) {
 	    users[log].buylist[j] = add;
+	    clearScreen();
+	    ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+	    printf("Código do produto: %d\n",add);
 	    printf("%d disponiveis.\n",stocks[fp].quantidade);
 	    ePrint("Selecione a quantidade prentendida: ");
 	    scanf("%d",&q);
@@ -183,6 +199,9 @@ void addprod(const int items, const int log){
 	      printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
 	      enterPrompt();
 	      clearScreen();
+	      ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+	      printf("Código do produto: %d\n",add);
+	      printf("%d disponiveis.\n",stocks[fp].quantidade);
 	      ePrint("Selecione a quantidade prentendida: ");
 	      scanf("%d",&q);
 	    }
@@ -190,7 +209,11 @@ void addprod(const int items, const int log){
 	    while(fq==-1){
 	      clearScreen();
 	      printErr("Selecionou uma quantidade superior ao stock existente!\n");
-	      ePrint("Selecione a quantidade pretendida: ");
+	      enterPrompt();
+	      ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+	      printf("Código do produto: %d\n",add);
+	      printf("%d disponiveis.\n",stocks[fp].quantidade);
+	      ePrint("Selecione a quantidade prentendida: ");
 	      scanf("%d",&q);
 	      fq=vq(fp,q);
 	    }
@@ -213,17 +236,12 @@ void addprod(const int items, const int log){
 	  clearScreen();
 	  addprod(j,log);
 	}
-	else if(add==0) {
-	  lista(log);
-	}
-	else {
-	  lista(log);
-	}
 }
 
 void remprod(const int items, const int log){
       clearScreen();
       int rem, q, rf=0, flag=0;
+      ePrint(COLOR_YELLOW "** Remova um produto da sua lista **" COLOR_RESET "\n");
       ePrint("Selecione o código do produto a remover da sua lista: ");
       scanf("%d",&rem);
       if (rem > 0) {
@@ -232,7 +250,6 @@ void remprod(const int items, const int log){
 	      rf=i;
 	      flag=1;
             }
-	    printf("Rem: %d | Rf: %d | Flag: %d\n",rem,rf,flag); 
 	  }
 	  if (flag == 0) {
 	    clearScreen();
@@ -264,6 +281,7 @@ void remprod(const int items, const int log){
 void mod(const int log) {
   int m=0, e=0, nq=0, fq=0, fp=0;
   clearScreen();
+  ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
   ePrint("Selecione o produto a modificar a quantidade: ");
   scanf("%d",&m);
   e=existe(log,m);
@@ -275,38 +293,52 @@ void mod(const int log) {
   }
   if (e>=0){
     fp=vp(m);
-    clearScreen();
-    printf("%d disponiveis.\n",stocks[fp].quantidade);
-    ePrint("Selecione a nova quantidade pretendida: ");
-    scanf("%d",&nq);
-    while(nq<=0) {
+    if (fp==-2) {
       clearScreen();
-      printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
+      printErr("O produto de momento não se encontra em stock! Para efetuar a compra da sua lista, necessita de remover este produto!\n");
       enterPrompt();
+      actionslista(4,log);
+    }
+    else {
       clearScreen();
+      ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+      printf("Código do produto: %d\n",m);
       printf("%d disponiveis.\n",stocks[fp].quantidade);
       ePrint("Selecione a quantidade prentendida: ");
       scanf("%d",&nq);
-    }
-    fq=vq(fp,nq);
-    while(fq==-1){
-      clearScreen();
-      printErr("Selecionou uma quantidade superior ao stock existente!\n");
-      enterPrompt();
-      clearScreen();
-      printf("%d disponiveis.\n",stocks[fp].quantidade);
-      ePrint("Selecione a nova quantidade pretendida: ");
-      scanf("%d",&nq);
+      while(nq<=0) {
+	clearScreen();
+	printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
+	enterPrompt();
+	clearScreen();
+	ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+	printf("Código do produto: %d\n",m);
+	printf("%d disponiveis.\n",stocks[fp].quantidade);
+	ePrint("Selecione a quantidade prentendida: ");
+	scanf("%d",&nq);
+      }
       fq=vq(fp,nq);
-    }
-    if(fq==1){
-      users[log].quantidade[e]=nq;
-      clearScreen();
-      ePrint("Quantidade modificada com sucesso!\n");
-      writeUsers();
-      //parseUsers();
-      enterPrompt();
-      actionslista(4,log);
+      while(fq==-1){
+	clearScreen();
+	printErr("Selecionou uma quantidade superior ao stock existente!\n");
+	enterPrompt();
+	clearScreen();
+	ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+	printf("Código do produto: %d\n",m);
+	printf("%d disponiveis.\n",stocks[fp].quantidade);
+	ePrint("Selecione a quantidade prentendida: ");
+	scanf("%d",&nq);
+	fq=vq(fp,nq);
+      }
+      if(fq==1){
+	users[log].quantidade[e]=nq;
+	clearScreen();
+	ePrint("Quantidade modificada com sucesso!\n");
+	writeUsers();
+	//parseUsers();
+	enterPrompt();
+	actionslista(4,log);
+      }
     }
   }
   lista(log);
@@ -323,8 +355,10 @@ int existe(const int log, const int add){
 
 int vp(const int add) {
   for (int i=0; i<512; i++) {
-      if(stocks[i].uid==add)
+      if(stocks[i].uid==add && stocks[i].quantidade>0)
 	return i;
+      else if(stocks[i].uid==add && stocks[i].quantidade==0)
+	return -2;
   }
   return -1;
 }
