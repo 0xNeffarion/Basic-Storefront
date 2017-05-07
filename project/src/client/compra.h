@@ -31,7 +31,6 @@ int compra(const int log, const int items){
     }
     else {
       for(int i=0;i<items;i++) {
-	printf("Ciclo: %d\nItems: %d\n",i,items);
 	int cod=users[log].buylist[i];
 	int id=-1;
 	for(int j=0;j<512;j++) {
@@ -57,11 +56,11 @@ int compra(const int log, const int items){
 	  users[log].buylist[i]=0;
 	  stocks[id].quantidade -= users[log].quantidade[i];
 	}
-      writeUsers();
-      writeStock();
-      parseStock();
-      return 1;
+	writeUsers();
+	writeStock();
+	parseStock();
       }
+      return 1;
     }
   }
   else {
