@@ -20,9 +20,8 @@ void lista(const int log){
 	ePrint(COLOR_CYAN "5)" COLOR_RESET " Comprar produtos da lista.\n");
 	ePrint(COLOR_CYAN "6)" COLOR_RESET " Voltar ao menu inicial.\n");
 	ePrint("Insira a opção desejada(1-6): ");
-	if(scanf("%d",&opt) > 0){
-		actionslista(opt, log);
-	}
+	scanf("%d",&opt);
+	actionslista(opt, log);
 }
 
 void actionslista(const int opt, const int log){
@@ -157,6 +156,7 @@ void actionslista(const int opt, const int log){
 }
 
 void addprod(const int items, const int log){
+  parseStock();
   int add=0, q=0, e=0, fp=0, fq=0;
         int j = items;
 	clearScreen();
@@ -190,6 +190,7 @@ void addprod(const int items, const int log){
 	    addprod(items,log);
 	  }
 	  else if (fp >= 0) {
+	    parseStock();
 	    users[log].buylist[j] = add;
 	    clearScreen();
 	    ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
@@ -198,6 +199,7 @@ void addprod(const int items, const int log){
 	    ePrint("Selecione a quantidade prentendida: ");
 	    scanf("%d",&q);
 	    while(q <= 0){
+	      parseStock();
 	      clearScreen();
 	      printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
 	      enterPrompt();
@@ -210,6 +212,7 @@ void addprod(const int items, const int log){
 	    }
 	    fq=vq(fp,q);
 	    while(fq==-1){
+	      parseStock();
 	      clearScreen();
 	      printErr("Selecionou uma quantidade superior ao stock existente!\n");
 	      enterPrompt();
@@ -226,7 +229,7 @@ void addprod(const int items, const int log){
 	      clearScreen();
 	      ePrint("Produto adicionado com sucesso à sua lista!\n");
 	      writeUsers();
-	      //parseUsers();
+	      parseUsers();
 	      enterPrompt();
 	    }
 	  }
@@ -242,6 +245,7 @@ void addprod(const int items, const int log){
 }
 
 void remprod(const int items, const int log){
+      parseStock();
       clearScreen();
       int rem, q, rf=0, flag=0;
       ePrint(COLOR_YELLOW "** Remova um produto da sua lista **" COLOR_RESET "\n");
@@ -268,7 +272,7 @@ void remprod(const int items, const int log){
 	    clearScreen();
 	    ePrint("Produto removido com sucesso!\n");
 	    writeUsers();
-	    //parseUsers();
+	    parseUsers();
 	    enterPrompt();
 	    actionslista(4,log);
 	  }
@@ -282,6 +286,7 @@ void remprod(const int items, const int log){
 }
 
 void mod(const int log) {
+  parseStock();
   int m=0, e=0, nq=0, fq=0, fp=0;
   clearScreen();
   ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
@@ -303,6 +308,7 @@ void mod(const int log) {
       actionslista(4,log);
     }
     else {
+      parseStock();
       clearScreen();
       ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
       printf("Código do produto: %d\n",m);
@@ -310,6 +316,7 @@ void mod(const int log) {
       ePrint("Selecione a quantidade prentendida: ");
       scanf("%d",&nq);
       while(nq<=0) {
+	parseStock();
 	clearScreen();
 	printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
 	enterPrompt();
@@ -322,6 +329,7 @@ void mod(const int log) {
       }
       fq=vq(fp,nq);
       while(fq==-1){
+	parseStock();
 	clearScreen();
 	printErr("Selecionou uma quantidade superior ao stock existente!\n");
 	enterPrompt();
@@ -338,7 +346,7 @@ void mod(const int log) {
 	clearScreen();
 	ePrint("Quantidade modificada com sucesso!\n");
 	writeUsers();
-	//parseUsers();
+	parseUsers();
 	enterPrompt();
 	actionslista(4,log);
       }

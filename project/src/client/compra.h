@@ -1,4 +1,5 @@
 int compra(const int log, const int items);
+int pid(int cod);
 
 int compra(const int log, const int items){
   float total=0;
@@ -32,30 +33,27 @@ int compra(const int log, const int items){
     else {
       for(int i=0;i<items;i++) {
 	int cod=users[log].buylist[i];
-	int id=-1;
-	for(int j=0;j<512;j++) {
-	  if(stocks[j].uid==cod) {
-	    id=j;
-	  }
-	}
+	int id=pid(cod);
 	if (id==-1) {
 	    clearScreen();
 	    printErr("Houve um erro a processar a sua compra! Por favor verifique a sua lista!\n");
 	    enterPrompt();
 	    return 0;
 	}
-	if (stocks[id].quantidade-users[log].quantidade[i]<0) {
+	else if (stocks[id].quantidade-users[log].quantidade[i]<0) {
 	  clearScreen();
 	  printErr("Houve um erro a processar a compra do produto "); printf("%d!\n",cod);
 	  ePrint("Por favor altere a quantidade do mesmo!\n");
 	  enterPrompt();
 	  return 0;
 	}
-	else {
-	  users[log].balance -= total;
-	  users[log].buylist[i]=0;
-	  stocks[id].quantidade -= users[log].quantidade[i];
-	}
+      }
+      for(int i=0;i<items;i++) {
+	int cod=users[log].buylist[i];
+	int id=pid(cod);
+	users[log].balance -= total;
+	users[log].buylist[i]=0;
+	stocks[id].quantidade -= users[log].quantidade[i];
 	writeUsers();
 	writeStock();
 	parseStock();
@@ -69,4 +67,12 @@ int compra(const int log, const int items){
     enterPrompt();
     compra(log,items);
   }
+}
+
+int pid(int cod) {
+  for(int j=0;j<512;j++) {
+    if(stocks[j].uid==cod) 
+      return j;
+  }
+  return -1;
 }
