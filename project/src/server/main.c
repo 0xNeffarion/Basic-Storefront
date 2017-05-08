@@ -26,6 +26,13 @@ int main(int argc, char **argv){
 				printf("Ficheiro de stocks removido!\n");
 				exit(0);
 			}
+			if(strcmp(argv[2], "stats") == 0){
+				char fp[512];
+				getStocksFilePath(fp);
+				remove(fp);
+				printf("Ficheiro de estastisticas removido!\n");
+				exit(0);
+			}
 		}
 	}
 

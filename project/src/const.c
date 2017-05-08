@@ -2,6 +2,8 @@
 #define USERS_TEMP_FILENAME    "reg_users_temp.data"
 #define ITEMS_FILENAME         "items_stock.data"
 #define ITEMS_TEMP_FILENAME    "items_stock_temp.data"
+#define STATS_FILENAME         "stats.data"
+#define STATS_TEMP_FILENAME    "stats_temp.data"
 #define DATA_FOLDERNAME        "labc_sm_data"
 #define FILE_DELIM             "[#]"
 #define BUYLIST_DELIM          ";"
@@ -14,5 +16,3 @@
 #define COLOR_MAGENTA          "\x1b[35m"
 #define COLOR_CYAN             "\x1b[36m"
 #define COLOR_RESET            "\x1b[0m"
-
-char myusr[30];

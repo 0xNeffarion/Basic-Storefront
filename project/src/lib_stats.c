@@ -5,7 +5,7 @@ typedef struct {
 	int quant;
 } statsdb;
 
-// FILE LAYOUT: ID[#]USERID[#]ITEMID[#]QUANT
+// FILE LAYOUT: ID[#]USERID[#]ITEMID[#]QUANT[#]DATA
 
 statsdb stats[1024];
 int     numStats = 0;

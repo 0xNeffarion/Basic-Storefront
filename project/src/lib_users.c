@@ -12,6 +12,7 @@ typedef struct {
 // FILE LAYOUT: ID[#]USERNAME[#]PASSWORD[#]ADMIN[#]BALANCE[#]QUANTIDADE[#]BUYLIST
 
 userdb users[512];
+char   myusr[30];
 int    numUsers = 0;
 
 void parseUsers();

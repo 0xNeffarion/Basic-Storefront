@@ -8,7 +8,7 @@ int login(){
 	clearScreen();
 	printf(COLOR_GREEN "+++ Login +++" COLOR_RESET "\n");
 	printf("Username: ");
-	if(scanf("%[^\n]s", usr) <= 0){
+	if(scanf("%s", usr) <= 0){
 		printErr("Tem que inserir um utilizador!\n");
 		usleep(1000 * 2500);
 		login();
@@ -27,18 +27,25 @@ int login(){
 		}
 		else{
 			clearScreen();
+			int fail = 0;
 			printf(COLOR_GREEN "+++ Login +++" COLOR_RESET "\n");
-			char *pwd = getpass("Password: ");
-			val = validatePassword(id, pwd);
-			if(val == true){
-				strcpy(myusr, usr);
-				clearScreen();
-				return(getUserPosition(id));
-			}
-			else if(val == false){
-				printErr("Password incorreta! Tente novamente!\n");
-				usleep(1000 * 2500);
-				login();
+			while(1){
+				if(fail > 3){
+					printErr("Demasiadas tentativas de login.\n");
+					usleep(1000 * 2500);
+					sair();
+				}
+				char *pwd = getpass("Password: ");
+				val = validatePassword(id, pwd);
+				if(val == true){
+					strcpy(myusr, usr);
+					clearScreen();
+					return(getUserPosition(id));
+				}
+				else if(val == false){
+					fail++;
+					printErr("Password incorreta! Tente novamente! (%d)\n\n", fail);
+				}
 			}
 		}
 	}
