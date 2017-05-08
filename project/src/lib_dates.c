@@ -20,7 +20,7 @@ void getDate(char out[]){
 
 struct tm *getDateStruct(){
 	time_t    rawtime;
-	struct tm *t = malloc(sizeof(tm));
+	struct tm *t = malloc(sizeof(struct tm));
 
 	time(&rawtime);
 	t = localtime(&rawtime);
@@ -45,12 +45,12 @@ struct tm *toDateStruct(char input[]){
 }
 
 bool isDateToday(char date[]){
-	struct tm *date  = toDateStruct(date);
+	struct tm *datet = toDateStruct(date);
 	struct tm *today = getDateStruct();
 
-	if(today->tm_year == date->tm_year){
-		if(today->tm_mon == date->tm_mon){
-			if(today->tm_mday == date->tm_mday){
+	if(today->tm_year == datet->tm_year){
+		if(today->tm_mon == datet->tm_mon){
+			if(today->tm_mday == datet->tm_mday){
 				return(true);
 			}
 		}
