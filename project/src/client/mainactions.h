@@ -6,8 +6,8 @@ void getStats(const int log);
 void startupActions(){
 	clearScreen();
 	setlocale(LC_ALL, "en_US.UTF-8");
-	char fp[512];
-	getUsersFilePath(fp);
+	char cvstats[512];
+	getClientStatsFilePath(cvstats);
 	char dr[512];
 	getDataDirectory(dr);
 	if(!dirExists(&dr[0])){
@@ -17,9 +17,9 @@ void startupActions(){
 			return;
 		}
 	}
-	if(!fileExists(&fp[0])){
-		if(!create(&fp[0])){
-			printErr("Nao foi possivel criar ficheiro de registo\n");
+	if(!fileExists(&cvstats[0])){
+		if(!create(&cvstats[0])){
+			printErr("Nao foi possivel criar ficheiro de estatisticas\n");
 			exit(1);
 			return;
 		}
