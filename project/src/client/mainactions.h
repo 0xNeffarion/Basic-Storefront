@@ -72,7 +72,7 @@ void getStats(const int log){
   int id=getUserId(log);
   bool val;
   for (int i=0; i<512; i++) {
-    if(stats[i].userid == id) {
+    if(clientstats[i].userid == id) {
       val==true;
       break;
     }
@@ -82,8 +82,8 @@ void getStats(const int log){
   }
   if (val==false) {
     for (int i=0; i<512; i++) {
-      if(stats[i].userid <= 0) {
-	stats[i].userid=id;
+      if(clientstats[i].userid <= 0) {
+	clientstats[i].userid=id;
 	break;
       }
     }

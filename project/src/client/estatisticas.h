@@ -24,8 +24,8 @@ void actionsestatisticas(const int opt, const int id){
         switch(opt){
 	case 1: {
 		clearScreen();
-		if (stats[sid].totalp>0) {
-		  printf("Comprou %d produtos.\n",stats[sid].totalp);
+		if (clientstats[sid].totalp>0) {
+		  printf("Comprou %d produtos.\n",clientstats[sid].totalp);
 		}
 		else
 		  printErr("Não comprou produtos na nossa loja!\n");
@@ -42,7 +42,7 @@ void actionsestatisticas(const int opt, const int id){
 	        pos=getItemPos(sid,prod);
 		clearScreen();
 		if (pos >= 0) {
-		  printf("Comprou %d vezes o produto %d.\n",stats[sid].quant[pos],prod);
+		  printf("Comprou %d vezes o produto %d.\n",clientstats[sid].quant[pos],prod);
 		}
 		else
 		  printErr("Nunca comprou este produto!\n");
@@ -59,7 +59,7 @@ void actionsestatisticas(const int opt, const int id){
 		pos=getItemPos(sid,prod);
 		clearScreen();
 		if (pos >= 0) {
-		  printf("Gastou %.2f€ no produto %d.\n",stats[sid].gasto[pos],prod);
+		  printf("Gastou %.2f€ no produto %d.\n",clientstats[sid].gasto[pos],prod);
 		}
 		else
 		  printErr("Nunca comprou este produto!\n");
@@ -70,8 +70,8 @@ void actionsestatisticas(const int opt, const int id){
 
 	case 4: {
 	        clearScreen();
-		if(stats[sid].total > 0) {
-		  printf("Total gasto: %.2f€\n",stats[sid].total);
+		if(clientstats[sid].total > 0) {
+		  printf("Total gasto: %.2f€\n",clientstats[sid].total);
 		}
 		else
 		  printf("Ainda não gastou dinheiro na nossa loja!\n");
@@ -97,7 +97,7 @@ void actionsestatisticas(const int opt, const int id){
 
 int getIdStats(const int id) {
   for (int i=0; i<512; i++) {
-    if (stats[i].userid == id) {
+    if (clientstats[i].userid == id) {
       return i;
     }
   }
@@ -105,7 +105,7 @@ int getIdStats(const int id) {
 
 int getItemPos(const int sid, const int prod) {
   for(int i=0; i<128; i++) {
-    if(stats[sid].itemid[i] == prod) {
+    if(clientstats[sid].itemid[i] == prod) {
       return i;
     }
   }
