@@ -57,7 +57,6 @@ int compra(const int log, const int items){
 	int j = viid(sid,cod);
 	float gasto=0;
 	sid=StatsID(getUserId(log));
-	printf("Item Position: %d\n",id);
 	stocks[id].quantidade-=q;
         gasto=q*getPreco(cod);
 	users[log].buylist[i]=0;
