@@ -1,9 +1,11 @@
 int compra(const int log, const int items);
-int pid(int cod);
+int StatsID(const int id);
+int viid(const int sid, const int cod); //verifica se o produto já se encontra nas stats
 
 int compra(const int log, const int items){
   float total=0;
   char decision[2];
+  int sid=0;
   clearScreen();
   if (items==0) {
     printErr("Não possui uma lista, por favor crie uma!\n");
@@ -33,7 +35,7 @@ int compra(const int log, const int items){
     else {
       for(int i=0;i<items;i++) {
 	int cod=users[log].buylist[i];
-	int id=pid(cod);
+	int id=getItemPosition(cod);
 	if (id==-1) {
 	    clearScreen();
 	    printErr("Houve um erro a processar a sua compra! Por favor verifique a sua lista!\n");
@@ -49,15 +51,31 @@ int compra(const int log, const int items){
 	}
       }
       for(int i=0;i<items;i++) {
+	int q=users[log].quantidade[i];
 	int cod=users[log].buylist[i];
-	int id=pid(cod);
-	users[log].balance -= total;
+	int id=getItemPosition(cod);
+	int j = viid(sid,cod);
+	float gasto=0;
+	sid=StatsID(getUserId(log));
+	printf("Item Position: %d\n",id);
+	stocks[id].quantidade-=q;
+        gasto=q*getPreco(cod);
 	users[log].buylist[i]=0;
-	stocks[id].quantidade -= users[log].quantidade[i];
+	stats[sid].quant[j]+=q;
+	stats[sid].totalp+=q;
+	users[log].quantidade[i]=0;
+	stats[sid].gasto[j]+=gasto;
+	if (i+1==items) {
+	  users[log].balance -= total;
+	  stats[sid].total+=total;
+	}
 	writeUsers();
 	writeStock();
-	parseStock();
+	writeStats();
       }
+      parseUsers();
+      parseStock();
+      //parseStats();
       return 1;
     }
   }
@@ -69,10 +87,32 @@ int compra(const int log, const int items){
   }
 }
 
-int pid(int cod) {
-  for(int j=0;j<512;j++) {
-    if(stocks[j].uid==cod) 
-      return j;
+int StatsID(const int id) {
+  for (int i=0; i<512; i++) {
+    if (stats[i].userid == id) {
+      return i;
+    }
   }
-  return -1;
+}
+
+int viid(const int sid, const int cod) {
+  bool isval;
+  for (int i=0; i<128; i++) {
+    if (stats[sid].itemid[i] == cod) {
+      isval=true;
+      return i;
+    }
+    else {
+      isval=false;
+    }
+  }
+  if (isval == false) {
+    for (int i=0; i<128; i++) {
+      if(stats[sid].itemid[i] <= 0) {
+	stats[sid].itemid[i]=cod;
+	isval=true;
+	return i;
+      }
+    }
+  }
 }

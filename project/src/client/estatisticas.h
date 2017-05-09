@@ -1,7 +1,9 @@
-void estatisticas();
-void actionsestatisticas(const int opt);
+void estatisticas(const int id);
+void actionsestatisticas(const int opt, const int id);
+int getIdStats(const int id);
+int getItemPos(const int sid, const int prod);
 
-void estatisticas(){
+void estatisticas(const int id){
 	int opt = 0;
 
 	clearScreen();
@@ -9,60 +11,103 @@ void estatisticas(){
 	ePrint(COLOR_CYAN "1)" COLOR_RESET " Quantidade total de produtos comprados.\n");
 	ePrint(COLOR_CYAN "2)" COLOR_RESET " Quantidade comprada de um determinado produto.\n");
 	ePrint(COLOR_CYAN "3)" COLOR_RESET " Valor total gasto num determinado produto.\n");
-	//adicionar mais estatisticas?
-	ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n");
-	ePrint("Insira a opção desejada(1-4):\n");
-	if(scanf("%d", &opt) > 0){
-		actionsestatisticas(opt);
-	}
+	ePrint(COLOR_CYAN "4)" COLOR_RESET " Valor total gasto.\n");
+	ePrint(COLOR_CYAN "5)" COLOR_RESET " Voltar ao menu inicial.\n");
+	ePrint("Insira a opção desejada(1-5): ");
+	scanf("%d", &opt);
+	actionsestatisticas(opt,id);
 }
 
-void actionsestatisticas(const int opt){
-	switch(opt){
+void actionsestatisticas(const int opt, const int id){
+        int sid = getIdStats(id);
+
+        switch(opt){
 	case 1: {
-		//Falta criar um contador associado ao user
 		clearScreen();
-		ePrint("Comprou (teste) produtos.\n");
-		usleep(1000 * 2000);
-		estatisticas();
+		if (stats[sid].totalp>0) {
+		  printf("Comprou %d produtos.\n",stats[sid].totalp);
+		}
+		else
+		  printErr("Não comprou produtos na nossa loja!\n");
+		enterPrompt();
+		estatisticas(id);
 		break;
 	}
 
 	case 2: {
-		int prod;
+	        int prod=0, pos=-1;
 		clearScreen();
-		ePrint("Insira o código do produto!\n");
+		ePrint("Insira o código do produto: ");
 		scanf("%d", &prod);
-		//aceder a um contador?
-		ePrint("Comprou (teste) quantidade do produto.\n");
-		usleep(1000 * 2000);
-		estatisticas();
+	        pos=getItemPos(sid,prod);
+		clearScreen();
+		if (pos >= 0) {
+		  printf("Comprou %d vezes o produto %d.\n",stats[sid].quant[pos],prod);
+		}
+		else
+		  printErr("Nunca comprou este produto!\n");
+		enterPrompt();
+		estatisticas(id);
 		break;
 	}
 
 	case 3: {
-		int prod;
+	        int prod=0, pos=-1;
 		clearScreen();
-		ePrint("Insira o código do produto!\n");
+		ePrint("Insira o código do produto: ");
 		scanf("%d", &prod);
-		//contador*preço
-		ePrint("Gastou (teste) euros no produto.\n");
-		usleep(1000 * 2000);
-		estatisticas();
+		pos=getItemPos(sid,prod);
+		clearScreen();
+		if (pos >= 0) {
+		  printf("Gastou %.2f€ no produto %d.\n",stats[sid].gasto[pos],prod);
+		}
+		else
+		  printErr("Nunca comprou este produto!\n");
+	        enterPrompt();
+		estatisticas(id);
 		break;
 	}
 
 	case 4: {
+	        clearScreen();
+		if(stats[sid].total > 0) {
+		  printf("Total gasto: %.2f€\n",stats[sid].total);
+		}
+		else
+		  printf("Ainda não gastou dinheiro na nossa loja!\n");
+		enterPrompt();
+		estatisticas(id);
+	        break;
+	}
+
+	case 5: {
 		break;
 	}
 
 	default: {
-		printErr("Opção inválida! Escolha entre a opção 1 a 4!\n");
+		printErr("Opção inválida! Escolha entre a opção 1 a 5!\n");
 		int opt = 0;
 		if(scanf("%d", &opt) > 0){
-			actionsestatisticas(opt);
+		  actionsestatisticas(opt,id);
 		}
 		break;
 	}
 	}
+}
+
+int getIdStats(const int id) {
+  for (int i=0; i<512; i++) {
+    if (stats[i].userid == id) {
+      return i;
+    }
+  }
+}
+
+int getItemPos(const int sid, const int prod) {
+  for(int i=0; i<128; i++) {
+    if(stats[sid].itemid[i] == prod) {
+      return i;
+    }
+  }
+  return -1;
 }
