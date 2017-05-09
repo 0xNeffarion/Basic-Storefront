@@ -1,6 +1,7 @@
 void startupActions();
 void sair();
 void actions(const int opt, const int log);
+void getStats(const int log);
 
 void startupActions(){
 	clearScreen();
@@ -40,12 +41,14 @@ void actions(const int opt, const int log){
 	}
 
 	case 2: {
+	        getStats(log);
 		lista(log);
 		break;
 	}
 
 	case 3: {
-		estatisticas();
+	        getStats(log);
+		estatisticas(getUserId(log));
 		break;
 	}
 
@@ -63,4 +66,26 @@ void actions(const int opt, const int log){
 		break;
 	}
 	}
+}
+
+void getStats(const int log){
+  int id=getUserId(log);
+  bool val;
+  for (int i=0; i<512; i++) {
+    if(stats[i].userid == id) {
+      val==true;
+      break;
+    }
+    else {
+      val==false;
+    }
+  }
+  if (val==false) {
+    for (int i=0; i<512; i++) {
+      if(stats[i].userid <= 0) {
+	stats[i].userid=id;
+	break;
+      }
+    }
+  }
 }
