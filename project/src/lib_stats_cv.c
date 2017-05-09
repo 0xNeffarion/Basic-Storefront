@@ -43,7 +43,7 @@ void parseClientStats(){
 					char *tk_id  = strtok(line, FILE_DELIM);
 					char *tk_uid = strtok(NULL, FILE_DELIM);
 					char *tk_iid = strtok(NULL, FILE_DELIM);
-					char *tk_qt  = strtok(NULL, FILE_DELIM);
+					char *tk_qto = strtok(NULL, FILE_DELIM);
 					char *tk_gs  = strtok(NULL, FILE_DELIM);
 					char *tk_tb  = strtok(NULL, FILE_DELIM);
 					char *tk_tp  = strtok(NULL, FILE_DELIM);
@@ -75,7 +75,7 @@ void parseClientStats(){
 						}
 					}
 
-					char *tks2 = strtok(tk_qt, BUYLIST_DELIM);
+					char *tks2 = strtok(tk_qto, BUYLIST_DELIM);
 					if(strcmp(tks2, "0") == 0){
 						i++;
 						continue;
@@ -147,12 +147,13 @@ void writeClientStats(){
 	if(fw != NULL){
 		int i = 0;
 		for(i = 0; i < 512; i++){
+		        fprintf(fw, "DEBUG 1\n");
 			if(clientstats[i].valid == true){
-				char iid[512] = "";
-				char qt[512]  = "";
-				char gs[512]  = "";
-				int  k        = 0;
-				for(k = 0; k < 127; k++){
+			        fprintf(fw, "DEBUG 2\n");
+			        char iid[512];
+				char qto[512];
+				char gs[512];
+				for(int k = 0; k < 127; k++){
 					if(k > 0){
 						if(clientstats[i].itemid[k] > 0){
 							sprintf(iid, "%s;%d", iid, clientstats[i].itemid[k]);
@@ -162,28 +163,27 @@ void writeClientStats(){
 						sprintf(iid, "%d", clientstats[i].itemid[k]);
 					}
 				}
-				for(k = 0; k < 127; k++){
+				for(int k = 0; k < 127; k++){
 					if(k > 0){
 						if(clientstats[i].quant[k] > 0){
-							sprintf(qt, "%s;%d", qt, clientstats[i].quant[k]);
+							sprintf(qto, "%s;%d", qto, clientstats[i].quant[k]);
 						}
 					}
 					else if(k == 0){
-						sprintf(qt, "%d", clientstats[i].quant[k]);
+						sprintf(qto, "%d", clientstats[i].quant[k]);
 					}
 				}
-				for(k = 0; k < 127; k++){
+				for(int k = 0; k < 127; k++){
 					if(k > 0){
 						if(clientstats[i].gasto[k] > 0){
-							sprintf(gs, "%s;%.2f", gs, clientstats[i].gasto[k]);
+							sprintf(gs, "%s;%f", gs, clientstats[i].gasto[k]);
 						}
 					}
 					else if(k == 0){
-						sprintf(gs, "%.2f", clientstats[i].gasto[k]);
+						sprintf(gs, "%f", clientstats[i].gasto[k]);
 					}
 				}
-				fprintf(fw, "%d[#]%d[#]%s[#]%s[#]%s[#]%.2f[#]%d\n", clientstats[i].uid, clientstats[i].userid,
-						iid, qt, gs, clientstats[i].total, clientstats[i].totalp);
+				//fprintf(fw, "%d[#]%d[#]%s[#]%s[#]%s[#]%.2f[#]%d\n", clientstats[i].uid, clientstats[i].userid, iid, qto, gs, clientstats[i].total, clientstats[i].totalp);
 			}
 		}
 		fclose(fw);
