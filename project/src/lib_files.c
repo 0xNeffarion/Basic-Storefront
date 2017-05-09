@@ -4,6 +4,8 @@ void getStocksFilePath(char buff[]);
 void getStocksTempFilePath(char buff[]);
 void getStatsFilePath(char buff[]);
 void getStatsTempFilePath(char buff[]);
+void getClientStatsFilePath(char buff[]);
+void getClientStatsTempFilePath(char buff[]);
 bool fileExists(char *f);
 bool readline(const char *f, const int line, char out[]);
 bool append(const char *f, const char *appstr);
@@ -79,6 +81,30 @@ void getStatsTempFilePath(char buff[]){
 
 	getDataDirectory(b);
 	sprintf(buff, "%s/%s", b, STATS_TEMP_FILENAME);
+}
+
+/*
+ * I: Retrieves full filepath for stats data file
+ * P: char[] buff: buffer to output
+ * R: -
+ */
+void getClientStatsFilePath(char buff[]){
+	char b[512];
+
+	getDataDirectory(b);
+	sprintf(buff, "%s/%s", b, CVSTATS_FILENAME);
+}
+
+/*
+ * I: Retrieves full filepath to stats data temporary file
+ * P: char[] buff: buffer to output
+ * R: -
+ */
+void getClientStatsTempFilePath(char buff[]){
+	char b[512];
+
+	getDataDirectory(b);
+	sprintf(buff, "%s/%s", b, CVSTATS_TEMP_FILENAME);
 }
 
 /*
