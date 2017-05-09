@@ -188,6 +188,7 @@ void addprod(const int items, const int log){
 	    clearScreen();
 	    printErr("O produto de momento não se encontra em stock!\n");
 	    enterPrompt();
+	    addprod(items,log);
 	  }
 	  else if (fp >= 0) {
 	    parseStock();
@@ -232,6 +233,7 @@ void addprod(const int items, const int log){
 	      writeUsers();
 	      parseUsers();
 	      enterPrompt();
+	      addprod(j,log);
 	    }
 	  }
 	  else {
@@ -240,8 +242,6 @@ void addprod(const int items, const int log){
 	    enterPrompt();
 	    addprod(items,log);
 	  }
-	  clearScreen();
-	  addprod(j,log);
 	}
 }
 
