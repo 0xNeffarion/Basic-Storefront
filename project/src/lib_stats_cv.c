@@ -1,11 +1,11 @@
 typedef struct {
 	int   uid;
 	int   userid;
-        int   itemid[128]; //Código do produto
-        int   quant[128]; //Quantidade comprada de um determinado produto
-        float gasto[128]; // Quantidade total gasta num determinado produto
-        float total; //Valor total gasto
-        int   totalp; //Quantidade total de produtos comprados
+	int   itemid[128]; //Código do produto
+	int   quant[128];  //Quantidade comprada de um determinado produto
+	float gasto[128];  // Quantidade total gasta num determinado produto
+	float total;       //Valor total gasto
+	int   totalp;      //Quantidade total de produtos comprados
 	bool  valid;
 } statscv;
 
@@ -40,18 +40,18 @@ void parseClientStats(){
 				}
 
 				if(strlen(line) > 1){
-                                        char *tk_id            = strtok(line, FILE_DELIM);
-					char *tk_uid           = strtok(NULL, FILE_DELIM);
-					char *tk_iid           = strtok(NULL, FILE_DELIM);
-					char *tk_qt            = strtok(NULL, FILE_DELIM);
-					char *tk_gs            = strtok(NULL, FILE_DELIM);
-					char *tk_tb            = strtok(NULL, FILE_DELIM);
-					char *tk_tp            = strtok(NULL, FILE_DELIM);
-					clientstats[i].uid     = atoi(tk_id);
-					clientstats[i].userid  = atoi(tk_uid);
-					clientstats[i].total   = atof(tk_tb);
-					clientstats[i].totalp  = atoi(tk_tp);
-				        clientstats[i].valid   = true;
+					char *tk_id  = strtok(line, FILE_DELIM);
+					char *tk_uid = strtok(NULL, FILE_DELIM);
+					char *tk_iid = strtok(NULL, FILE_DELIM);
+					char *tk_qt  = strtok(NULL, FILE_DELIM);
+					char *tk_gs  = strtok(NULL, FILE_DELIM);
+					char *tk_tb  = strtok(NULL, FILE_DELIM);
+					char *tk_tp  = strtok(NULL, FILE_DELIM);
+					clientstats[i].uid    = atoi(tk_id);
+					clientstats[i].userid = atoi(tk_uid);
+					clientstats[i].total  = atof(tk_tb);
+					clientstats[i].totalp = atoi(tk_tp);
+					clientstats[i].valid  = true;
 
 					int  z     = 1;
 					char *tks1 = strtok(tk_iid, BUYLIST_DELIM);
@@ -74,7 +74,7 @@ void parseClientStats(){
 							break;
 						}
 					}
-					
+
 					char *tks2 = strtok(tk_qt, BUYLIST_DELIM);
 					if(strcmp(tks2, "0") == 0){
 						i++;
@@ -138,7 +138,7 @@ void parseClientStats(){
 }
 
 void writeClientStats(){
-        char fp[512];
+	char fp[512];
 	char fp_temp[512];
 
 	getClientStatsFilePath(fp);
@@ -148,10 +148,10 @@ void writeClientStats(){
 		int i = 0;
 		for(i = 0; i < 512; i++){
 			if(stats[i].valid == true){
-				char iid[512];
-				char qt[512];
-				char gs[512];
-				int  k     = 0;
+				char iid[512] = "";
+				char qt[512]  = "";
+				char gs[512]  = "";
+				int  k        = 0;
 				for(k = 0; k < 127; k++){
 					if(k > 0){
 						if(clientstats[i].itemid[k] > 0){
@@ -173,17 +173,17 @@ void writeClientStats(){
 					}
 				}
 				for(k = 0; k < 127; k++){
-				        if(k > 0){
-				                if(clientstats[i].gasto[k] > 0){
-				                        sprintf(gs, "%s;.2%f", gs, clientstats[i].gasto[k]);
-				                }
-				        }
-				        else if(k == 0){
-				                sprintf(gs, "%.2f", clientstats[i].gasto[k]);
-				        }
+					if(k > 0){
+						if(clientstats[i].gasto[k] > 0){
+							sprintf(gs, "%s;%.2f", gs, clientstats[i].gasto[k]);
+						}
+					}
+					else if(k == 0){
+						sprintf(gs, "%.2f", clientstats[i].gasto[k]);
+					}
 				}
 				fprintf(fw, "%d[#]%d[#]%s[#]%s[#]%s[#]%.2f[#]%d\n", clientstats[i].uid, clientstats[i].userid,
-					iid, qt, gs, clientstats[i].total, clientstats[i].totalp);
+						iid, qt, gs, clientstats[i].total, clientstats[i].totalp);
 			}
 		}
 		fclose(fw);
