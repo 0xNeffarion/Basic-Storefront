@@ -9,7 +9,7 @@ typedef struct {
 	bool  valid;
 } statscv;
 
-// FILE LAYOUT: ID[#]USERID[#]QUANT[#]GASTO[#]TOTAL[#]TOTALP
+// FILE LAYOUT: ID[#]USERID[#]ITEMID[#]QUANT[#]GASTO[#]TOTAL[#]TOTALP
 
 statscv clientstats[512];
 int     numClientStats = 0;
@@ -21,7 +21,7 @@ int getClientStatPosition(const int id);
 int getClientLastStatId();
 
 void resetClientStats(){
-	memset(stats, 0, 512);
+	memset(clientstats, 0, 512);
 }
 
 void parseClientStats(){
@@ -125,7 +125,7 @@ void parseClientStats(){
 
 			i++;
 			for(; i < 512; i++){
-				stats[i].valid = false;
+				clientstats[i].valid = false;
 			}
 		}
 		else{
@@ -147,7 +147,7 @@ void writeClientStats(){
 	if(fw != NULL){
 		int i = 0;
 		for(i = 0; i < 512; i++){
-			if(stats[i].valid == true){
+			if(clientstats[i].valid == true){
 				char iid[512] = "";
 				char qt[512]  = "";
 				char gs[512]  = "";
@@ -195,7 +195,7 @@ void writeClientStats(){
 int getClientStatPosition(const int id){
 	int i = 0;
 
-	for(; i < numStats; i++){
+	for(; i < numClientStats; i++){
 		if(clientstats[i].uid == id){
 			return(i);
 		}
