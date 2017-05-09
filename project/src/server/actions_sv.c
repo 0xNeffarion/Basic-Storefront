@@ -12,6 +12,8 @@ void startupActions(){
 	getUsersFilePath(fp);
 	char st[512];
 	getStocksFilePath(st);
+	char stats[512];
+	getStatsFilePath(stats);
 	char dr[512];
 	getDataDirectory(dr);
 	if(!dirExists(&dr[0])){
@@ -40,6 +42,13 @@ void startupActions(){
 	if(!fileExists(&st[0])){
 		if(!create(&st[0])){
 			printErr("Nao foi possivel criar ficheiro de registo (stocks)\n");
+			exit(1);
+			return;
+		}
+	}
+	if(!fileExists(&stats[0])){
+		if(!create(&stats[0])){
+			printErr("Nao foi possivel criar ficheiro de estatisticas\n");
 			exit(1);
 			return;
 		}

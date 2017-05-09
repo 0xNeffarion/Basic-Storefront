@@ -40,6 +40,7 @@ int main(int argc, char **argv){
 	startupActions();
 	parseUsers();
 	parseStock();
+  parseStats();
 	login();
 	mainActions();
 	return(0);

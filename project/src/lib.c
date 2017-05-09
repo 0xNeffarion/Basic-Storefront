@@ -157,9 +157,9 @@ unsigned int rand_interval(unsigned int min, unsigned int max){
 }
 
 /*
- * I: Simple strig hashing with crc32
+ * I: Simple string hashing with crc32
  * P: char* message: string to hash
- * R: digested string
+ * R: digested string (hexa int)
  */
 unsigned int crc32b(char *message){
 	int          i, j;
