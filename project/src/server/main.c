@@ -1,4 +1,5 @@
 #include "../lib.c"
+#include "stats_sv.c"
 #include "menus_sv.c"
 #include "methods_sv.c"
 #include "users_sv.c"

@@ -61,7 +61,7 @@ void parseStock(){
 			numItems = i + 1;
 
 			i++;
-			for(; i < 256; i++){
+			for(; i < 512; i++){
 				stocks[i].valid = false;
 			}
 		}
@@ -92,6 +92,14 @@ void writeStock(){
 		fclose(fw);
 		remove(fp);
 		rename(fp_temp, fp);
+	}
+}
+
+void getItemById(const int itemid, char out[]){
+	const int pos = getItemPosition(itemid);
+
+	if(stocks[pos].valid == true){
+		strcpy(out, stocks[pos].nome);
 	}
 }
 

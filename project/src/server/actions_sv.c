@@ -1,6 +1,9 @@
 void actionsStocks(const int val);
 void actions(const int val);
+void actionsStats(const int val);
 void startupActions();
+
+int lock = 0;
 
 void startupActions(){
 	clearScreen();
@@ -43,7 +46,47 @@ void startupActions(){
 	}
 }
 
-int lock = 0;
+void actionsStats(const int val){
+	switch(val){
+	case 1: {
+		printToday();
+		break;
+	}
+
+	case 2: {
+		printWeek();
+		break;
+	}
+
+	case 3: {
+		printMonth();
+		break;
+	}
+
+	case 4: {
+		break;
+	}
+
+	case 5: {
+		sair();
+		break;
+	}
+
+	default: {
+		if(lock == 0){
+			printErr("Opção invalida! Escolha valores de 1 a 8\n\n");
+			int n = 0;
+			menuStats();
+			lock = 1;
+			if(scanf("%1d", &n) >= 1){
+				lock = 0;
+				actionsStats(n);
+			}
+		}
+		break;
+	}
+	}
+}
 
 void actionsStocks(const int val){
 	switch(val){
@@ -132,6 +175,22 @@ void actions(const int val){
 	}
 
 	case 3: {
+		do {
+			if(lock == 0){
+				menuStats();
+				lock = 1;
+				int inputstats = 0;
+				if(scanf("%1d", &inputstats) >= 1){
+					lock = 0;
+					clearScreen();
+					actionsStats(inputstats);
+				}
+				if(inputstats == 4){
+					clearScreen();
+					break;
+				}
+			}
+		} while(1);
 		break;
 	}
 
