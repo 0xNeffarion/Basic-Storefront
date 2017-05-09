@@ -1,0 +1,12 @@
+typedef struct {
+	int uid;
+	int userid;
+        int itemid[128]; //Código do produto
+        int quant[128]; //Quantidade comprada de um determinado produto
+        float gasto[128]; // Quantidade total gasta num determinado produto
+        float total; //Valor total gasto
+        int totalp; //Quantidade total de produtos comprados
+        bool valid;
+} statsdb;
+
+// FILE LAYOUT: ID[#]USERID[#]QUANT[#]GASTO[#]TOTAL[#]TOTALP
