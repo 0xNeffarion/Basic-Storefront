@@ -5,6 +5,7 @@ int main(){
 	startupActions();
 	parseUsers();
 	parseStock();
+	parseClientStats();
 	int opt = 0, log = -1;
 	log = login();
 	if(log > -1){

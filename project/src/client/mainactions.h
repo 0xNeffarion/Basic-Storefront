@@ -1,7 +1,8 @@
 void startupActions();
 void sair();
 void actions(const int opt, const int log);
-void getStats(const int log);
+void getStats(const int log); //cria entrada no ficheiro stats para cada utilizador
+int vstats(const int vsid); //verifica se já existe stats para o utilizador
 
 void startupActions(){
 	clearScreen();
@@ -69,23 +70,24 @@ void actions(const int opt, const int log){
 }
 
 void getStats(const int log){
-  int id=getUserId(log);
-  bool val;
-  for (int i=0; i<512; i++) {
-    if(clientstats[i].userid == id) {
-      val==true;
-      break;
-    }
-    else {
-      val==false;
-    }
-  }
-  if (val==false) {
+  int vsid=getUserId(log);
+  int flag=0;
+  flag=vstats(vsid);
+  if (flag == -1) {
     for (int i=0; i<512; i++) {
       if(clientstats[i].userid <= 0) {
-	clientstats[i].userid=id;
+	createClientStats(vsid);
 	break;
       }
     }
   }
+}
+
+int vstats(const int vsid) {
+  for (int i=0;i<512;i++) {
+    if(clientstats[i].userid == vsid) {
+      return 1;
+    }
+  }
+  return -1;
 }

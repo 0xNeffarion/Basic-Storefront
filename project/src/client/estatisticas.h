@@ -85,11 +85,10 @@ void actionsestatisticas(const int opt, const int id){
 	}
 
 	default: {
+	        clearScreen();
 		printErr("Opção inválida! Escolha entre a opção 1 a 5!\n");
-		int opt = 0;
-		if(scanf("%d", &opt) > 0){
-		  actionsestatisticas(opt,id);
-		}
+		enterPrompt();
+	        estatisticas(id);
 		break;
 	}
 	}
