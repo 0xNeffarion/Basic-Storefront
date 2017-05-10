@@ -19,6 +19,7 @@ void parseClientStats();
 void writeClientStats();
 int getClientStatPosition(const int id);
 int getClientLastStatId();
+int createClientStats(int id);
 
 void resetClientStats(){
 	memset(clientstats, 0, 512);
@@ -147,9 +148,7 @@ void writeClientStats(){
 	if(fw != NULL){
 		int i = 0;
 		for(i = 0; i < 512; i++){
-		        fprintf(fw, "DEBUG 1\n");
 			if(clientstats[i].valid == true){
-			        fprintf(fw, "DEBUG 2\n");
 			        char iid[512];
 				char qto[512];
 				char gs[512];
@@ -176,14 +175,14 @@ void writeClientStats(){
 				for(int k = 0; k < 127; k++){
 					if(k > 0){
 						if(clientstats[i].gasto[k] > 0){
-							sprintf(gs, "%s;%f", gs, clientstats[i].gasto[k]);
+							sprintf(gs, "%s;%.2f", gs, clientstats[i].gasto[k]);
 						}
 					}
 					else if(k == 0){
-						sprintf(gs, "%f", clientstats[i].gasto[k]);
+						sprintf(gs, "%.2f", clientstats[i].gasto[k]);
 					}
 				}
-				//fprintf(fw, "%d[#]%d[#]%s[#]%s[#]%s[#]%.2f[#]%d\n", clientstats[i].uid, clientstats[i].userid, iid, qto, gs, clientstats[i].total, clientstats[i].totalp);
+				fprintf(fw, "%d[#]%d[#]%s[#]%s[#]%s[#]%.2f[#]%d\n", clientstats[i].uid, clientstats[i].userid, iid, qto, gs, clientstats[i].total, clientstats[i].totalp);
 			}
 		}
 		fclose(fw);
@@ -210,9 +209,12 @@ int getClientLastStatId(){
 
 	getClientStatsFilePath(fp);
 	FILE *fr = fopen(&fp[0], "r");
-	int  i   = -1;
+	int  i   = 0;
 	if(fr != NULL){
 		while(fgets(line, sizeof(line), fr) != NULL){
+		        if(strcmp(line, "\n") == 0){
+			        continue;
+			}
 			if(strlen(line) > 1){
 				char *tk_id = strtok(line, FILE_DELIM);
 				int  u      = atoi(tk_id);
@@ -226,4 +228,23 @@ int getClientLastStatId(){
 	}
 
 	return(i);
+}
+
+int createClientStats(int id){
+	int size   = numClientStats;
+	int next   = size + 1;
+	int nextId = getClientLastStatId() + 1;
+
+        clientstats[next].valid      = true;
+	clientstats[next].userid     = id;
+	clientstats[next].uid        = nextId;
+	writeClientStats();
+	parseClientStats();
+
+	if(getLastStockId() == nextId){
+		return(nextId);
+	}
+	else{
+		return(-1);
+	}
 }
