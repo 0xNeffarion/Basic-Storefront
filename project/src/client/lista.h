@@ -256,13 +256,13 @@ void addprod(const int items, const int log){
                                 		addprod(j,log);
                         		}
                 		}
-                	else {
-                        	clearScreen();
-                        	printErr("Produto não encontrado! Tente novamente!\n");
-				enterPrompt();
-                        	addprod(items,log);
-                	}
-        	}
+                		else {
+                        		clearScreen();
+                        		printErr("Produto não encontrado! Tente novamente!\n");
+					enterPrompt();
+                        		addprod(items,log);
+                		}
+        		}	
         	}
         }
 }
@@ -274,38 +274,38 @@ void remprod(const int items, const int log){
         ePrint(COLOR_YELLOW " +++ Remova um produto da sua lista +++ " COLOR_RESET "\n");
         ePrint("Selecione o código do produto a remover da sua lista: ");
         if (scanf("%d",&rem) > 0) {
-        if (rem > 0) {
-                for (int i = 0; i < items; i++) {
-                        if (users[log].buylist[i] == rem) {
-                                rf=i;
-                                flag=1;
-                        }
-                }
-                if (flag == 0) {
-                        clearScreen();
-                        printErr("Produto não encontrado na sua lista, tente novamente!\n");
-                        enterPrompt();
-                        actionslista(4,log);
-                }
-                else if(flag==1) {
-                        for (int i = rf; users[log].buylist[i]>0; i++) {
-                                users[log].buylist[i]=users[log].buylist[i+1];
-                                users[log].quantidade[i]=users[log].quantidade[i+1];
-                        }
-                        clearScreen();
-                        ePrint("Produto removido com sucesso!\n");
-                        writeUsers();
-                        parseUsers();
-                        enterPrompt();
-                        actionslista(4,log);
-                }
-        }
-        else {
-                clearScreen();
-                printErr("Por favor selecione um código superior a 0!\n");
-                enterPrompt();
-                actionslista(4,log);
-        }
+        	if (rem > 0) {
+                	for (int i = 0; i < items; i++) {
+                        	if (users[log].buylist[i] == rem) {
+                                	rf=i;
+                                	flag=1;
+                        	}
+                	}
+                	if (flag == 0) {
+                        	clearScreen();
+                        	printErr("Produto não encontrado na sua lista, tente novamente!\n");
+                        	enterPrompt();
+                        	actionslista(4,log);
+                	}
+               		else if(flag==1) {
+                        	for (int i = rf; users[log].buylist[i]>0; i++) {
+                                	users[log].buylist[i]=users[log].buylist[i+1];
+                                	users[log].quantidade[i]=users[log].quantidade[i+1];
+                        	}
+                        	clearScreen();
+                        	ePrint("Produto removido com sucesso!\n");
+                        	writeUsers();
+                        	parseUsers();
+                        	enterPrompt();
+                        	actionslista(4,log);
+                	}
+        	}
+        	else {
+                	clearScreen();
+                	printErr("Por favor selecione um código superior a 0!\n");
+                	enterPrompt();
+                	actionslista(4,log);
+        	}
         }
 }
 
