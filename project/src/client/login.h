@@ -19,7 +19,7 @@ int login(){
                 clearScreen();
                 printErr("O Utilizador que inseriu não foi encontrado! Tente novamente!\n");
                 enterPrompt();
-                login();
+                return login();
         }
         else{
                 char *pwd = getpass("Password: ");
