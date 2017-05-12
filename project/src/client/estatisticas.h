@@ -46,9 +46,6 @@ void actionsestatisticas(const int opt, const int id){
 			clearScreen();
 		}
 		if (pos >= 0) {
-			for(int i=0; i<10; i++) {
-		  		printf("Quant: %d",clientstats[sid].quant[i]);
-			}
 			ePrint(COLOR_YELLOW " +++ Quantidade comprada de um determinado produto: +++" COLOR_RESET "\n");
 			printf("Comprou %d vezes o produto %d.\n",clientstats[sid].quant[pos],prod);
 		}
