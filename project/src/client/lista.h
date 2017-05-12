@@ -219,51 +219,51 @@ void addprod(const int items, const int log){
                         		while(fq==-1) {
                                 		parseStock();
                                 		clearScreen();
-                                	printErr("Selecionou uma quantidade superior ao stock existente!\n");
-                                	enterPrompt();
-                                	clearScreen();
-                                	ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
-                                	printf("Código do produto: %d\n",add);
-                                	printf("%d disponiveis.\n",stocks[fp].quantidade);
-                                	ePrint("Selecione a quantidade prentendida: ");
-                                	if (scanf("%d",&q) > 0) {
-		          			while (q <= 0) {
-							clearScreen();
-							printErr("Selecionou uma quantidade inferior a 0!\n");
-							enterPrompt();
-							clearScreen();
-							ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
-							printf("Código do produto: %d\n",add);
-							printf("%d disponiveis.\n",stocks[fp].quantidade);
-							ePrint("Selecione a quantidade prentendida: ");
-							if (scanf("%d",&q) > 0) {
-			  					continue;
-							}
-		          		}
-		          		if (q > 0) {
-						fq=vq(fp,q);
-		          		}
-		        	}
-                        }
-                        if(fq==1) {
-                                users[log].quantidade[j]=q;
-                                j++;
-                                clearScreen();
-                                ePrint("Produto adicionado com sucesso à sua lista!\n");
-                                writeUsers();
-                                parseUsers();
-                                enterPrompt();
-                                addprod(j,log);
-                        }
-                }
-                else {
-                        clearScreen();
-                        printErr("Produto não encontrado! Tente novamente!\n");
-                        enterPrompt();
-                        addprod(items,log);
-                }
-        }
-        }
+                                		printErr("Selecionou uma quantidade superior ao stock existente!\n");
+                                		enterPrompt();
+                                		clearScreen();
+                                		ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
+                                		printf("Código do produto: %d\n",add);
+                                		printf("%d disponiveis.\n",stocks[fp].quantidade);
+                                		ePrint("Selecione a quantidade prentendida: ");
+                                		if (scanf("%d",&q) > 0) {
+		          				while (q <= 0) {
+								clearScreen();
+								printErr("Selecionou uma quantidade inferior a 0!\n");
+								enterPrompt();
+								clearScreen();
+								ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
+								printf("Código do produto: %d\n",add);
+								printf("%d disponiveis.\n",stocks[fp].quantidade);
+								ePrint("Selecione a quantidade prentendida: ");
+								if (scanf("%d",&q) > 0) {
+			  						continue;
+								}
+		          				}
+		          				if (q > 0) {
+								fq=vq(fp,q);
+		          				}
+		        			}
+                        		}
+                        		if(fq==1) {
+                                		users[log].quantidade[j]=q;
+                                		j++;
+                                		clearScreen();
+                                		ePrint("Produto adicionado com sucesso à sua lista!\n");
+						writeUsers();
+                                		parseUsers();
+                                		enterPrompt();
+                                		addprod(j,log);
+                        		}
+                		}
+                	else {
+                        	clearScreen();
+                        	printErr("Produto não encontrado! Tente novamente!\n");
+				enterPrompt();
+                        	addprod(items,log);
+                	}
+        	}
+        	}
         }
 }
 
