@@ -85,8 +85,8 @@ void actionsestatisticas(const int opt, const int id){
 	case 4: {
 	        clearScreen();
 		if(clientstats[sid].total > 0) {
-			ePrint(COLOR_YELLOW " +++ Valor total gasto: +++" COLOR_RESET);
-			printf("%.2f€\n",clientstats[sid].total);
+			ePrint(COLOR_YELLOW " +++ Valor total gasto: +++" COLOR_RESET "\n");
+			printf("Gastou %.2f€ neste Supermercado!\n",clientstats[sid].total);
 		}
 		else
 			printErr("Ainda não gastou dinheiro na nossa loja!\n");
