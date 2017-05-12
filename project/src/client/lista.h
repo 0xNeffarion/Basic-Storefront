@@ -12,16 +12,17 @@ void lista(const int log){
         parseStock();
 
         clearScreen();
-        ePrint(COLOR_YELLOW "** Lista **" COLOR_RESET "\n");
-        ePrint(COLOR_CYAN "1)" COLOR_RESET " Criar Lista de Compras.\n");
-        ePrint(COLOR_CYAN "2)" COLOR_RESET " Consultar Lista de Compras.\n");
-        ePrint(COLOR_CYAN "3)" COLOR_RESET " Adicionar produtos à Lista de Compras.\n");
-        ePrint(COLOR_CYAN "4)" COLOR_RESET " Alterar Lista de Compras.\n");
-        ePrint(COLOR_CYAN "5)" COLOR_RESET " Comprar produtos da lista.\n");
-        ePrint(COLOR_CYAN "6)" COLOR_RESET " Voltar ao menu inicial.\n");
+        ePrint(COLOR_YELLOW " +++ Lista +++ " COLOR_RESET "\n");
+        ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Criar Lista de Compras.\n");
+        ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Consultar Lista de Compras.\n");
+        ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Adicionar produtos à Lista de Compras.\n");
+        ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Alterar Lista de Compras.\n");
+        ePrint(COLOR_CYAN "[5] ‣" COLOR_RESET " Comprar produtos da lista.\n");
+        ePrint(COLOR_MAGENTA "[6] ‣" COLOR_RESET " Voltar ao menu inicial.\n\n");
         ePrint("Insira a opção desejada(1-6): ");
-        scanf("%d",&opt);
-        actionslista(opt, log);
+        if (scanf("%d",&opt) > 0) {
+          actionslista(opt, log);
+        }
 }
 
 void actionslista(const int opt, const int log){
@@ -57,7 +58,7 @@ void actionslista(const int opt, const int log){
                         lista(log);
                 }
                 else{
-                        printf("Lista de Compras:\n\n");
+                        printf(" +++ Lista de Compras: +++ \n\n");
                         printf("|-%-6s-|-%-10s-|-%-5s-|\n", "------", "----------", "-----");
                         printf("| " COLOR_GREEN "%-6s" COLOR_RESET " | " COLOR_GREEN "%-10s " COLOR_RESET "| " COLOR_GREEN "%-5s " COLOR_RESET "|\n", "Código", "Quantidade", "Stock");
                         printf("|-%-6s-|-%-10s-|-%-5s-|\n", "------", "----------", "-----");
@@ -94,10 +95,10 @@ void actionslista(const int opt, const int log){
         case 4: {
                 clearScreen();
                 int o=0;
-                ePrint(COLOR_YELLOW "** Alterar Lista de Compras **" COLOR_RESET "\n");
-                ePrint(COLOR_CYAN "1)" COLOR_RESET " Modificar quantidade de um produto.\n");
-                ePrint(COLOR_CYAN "2)" COLOR_RESET " Remover produto.\n");
-                ePrint(COLOR_CYAN "3)" COLOR_RESET " Voltar ao menu anterior.\n");
+                ePrint(COLOR_YELLOW " +++ Alterar Lista de Compras +++ " COLOR_RESET "\n");
+                ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Modificar quantidade de um produto.\n");
+                ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Remover produto.\n");
+                ePrint(COLOR_MAGENTA "[3] ‣" COLOR_RESET " Voltar ao menu anterior.\n");
                 ePrint("Insira a opção desejada(1-3): ");
                 scanf("%d",&o);
                 if (o!=1 && o!=2 && o!=3) {
@@ -161,7 +162,7 @@ void addprod(const int items, const int log){
         int add=0, q=0, e=0, fp=0, fq=0;
         int j = items;
         clearScreen();
-        ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+        ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
         ePrint("Pressine '0' quando terminar de adicionar produtos à sua lista!\n");
         ePrint("Adicione o código do produto à sua lista: ");
         scanf("%d",&add);
@@ -194,7 +195,7 @@ void addprod(const int items, const int log){
                         parseStock();
                         users[log].buylist[j] = add;
                         clearScreen();
-                        ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+                        ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
                         printf("Código do produto: %d\n",add);
                         printf("%d disponiveis.\n",stocks[fp].quantidade);
                         ePrint("Selecione a quantidade prentendida: ");
@@ -205,7 +206,7 @@ void addprod(const int items, const int log){
                                 printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
                                 enterPrompt();
                                 clearScreen();
-                                ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+                                ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
                                 printf("Código do produto: %d\n",add);
                                 printf("%d disponiveis.\n",stocks[fp].quantidade);
                                 ePrint("Selecione a quantidade prentendida: ");
@@ -218,7 +219,7 @@ void addprod(const int items, const int log){
                                 printErr("Selecionou uma quantidade superior ao stock existente!\n");
                                 enterPrompt();
                                 clearScreen();
-                                ePrint(COLOR_YELLOW "** Adicione um produto à sua lista **" COLOR_RESET "\n");
+                                ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
                                 printf("Código do produto: %d\n",add);
                                 printf("%d disponiveis.\n",stocks[fp].quantidade);
                                 ePrint("Selecione a quantidade prentendida: ");
@@ -249,7 +250,7 @@ void remprod(const int items, const int log){
         parseStock();
         clearScreen();
         int rem, rf=0, flag=0;
-        ePrint(COLOR_YELLOW "** Remova um produto da sua lista **" COLOR_RESET "\n");
+        ePrint(COLOR_YELLOW " +++ Remova um produto da sua lista +++ " COLOR_RESET "\n");
         ePrint("Selecione o código do produto a remover da sua lista: ");
         scanf("%d",&rem);
         if (rem > 0) {
@@ -290,7 +291,7 @@ void mod(const int log) {
         parseStock();
         int m=0, e=0, nq=0, fq=0, fp=0;
         clearScreen();
-        ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+        ePrint(COLOR_YELLOW " +++ Altere a quantidade de um produto da sua lista +++ " COLOR_RESET "\n");
         ePrint("Selecione o produto a modificar a quantidade: ");
         scanf("%d",&m);
         e=existe(log,m);
@@ -311,7 +312,7 @@ void mod(const int log) {
                 else {
                         parseStock();
                         clearScreen();
-                        ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+                        ePrint(COLOR_YELLOW " +++ Altere a quantidade de um produto da sua lista +++ " COLOR_RESET "\n");
                         printf("Código do produto: %d\n",m);
                         printf("%d disponiveis.\n",stocks[fp].quantidade);
                         ePrint("Selecione a quantidade prentendida: ");
@@ -322,7 +323,7 @@ void mod(const int log) {
                                 printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
                                 enterPrompt();
                                 clearScreen();
-                                ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+                                ePrint(COLOR_YELLOW " +++ Altere a quantidade de um produto da sua lista +++ " COLOR_RESET "\n");
                                 printf("Código do produto: %d\n",m);
                                 printf("%d disponiveis.\n",stocks[fp].quantidade);
                                 ePrint("Selecione a quantidade prentendida: ");
@@ -335,7 +336,7 @@ void mod(const int log) {
                                 printErr("Selecionou uma quantidade superior ao stock existente!\n");
                                 enterPrompt();
                                 clearScreen();
-                                ePrint(COLOR_YELLOW "** Altere a quantidade de um produto da sua lista **" COLOR_RESET "\n");
+                                ePrint(COLOR_YELLOW " +++ Altere a quantidade de um produto da sua lista +++ " COLOR_RESET "\n");
                                 printf("Código do produto: %d\n",m);
                                 printf("%d disponiveis.\n",stocks[fp].quantidade);
                                 ePrint("Selecione a quantidade prentendida: ");
