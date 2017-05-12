@@ -21,7 +21,7 @@ void lista(const int log){
         ePrint(COLOR_MAGENTA "[6] ‣" COLOR_RESET " Voltar ao menu inicial.\n\n");
         ePrint("Insira a opção desejada(1-6): ");
         if (scanf("%d",&opt) > 0) {
-          actionslista(opt, log);
+        	actionslista(opt, log);
         }
 }
 
@@ -101,30 +101,30 @@ void actionslista(const int opt, const int log){
                 ePrint(COLOR_MAGENTA "[3] ‣" COLOR_RESET " Voltar ao menu anterior.\n");
                 ePrint("Insira a opção desejada(1-3): ");
                 if(scanf("%d",&o) > 0) {
-                if (o!=1 && o!=2 && o!=3) {
-                        clearScreen();
-                        printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
-                        enterPrompt();
-                        actionslista(4,log);
-                }
-                else if (o!=3 && items==0) {
-                        clearScreen();
-                        printErr("Não tem produtos na sua lista!\n");
-                        enterPrompt();
-                        lista(log);
-                }
-                else if (o==1 && items!=0) {
-                        clearScreen();
-                        mod(log);
-                }
-                else if(o==2 && items!=0) {
-                        clearScreen();
-                        remprod(items, log);
-                }
-                else {
-                        lista(log);
-                }
-	    }
+                	if (o!=1 && o!=2 && o!=3) {
+                        	clearScreen();
+                        	printErr("Opção inválida! Escolha entre a opção 1 a 3!\n");
+                        	enterPrompt();
+                        	actionslista(4,log);
+                	}
+                	else if (o!=3 && items==0) {
+                       		clearScreen();
+                        	printErr("Não tem produtos na sua lista!\n");
+                        	enterPrompt();
+                        	lista(log);
+                	}
+                	else if (o==1 && items!=0) {
+                        	clearScreen();
+                        	mod(log);
+                	}
+                	else if(o==2 && items!=0) {
+                        	clearScreen();
+                        	remprod(items, log);
+                	}
+                	else {
+                        	lista(log);
+                	}
+		}
                 break;
         }
 
@@ -167,83 +167,83 @@ void addprod(const int items, const int log){
         ePrint("Pressine '0' quando terminar de adicionar produtos à sua lista!\n");
         ePrint("Adicione o código do produto à sua lista: ");
         if(scanf("%d",&add) > 0) {
-        if(add==0) {
-                lista(log);
-        }
-        e=existe(log,add);
-        if (add < 0) {
-                clearScreen();
-                printErr("Tem que selecionar um código de produto maior do que 0!\n");
-                enterPrompt();
-                addprod(items,log);
-        }
-        else if (add > 0 && e>=0) {
-                clearScreen();
-                printErr("O produto já se encontra na sua lista!\n");
-                printf("Para alterar a quantidade do mesmo, por favor selecione a opção nº4!\n");
-                enterPrompt();
-                addprod(items,log);
-        }
-        else if (add > 0 && e<0) {
-                fp=vp(add);
-                if (fp==-2) {
-                        clearScreen();
-                        printErr("O produto de momento não se encontra em stock!\n");
-                        enterPrompt();
-                        addprod(items,log);
-                }
-                else if (fp >= 0) {
-                        parseStock();
-                        users[log].buylist[j] = add;
-                        clearScreen();
-                        ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
-                        printf("Código do produto: %d\n",add);
-                        printf("%d disponiveis.\n",stocks[fp].quantidade);
-                        ePrint("Selecione a quantidade prentendida: ");
-                        if (scanf("%d",&q) > 0) {
-                        while(q <= 0) {
-                                parseStock();
-                                clearScreen();
-                                printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
-                                enterPrompt();
-                                clearScreen();
-                                ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
-                                printf("Código do produto: %d\n",add);
-                                printf("%d disponiveis.\n",stocks[fp].quantidade);
-                                ePrint("Selecione a quantidade prentendida: ");
-                                if (scanf("%d",&q) > 0) {
-		          continue;
-		        }
-                        }
-                        fq=vq(fp,q);
-                        while(fq==-1) {
-                                parseStock();
-                                clearScreen();
-                                printErr("Selecionou uma quantidade superior ao stock existente!\n");
-                                enterPrompt();
-                                clearScreen();
-                                ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
-                                printf("Código do produto: %d\n",add);
-                                printf("%d disponiveis.\n",stocks[fp].quantidade);
-                                ePrint("Selecione a quantidade prentendida: ");
-                                if (scanf("%d",&q) > 0) {
-		          while (q <= 0) {
-			clearScreen();
-			printErr("Selecionou uma quantidade inferior a 0!\n");
-			enterPrompt();
-			clearScreen();
-			ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
-			printf("Código do produto: %d\n",add);
-			printf("%d disponiveis.\n",stocks[fp].quantidade);
-			ePrint("Selecione a quantidade prentendida: ");
-			if (scanf("%d",&q) > 0) {
-			  continue;
-			}
-		          }
-		          if (q > 0) {
-			fq=vq(fp,q);
-		          }
-		        }
+        	if(add==0) {
+                	lista(log);
+       		}
+        	e=existe(log,add);
+        	if (add < 0) {
+                	clearScreen();
+                	printErr("Tem que selecionar um código de produto maior do que 0!\n");
+                	enterPrompt();
+                	addprod(items,log);
+        	}
+        	else if (add > 0 && e>=0) {
+                	clearScreen();
+                	printErr("O produto já se encontra na sua lista!\n");
+                	printf("Para alterar a quantidade do mesmo, por favor selecione a opção nº4!\n");
+                	enterPrompt();
+                	addprod(items,log);
+        	}
+        	else if (add > 0 && e<0) {
+			fp=vp(add);
+                	if (fp==-2) {
+				clearScreen();
+                        	printErr("O produto de momento não se encontra em stock!\n");
+                        	enterPrompt();
+                        	addprod(items,log);
+                	}
+                	else if (fp >= 0) {
+                        	parseStock();
+                        	users[log].buylist[j] = add;
+                        	clearScreen();
+                        	ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
+                        	printf("Código do produto: %d\n",add);
+                        	printf("%d disponiveis.\n",stocks[fp].quantidade);
+                        	ePrint("Selecione a quantidade prentendida: ");
+                        	if (scanf("%d",&q) > 0) {
+                        		while(q <= 0) {
+                                		parseStock();
+                                		clearScreen();
+                               			printErr("Selecionou uma quantidade igual ou inferior a 0!\n");
+                                		enterPrompt();
+                                		clearScreen();
+                                		ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
+                                		printf("Código do produto: %d\n",add);
+                                		printf("%d disponiveis.\n",stocks[fp].quantidade);
+                                		ePrint("Selecione a quantidade prentendida: ");
+                                		if (scanf("%d",&q) > 0) {
+		          				continue;
+		        			}
+                        		}
+                        		fq=vq(fp,q);
+                        		while(fq==-1) {
+                                		parseStock();
+                                		clearScreen();
+                                	printErr("Selecionou uma quantidade superior ao stock existente!\n");
+                                	enterPrompt();
+                                	clearScreen();
+                                	ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
+                                	printf("Código do produto: %d\n",add);
+                                	printf("%d disponiveis.\n",stocks[fp].quantidade);
+                                	ePrint("Selecione a quantidade prentendida: ");
+                                	if (scanf("%d",&q) > 0) {
+		          			while (q <= 0) {
+							clearScreen();
+							printErr("Selecionou uma quantidade inferior a 0!\n");
+							enterPrompt();
+							clearScreen();
+							ePrint(COLOR_YELLOW " +++ Adicione um produto à sua lista +++ " COLOR_RESET "\n");
+							printf("Código do produto: %d\n",add);
+							printf("%d disponiveis.\n",stocks[fp].quantidade);
+							ePrint("Selecione a quantidade prentendida: ");
+							if (scanf("%d",&q) > 0) {
+			  					continue;
+							}
+		          		}
+		          		if (q > 0) {
+						fq=vq(fp,q);
+		          		}
+		        	}
                         }
                         if(fq==1) {
                                 users[log].quantidade[j]=q;
