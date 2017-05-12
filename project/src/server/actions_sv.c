@@ -13,7 +13,7 @@ void startupActions(){
 	char st[512];
 	getStocksFilePath(st);
 	char stats[512];
-	getStatsFilePath(stats);
+	getClientStatsFilePath(stats);
 	char dr[512];
 	getDataDirectory(dr);
 	if(!dirExists(&dr[0])){
@@ -58,32 +58,36 @@ void startupActions(){
 void actionsStats(const int val){
 	switch(val){
 	case 1: {
-		printToday();
+		printAll();
 		break;
 	}
 
 	case 2: {
-		printWeek();
+		printProduto();
 		break;
 	}
 
 	case 3: {
-		printMonth();
+		printLucro();
 		break;
 	}
 
 	case 4: {
+		printCliente();
 		break;
 	}
 
 	case 5: {
-		sair();
 		break;
+	}
+
+	case 6: {
+		sair();
 	}
 
 	default: {
 		if(lock == 0){
-			printErr("Opção invalida! Escolha valores de 1 a 8\n\n");
+			printErr("Opção invalida! Escolha valores de 1 a 6\n\n");
 			int n = 0;
 			menuStats();
 			lock = 1;
@@ -194,7 +198,7 @@ void actions(const int val){
 					clearScreen();
 					actionsStats(inputstats);
 				}
-				if(inputstats == 4){
+				if(inputstats == 5){
 					clearScreen();
 					break;
 				}
@@ -209,6 +213,11 @@ void actions(const int val){
 	}
 
 	case 5: {
+		printSobre();
+		break;
+	}
+
+	case 6: {
 		sair();
 		return;
 
@@ -216,7 +225,7 @@ void actions(const int val){
 	}
 
 	default: {
-		printErr("Opção invalida! Escolha valores de 1 a 5\n\n");
+		printErr("Opção invalida! Escolha valores de 1 a 6\n\n");
 		int n = 0;
 		menu();
 		if(scanf("%d", &n) >= 1){

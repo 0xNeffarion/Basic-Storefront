@@ -1,4 +1,5 @@
 #include "../lib.c"
+#include "about_sv.c"
 #include "stats_sv.c"
 #include "menus_sv.c"
 #include "methods_sv.c"
@@ -29,7 +30,7 @@ int main(int argc, char **argv){
 			}
 			if(strcmp(argv[2], "stats") == 0){
 				char fp[512];
-				getStocksFilePath(fp);
+				getClientStatsFilePath(fp);
 				remove(fp);
 				printf("Ficheiro de estastisticas removido!\n");
 				exit(0);
@@ -40,7 +41,7 @@ int main(int argc, char **argv){
 	startupActions();
 	parseUsers();
 	parseStock();
-  parseStats();
+	parseClientStats();
 	login();
 	mainActions();
 	return(0);

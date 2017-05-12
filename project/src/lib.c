@@ -186,5 +186,4 @@ unsigned int crc32b(char *message){
 #include "lib_dates.c"
 #include "lib_stocks.c"
 #include "lib_users.c"
-#include "lib_stats.c"
 #include "lib_stats_cv.c"

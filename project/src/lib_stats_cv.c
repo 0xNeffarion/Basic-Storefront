@@ -149,7 +149,7 @@ void writeClientStats(){
 		int i = 0;
 		for(i = 0; i < 512; i++){
 			if(clientstats[i].valid == true){
-			        char iid[512];
+				char iid[512];
 				char qto[512];
 				char gs[512];
 				for(int k = 0; k < 127; k++){
@@ -203,6 +203,18 @@ int getClientStatPosition(const int id){
 	return(-1);
 }
 
+int getClientStatUserPosition(const int id){
+	int i = 0;
+
+	for(; i < numClientStats; i++){
+		if(clientstats[i].userid == id){
+			return(i);
+		}
+	}
+
+	return(-1);
+}
+
 int getClientLastStatId(){
 	char fp[512];
 	char line[256];
@@ -212,8 +224,8 @@ int getClientLastStatId(){
 	int  i   = 0;
 	if(fr != NULL){
 		while(fgets(line, sizeof(line), fr) != NULL){
-		        if(strcmp(line, "\n") == 0){
-			        continue;
+			if(strcmp(line, "\n") == 0){
+				continue;
 			}
 			if(strlen(line) > 1){
 				char *tk_id = strtok(line, FILE_DELIM);
@@ -235,9 +247,9 @@ int createClientStats(int id){
 	int next   = size + 1;
 	int nextId = getClientLastStatId() + 1;
 
-        clientstats[next].valid      = true;
-	clientstats[next].userid     = id;
-	clientstats[next].uid        = nextId;
+	clientstats[next].valid  = true;
+	clientstats[next].userid = id;
+	clientstats[next].uid    = nextId;
 	writeClientStats();
 	parseClientStats();
 

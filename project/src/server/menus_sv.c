@@ -8,7 +8,8 @@ void menu(){
 	ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Gerir stocks\n");
 	ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Ver estatisticas\n");
 	ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Listar utilizadores\n\n");
-	ePrint(COLOR_RED "[5] ‣" COLOR_RESET " Sair [⇲]\n\n");
+	ePrint(COLOR_MAGENTA "[5] ‣" COLOR_RESET " Sobre\n\n");
+	ePrint(COLOR_RED "[6] ‣" COLOR_RESET " Sair [⇲]\n\n");
 	ePrint("Insira a opcao desejada (1-5):\n");
 }
 
@@ -27,10 +28,11 @@ void menuStocks(){
 
 void menuStats(){
 	ePrint(COLOR_YELLOW " +++ Menu Estatisticas +++ " COLOR_RESET "\n");
-	ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Visualizar hoje\n");
-	ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Visualizar semana\n");
-	ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Visualizar mes\n");
-	ePrint(COLOR_MAGENTA "[4] ‣" COLOR_RESET " Voltar para menu principal\n\n");
-	ePrint(COLOR_RED "[5] ‣" COLOR_RESET " Sair servidor [⇲]\n\n");
+	ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Quantidade de produtos vendidos no total\n");
+	ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Quantidade vendida de um determinado produto\n");
+	ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Lucro de um determinado produto\n");
+	ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Analisar os produtos comprados por um determinado cliente\n");
+	ePrint(COLOR_MAGENTA "[5] ‣" COLOR_RESET " Voltar para menu principal\n\n");
+	ePrint(COLOR_RED "[6] ‣" COLOR_RESET " Sair servidor [⇲]\n\n");
 	ePrint("Insira a opcao desejada (1-5):\n");
 }
