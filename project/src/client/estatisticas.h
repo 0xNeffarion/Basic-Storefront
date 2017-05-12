@@ -26,11 +26,11 @@ void actionsestatisticas(const int opt, const int id){
 	case 1: {
 		clearScreen();
 		if (clientstats[sid].totalp>0) {
-		  ePrint(COLOR_YELLOW " +++ Quantidade total de produtos comprados: +++" COLOR_RESET "\n");
-		  printf("Comprou %d produtos.\n",clientstats[sid].totalp);
+			ePrint(COLOR_YELLOW " +++ Quantidade total de produtos comprados: +++" COLOR_RESET "\n");
+			printf("Comprou %d produtos.\n",clientstats[sid].totalp);
 		}
 		else
-		  printErr("Não comprou produtos na nossa loja!\n");
+			printErr("Não comprou produtos na nossa loja!\n");
 		enterPrompt();
 		estatisticas(id);
 		break;
@@ -42,21 +42,21 @@ void actionsestatisticas(const int opt, const int id){
 		ePrint(COLOR_YELLOW " +++ Quantidade comprada de um determinado produto: +++" COLOR_RESET "\n");
 		ePrint("Insira o código do produto: ");
 		if (scanf("%d", &prod) > 0) {
-		  pos=getItemPos(sid,prod);
-		  clearScreen();
+			pos=getItemPos(sid,prod);
+			clearScreen();
 		}
 		if (pos >= 0) {
-		  for(int i=0; i<10; i++) {
-		    printf("Quant: %d",clientstats[sid].quant[i]);
-		  }
-		  ePrint(COLOR_YELLOW " +++ Quantidade comprada de um determinado produto: +++" COLOR_RESET "\n");
-		  printf("Comprou %d vezes o produto %d.\n",clientstats[sid].quant[pos],prod);
+			for(int i=0; i<10; i++) {
+		  		printf("Quant: %d",clientstats[sid].quant[i]);
+			}
+			ePrint(COLOR_YELLOW " +++ Quantidade comprada de um determinado produto: +++" COLOR_RESET "\n");
+			printf("Comprou %d vezes o produto %d.\n",clientstats[sid].quant[pos],prod);
 		}
 		else if (pos == -1 && prod > 0) { 
-		  printErr("Nunca comprou este produto!\n");
+			printErr("Nunca comprou este produto!\n");
 		}
 		else
-		  printErr("Por favor insira um código de produto superior a 0!\n");
+			printErr("Por favor insira um código de produto superior a 0!\n");
 		enterPrompt();
 		estatisticas(id);
 		break;
@@ -68,18 +68,18 @@ void actionsestatisticas(const int opt, const int id){
 		ePrint(COLOR_YELLOW " +++ Valor total gasto num determinado produto: +++" COLOR_RESET "\n");
 		ePrint("Insira o código do produto: ");
 		if (scanf("%d", &prod) > 0) {
-		  pos=getItemPos(sid,prod);
-		  clearScreen();
+			pos=getItemPos(sid,prod);
+			clearScreen();
 		}
 		if (pos >= 0) {
-		  ePrint(COLOR_YELLOW " +++ Valor total gasto num determinado produto: +++" COLOR_RESET "\n");
-		  printf("Gastou %.2f€ no produto %d.\n",clientstats[sid].gasto[pos],prod);
+			ePrint(COLOR_YELLOW " +++ Valor total gasto num determinado produto: +++" COLOR_RESET "\n");
+			printf("Gastou %.2f€ no produto %d.\n",clientstats[sid].gasto[pos],prod);
 		}
 		else if (pos == -1 && prod > 0) { 
-		  printErr("Nunca comprou este produto!\n");
+			printErr("Nunca comprou este produto!\n");
 		}
 		else
-		  printErr("Por favor insira um código de produto superior a 0!\n");
+			printErr("Por favor insira um código de produto superior a 0!\n");
 	        enterPrompt();
 		estatisticas(id);
 		break;
@@ -88,11 +88,11 @@ void actionsestatisticas(const int opt, const int id){
 	case 4: {
 	        clearScreen();
 		if(clientstats[sid].total > 0) {
-		  ePrint(COLOR_YELLOW " +++ Valor total gasto: +++" COLOR_RESET);
-		  printf("%.2f€\n",clientstats[sid].total);
+			ePrint(COLOR_YELLOW " +++ Valor total gasto: +++" COLOR_RESET);
+			printf("%.2f€\n",clientstats[sid].total);
 		}
 		else
-		  printErr("Ainda não gastou dinheiro na nossa loja!\n");
+			printErr("Ainda não gastou dinheiro na nossa loja!\n");
 		enterPrompt();
 		estatisticas(id);
 	        break;
@@ -113,19 +113,19 @@ void actionsestatisticas(const int opt, const int id){
 }
 
 int getIdStats(const int id) {
-  for (int i=0; i<512; i++) {
-    if (clientstats[i].userid == id) {
-      return i;
-    }
-  }
-  return 0;
+	for (int i=0; i<512; i++) {
+  		if (clientstats[i].userid == id) {
+    			return i;
+    		}
+  	}
+  	return 0;
 }
 
 int getItemPos(const int sid, const int prod) {
-  for(int i=0; i<128; i++) {
-    if(clientstats[sid].itemid[i] == prod) {
-      return i;
-    }
-  }
-  return -1;
+  	for(int i=0; i<128; i++) {
+    		if(clientstats[sid].itemid[i] == prod) {
+      			return i;
+    		}
+  	}
+ 	return -1;
 }
