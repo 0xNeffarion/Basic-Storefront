@@ -7,7 +7,7 @@ Conteúdo deste Readme:
 *Documentação extra
 
 - Introdução:
-Este projeto foi criado por André Moreira Pacheco (up201505089@fc.up.pt) e … no âmbito da unidade curricular de Laboratório de Computadores. O mesmo consiste no desenvolvimento de um sistema de controlo de um supermercado e tem por base 2 programas, o Servidor (Supermercado) e Cliente.
+Este projeto foi criado por André Moreira Pacheco (up201505089@fc.up.pt) e Vasco Serrano (up201503010@fc.up.pt) no âmbito da unidade curricular de Laboratório de Computadores. O mesmo consiste no desenvolvimento de um sistema de controlo de um supermercado e tem por base 2 programas, o Servidor (Supermercado) e Cliente.
 
 - Requerimentos:
 Para executar os 2 programas (Servidor e Cliente) é necessário o acesso a um terminal do Linux.
