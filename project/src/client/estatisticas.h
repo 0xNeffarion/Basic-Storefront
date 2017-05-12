@@ -100,6 +100,7 @@ int getIdStats(const int id) {
       return i;
     }
   }
+  return 0;
 }
 
 int getItemPos(const int sid, const int prod) {

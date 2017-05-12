@@ -4,4 +4,5 @@
 #include "compra.h"
 #include "lista.h"
 #include "estatisticas.h"
+#include "about_cv.h"
 #include "mainactions.h"

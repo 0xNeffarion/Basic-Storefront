@@ -53,7 +53,13 @@ void actions(const int opt, const int log){
 		break;
 	}
 
+
 	case 4: {
+	        printSobre();
+		break;
+	}
+	  
+	case 5: {
 		sair();
 		return;
 
@@ -62,7 +68,7 @@ void actions(const int opt, const int log){
 
 	default: {
 	        clearScreen();
-		printErr("Opção inválida! Escolha entre a opção 1 a 4!\n");
+		printErr("Opção inválida! Escolha entre a opção 1 a 5!\n");
 		enterPrompt();
 		break;
 	}

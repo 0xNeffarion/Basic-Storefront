@@ -17,7 +17,7 @@ int compra(const int log, const int items){
                 int cod=users[log].buylist[i];
                 total+=q*getPreco(cod);
         }
-        ePrint(COLOR_YELLOW "** Comprar produtos da sua Lista de Compras **" COLOR_RESET "\n");
+        ePrint(COLOR_YELLOW " +++ Comprar produtos da sua Lista de Compras +++ " COLOR_RESET "\n");
         printf("Total: %.2f€\n",total);
         ePrint("Prosseguir com a compra? (sim/nao)\n");
         if(scanf("%s", decision) <= 0) {
@@ -95,6 +95,7 @@ int StatsID(const int id) {
                         return i;
                 }
         }
+	return 0;
 }
 
 int viid(const int sid, const int cod) {
@@ -117,4 +118,5 @@ int viid(const int sid, const int cod) {
                         }
                 }
         }
+	return 0;
 }

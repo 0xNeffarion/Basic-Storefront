@@ -5,11 +5,11 @@ void saldo(const int log){
         int opt;
 
         clearScreen();
-        ePrint(COLOR_YELLOW "** Saldo **" COLOR_RESET "\n");
-        ePrint(COLOR_CYAN "1)" COLOR_RESET " Consultar Saldo.\n");
-        ePrint(COLOR_CYAN "2)" COLOR_RESET " Adicionar Saldo.\n");
-        ePrint(COLOR_CYAN "3)" COLOR_RESET " Remover Saldo.\n");
-        ePrint(COLOR_CYAN "4)" COLOR_RESET " Voltar ao menu inicial.\n");
+        ePrint(COLOR_YELLOW " +++ Saldo +++ " COLOR_RESET "\n");
+        ePrint(COLOR_CYAN "[1] ‣" COLOR_RESET " Consultar Saldo.\n");
+        ePrint(COLOR_CYAN "[2] ‣" COLOR_RESET " Adicionar Saldo.\n");
+        ePrint(COLOR_CYAN "[3] ‣" COLOR_RESET " Remover Saldo.\n");
+        ePrint(COLOR_MAGENTA "[4] ‣" COLOR_RESET " Voltar ao menu inicial.\n\n");
         ePrint("Insira a opção desejada(1-4): ");
         if(scanf("%d", &opt) > 0) {
                 actionsaldo(opt, log);
@@ -21,7 +21,7 @@ void actionsaldo(const int opt, const int log){
         switch(opt) {
         case 1: {
                 clearScreen();
-                ePrint(COLOR_YELLOW "** Consultar Saldo **" COLOR_RESET "\n");
+                ePrint(COLOR_YELLOW " +++ Consultar Saldo +++ " COLOR_RESET "\n");
                 ePrint("O seu saldo atual é:");
                 printf(" %.2f€\n", users[log].balance);
                 enterPrompt();
@@ -32,7 +32,7 @@ void actionsaldo(const int opt, const int log){
         case 2: {
                 float add;
                 clearScreen();
-                ePrint(COLOR_YELLOW "** Adicionar Saldo **" COLOR_RESET "\n");
+                ePrint(COLOR_YELLOW " +++ Adicionar Saldo +++ " COLOR_RESET "\n");
                 ePrint("Insira a quantia a adicionar ao seu saldo (em euros): ");
                 if(scanf("%f", &add) <= 0) {
                         printErr("Erro a ler valor\n");
@@ -59,7 +59,7 @@ void actionsaldo(const int opt, const int log){
         case 3: {
                 float rem;
                 clearScreen();
-                ePrint(COLOR_YELLOW "** Remover Saldo **" COLOR_RESET "\n");
+                ePrint(COLOR_YELLOW " +++ Remover Saldo +++ " COLOR_RESET "\n");
                 ePrint("Insira a quantia a remover ao seu saldo (em euros): ");
                 if(scanf("%f", &rem) <= 0) {
                         printErr("Erro a ler valor\n");
