@@ -54,12 +54,12 @@ int compra(const int log, const int items){
                                 }
                         }
                         for(int i=0; i<items; i++) {
+		        sid=StatsID(getUserId(log));
                                 int q=users[log].quantidade[i];
                                 int cod=users[log].buylist[i];
                                 int id=getItemPosition(cod);
                                 int j = viid(sid,cod);
                                 float gasto=0;
-                                sid=StatsID(getUserId(log));
                                 stocks[id].quantidade-=q;
                                 gasto=q*getPreco(cod);
                                 users[log].buylist[i]=0;
@@ -77,7 +77,7 @@ int compra(const int log, const int items){
                         }
                         parseUsers();
                         parseStock();
-                        //parseClientStats();
+                        parseClientStats();
                         return 1;
                 }
         }
@@ -95,7 +95,7 @@ int StatsID(const int id) {
                         return i;
                 }
         }
-	return 0;
+        return 0;
 }
 
 int viid(const int sid, const int cod) {
@@ -111,12 +111,12 @@ int viid(const int sid, const int cod) {
         }
         if (isval == false) {
                 for (int i=0; i<128; i++) {
-                        if(clientstats[sid].itemid[i] <= 0) {
+                        if(clientstats[sid].itemid[i] == 0) {
                                 clientstats[sid].itemid[i]=cod;
                                 isval=true;
                                 return i;
                         }
                 }
         }
-	return 0;
+        return 0;
 }
