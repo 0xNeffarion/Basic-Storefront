@@ -54,7 +54,7 @@ int compra(const int log, const int items){
                                 }
                         }
                         for(int i=0; i<items; i++) {
-		        sid=StatsID(getUserId(log));
+		        	sid=StatsID(getUserId(log));
                                 int q=users[log].quantidade[i];
                                 int cod=users[log].buylist[i];
                                 int id=getItemPosition(cod);
