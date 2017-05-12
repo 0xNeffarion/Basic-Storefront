@@ -10,7 +10,7 @@ void menu(){
 	ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Listar utilizadores\n\n");
 	ePrint(COLOR_MAGENTA "[5] ‣" COLOR_RESET " Sobre\n\n");
 	ePrint(COLOR_RED "[6] ‣" COLOR_RESET " Sair [⇲]\n\n");
-	ePrint("Insira a opcao desejada (1-5):\n");
+	ePrint("Insira a opcao desejada (1-6):\n");
 }
 
 void menuStocks(){
@@ -34,5 +34,5 @@ void menuStats(){
 	ePrint(COLOR_CYAN "[4] ‣" COLOR_RESET " Analisar os produtos comprados por um determinado cliente\n");
 	ePrint(COLOR_MAGENTA "[5] ‣" COLOR_RESET " Voltar para menu principal\n\n");
 	ePrint(COLOR_RED "[6] ‣" COLOR_RESET " Sair servidor [⇲]\n\n");
-	ePrint("Insira a opcao desejada (1-5):\n");
+	ePrint("Insira a opcao desejada (1-6):\n");
 }
