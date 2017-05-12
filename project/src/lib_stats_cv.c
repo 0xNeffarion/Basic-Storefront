@@ -76,6 +76,7 @@ void parseClientStats(){
 						}
 					}
 
+					z = 1;
 					char *tks2 = strtok(tk_qto, BUYLIST_DELIM);
 					if(strcmp(tks2, "0") == 0){
 						i++;
