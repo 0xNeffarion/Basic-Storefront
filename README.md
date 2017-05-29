@@ -1,4 +1,4 @@
-# Project Title
+# Storefront
 
 Storefront back-end (server) & front-end (client) applications
 
