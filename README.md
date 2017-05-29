@@ -46,8 +46,8 @@ All information is stored locally on same machine (users, stats and items) @ ~\l
 
 In order to log in into the server for the first time the starting user will be:
 
-Username: gestor
- Password: admin
+Username: gestor  
+Password: admin
 
 It is possible to reset the stock, stats and registered users info by running the server with the following arguments (in-case something goes wrong unnexpectedly)
 
