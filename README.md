@@ -10,6 +10,7 @@ Storefront back-end (server) & front-end (client) applications
 ### Installing
 
 Clone or download a zip file with source code and extract to a folder.
+
 If you dont have GCC installed type the following in the terminal:
 
 ```
@@ -17,8 +18,8 @@ sudo apt-get install gcc
 ```
 
 You can use the provided .sh files to build and run the client/server.
+
 Make sure they have permission to execute.
-Like so:
 
 Build server and client:
 ```
@@ -38,6 +39,8 @@ Any compiled files will be in the bin folder
 * **André Moreira Pacheco** - [AndreMP97](https://github.com/AndreMP97)
 
 ## Acknowledgments
+
+This was a simple university project written in C.
 
 All information is stored locally on same machine (users, stats and items) @ ~\labc_sm_data
 
