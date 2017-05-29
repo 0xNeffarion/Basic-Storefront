@@ -44,8 +44,10 @@ This was a simple university project written in C.
 
 All information is stored locally on same machine (users, stats and items) @ ~\labc_sm_data
 
-In order to log in into the server the starting user will be:
+In order to log in into the server for the first time the starting user will be:
+
 Username: gestor
+
 Password: admin
 
 It is possible to reset the stock, stats and registered users info by running the server with the following arguments (in-case something goes wrong unnexpectedly)
