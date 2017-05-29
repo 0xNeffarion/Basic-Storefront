@@ -1,27 +1,52 @@
-# ProjLabc
-Conteúdo deste Readme:
-*Introdução
-*Requerimentos
-*Instalação
-*Execução
-*Documentação extra
+# Project Title
 
-- Introdução:
-Este projeto foi criado por André Moreira Pacheco (up201505089@fc.up.pt) e Vasco Serrano (up201503010@fc.up.pt) no âmbito da unidade curricular de Laboratório de Computadores. O mesmo consiste no desenvolvimento de um sistema de controlo de um supermercado e tem por base 2 programas, o Servidor (Supermercado) e Cliente.
+Storefront back-end (server) & front-end (client) applications
 
-- Requerimentos:
-Para executar os 2 programas (Servidor e Cliente) é necessário o acesso a um terminal do Linux.
+### Prerequisites
 
-- Instalação:
-Para instalar os 2 programas basta copiar a pasta “project” para um diretório à sua escolha.
+- Linux based OS. Ubuntu, Debian, Fedora, etc..
+- GCC installed for compiling the source code
 
-- Execução:
-Para executar tanto o Servidor como o Cliente, deverá aceder à pasta “project” que copiou para o diretório à sua escolha. Posto isto, o executável do Servidor (SUPServidor) encontra-se na pasta “project/src/server” e do Cliente (SUPCliente) encontra-se na pasta “project/src/client”.
+### Installing
 
-- Documentação extra:
-O código comum ao Servidor e Cliente encontra-se na pasta “src”, o código apenas do Servidor, poderá ser encontrado na pasta “project/src/server” e o do Cliente na pasta “project/src/client”. 
-Os ficheiros que servirão para guardar os dados de ambos os programas, terão a extensão .data e poderão ser encontrados no seu diretório “Home/labc_sm_data”.
-Para efetuar o login como gestor no Servidor, deverá usar como username “gestor” e password “admin”.
-Só conseguirá fazer login no Cliente, após criar um utilizador no Servidor e caso execute o Cliente antes de criar o utilizador, irá ser apresentado um erro no login.
-Para efetuar a compra da lista do utilizador que efetuou o login, será necessário colocar como input “sim”, quando for apresentada a mensagem “Prosseguir com a compra?”. Caso haja duas ou mais compras ao mesmo tempo do mesmo produto e o stock não seja suficiente, será apresentado um erro ao(s) utilizador(es) que não conseguiram efetuar a compra e o(s) mesmo(s) terão que alterar a sua lista de compras. 
-Na Lista de Compras serão apresentados todos os itens adicionados à mesma (pela ordem que foram adicionados), bem como a sua quantidade e se estes encontram-se em stock. Caso haja uma compra de um dos produtos adicionados à lista e rutura de stock, o utilizador poderá remover esse produto da sua lista ou caso haja uma compra de algumas unidades de um desses produtos e o stock existente é menor ao da lista, o utilizador poderá modificar a quantidade do produto da sua lista.
+Clone or download a zip file with source code and extract to a folder.
+If you dont have GCC installed type the following in the terminal:
+
+```
+sudo apt-get install gcc
+```
+
+You can use the provided .sh files to build and run the client/server.
+Make sure they have permission to execute.
+Like so:
+
+Build server and client:
+```
+sh build.sh
+```
+
+Run client or/and server
+```
+sh client_run.sh
+sh server_run.sh
+```
+Any compiled files will be in the bin folder
+
+## Authors
+
+* **Vasco Serrano** - [0xNeffarion](https://github.com/0xNeffarion)
+* **André Moreira Pacheco** - [AndreMP97](https://github.com/AndreMP97)
+
+## Acknowledgments
+
+All information is stored locally on same machine (users, stats and items) @ ~\labc_sm_data
+
+It is possible to reset the stock, stats and registered users info by running the server with the following arguments (in-case something goes wrong unnexpectedly)
+
+```
+.\sv.out reset target
+```
+
+Target can be either:
+users, stats or stocks
+
