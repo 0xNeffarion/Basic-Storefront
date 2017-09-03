@@ -1,6 +1,6 @@
 # Storefront
 
-Storefront back-end (server) & front-end (client) applications
+Storefront back-end (local server) & front-end (client) applications.
 
 ### Prerequisites
 
